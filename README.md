@@ -2,8 +2,8 @@
 
 Conectar Web es la nueva plataforma de **Conectar Servicios**. Reunirá el sitio
 web público corporativo y un panel en `/admin` desde el que se administrará su
-contenido. Esta primera etapa establece la arquitectura base; la integración
-con Supabase se incorporará en tareas posteriores.
+contenido. La infraestructura de Supabase está preparada como backend para las
+próximas funcionalidades de datos y autenticación.
 
 ## Stack
 
@@ -19,6 +19,18 @@ Instalá las dependencias:
 
 ```bash
 npm install
+```
+
+Copiá el archivo de variables de entorno y completá las credenciales públicas
+del proyecto Supabase (sin agregar claves secretas):
+
+```bash
+cp .env.example .env.local
+```
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=tu-clave-publicable
 ```
 
 Iniciá el servidor de desarrollo:

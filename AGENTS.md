@@ -46,6 +46,24 @@ servicios, noticias, eventos, preguntas frecuentes, información institucional,
 datos de contacto ni redes sociales. Ese contenido provendrá de Supabase y se
 gestionará desde `/admin`.
 
+El esquema versionado vive en `supabase/migrations`. Todo cambio de tablas,
+tipos, funciones, triggers, índices, grants o policies debe realizarse mediante
+una nueva migración; no se modifica la base remota manualmente sin conservar un
+equivalente reproducible en el repositorio.
+
+Todas las tablas del esquema `public` deben tener RLS habilitado y grants
+explícitos. La lectura anónima se limita a contenido público (activo, publicado
+y/o dentro de su ventana temporal según corresponda), y ninguna escritura es
+pública. `site_settings` puede contener configuración pública o interna no
+secreta, pero solo las filas con `is_public = true` se exponen a visitantes.
+Secretos, contraseñas, claves `service_role` y credenciales están prohibidos en
+esa tabla independientemente de `is_public`. La autenticación por sí sola no
+concede permisos administrativos: un usuario debe tener un perfil activo. Los
+roles son `editor` para contenido, `admin` para contenido y configuración, y
+`super_admin` para esas tareas y la administración de perfiles. Las policies de
+perfiles deben impedir la autopromoción a `super_admin` y evitar consultas
+recursivas.
+
 ## Calidad
 
 - Mantener TypeScript en modo estricto y evitar `any`.

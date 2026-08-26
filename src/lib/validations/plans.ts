@@ -26,11 +26,14 @@ export function parsePlanForm(formData: FormData): ParsedPlanForm {
   const errors: Record<string, string> = {};
   const name = text(formData, "name");
   const slug = slugifyPlanName(text(formData, "slug"));
-  const speedMbps = Number(text(formData, "speed_mbps"));
-  const regularPrice = Number(text(formData, "regular_price"));
+  const speedMbpsRaw = text(formData, "speed_mbps");
+  const speedMbps = Number(speedMbpsRaw);
+  const regularPriceRaw = text(formData, "regular_price");
+  const regularPrice = Number(regularPriceRaw);
   const promotionalRaw = text(formData, "promotional_price");
   const promotionalPrice = promotionalRaw === "" ? null : Number(promotionalRaw);
-  const displayOrder = Number(text(formData, "display_order"));
+  const displayOrderRaw = text(formData, "display_order");
+  const displayOrder = Number(displayOrderRaw);
   const promotionStartRaw = text(formData, "promotion_start");
   const promotionEndRaw = text(formData, "promotion_end");
   const promotionStartDate = promotionStartRaw ? new Date(promotionStartRaw) : null;
@@ -38,10 +41,10 @@ export function parsePlanForm(formData: FormData): ParsedPlanForm {
 
   if (!name) errors.name = "Ingresá el nombre del plan.";
   if (!slug) errors.slug = "Ingresá un slug válido.";
-  if (!Number.isInteger(speedMbps) || speedMbps <= 0) errors.speed_mbps = "Ingresá un entero mayor que cero.";
-  if (!Number.isFinite(regularPrice) || regularPrice < 0) errors.regular_price = "Ingresá un precio mayor o igual a cero.";
+  if (!speedMbpsRaw || !Number.isInteger(speedMbps) || speedMbps <= 0) errors.speed_mbps = "Ingresá un entero mayor que cero.";
+  if (!regularPriceRaw || !Number.isFinite(regularPrice) || regularPrice < 0) errors.regular_price = "Ingresá un precio mayor o igual a cero.";
   if (promotionalPrice !== null && (!Number.isFinite(promotionalPrice) || promotionalPrice < 0)) errors.promotional_price = "Ingresá un precio mayor o igual a cero, o dejalo vacío.";
-  if (!Number.isInteger(displayOrder) || displayOrder < 0) errors.display_order = "Ingresá un entero mayor o igual a cero.";
+  if (!displayOrderRaw || !Number.isInteger(displayOrder) || displayOrder < 0) errors.display_order = "Ingresá un entero mayor o igual a cero.";
   if (promotionStartDate && Number.isNaN(promotionStartDate.getTime())) errors.promotion_start = "Ingresá una fecha válida.";
   if (promotionEndDate && Number.isNaN(promotionEndDate.getTime())) errors.promotion_end = "Ingresá una fecha válida.";
   if (promotionStartDate && promotionEndDate && promotionEndDate < promotionStartDate) errors.promotion_end = "El fin no puede ser anterior al inicio.";

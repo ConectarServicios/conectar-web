@@ -80,6 +80,7 @@ export function PlanForm({ id, initialValues }: Readonly<{ id?: string; initialV
           </label>
           <label className="text-sm font-semibold text-slate-700">Inicio
             <input className={inputClass} defaultValue={initialStart} type="datetime-local" onChange={(event) => setPromotionStart(event.target.value ? new Date(event.target.value).toISOString() : "")} />
+            {error("promotion_start") && <span className="mt-1 block text-xs text-red-700">{error("promotion_start")}</span>}
           </label>
           <label className="text-sm font-semibold text-slate-700">Fin
             <input className={inputClass} defaultValue={initialEnd} type="datetime-local" onChange={(event) => setPromotionEnd(event.target.value ? new Date(event.target.value).toISOString() : "")} />

@@ -29,9 +29,12 @@ TypeScript estricto, Tailwind CSS, ESLint, una estructura `src/`, el alias
 - `src/lib/auth`, `src/lib/supabase`, `src/lib/utils` y
   `src/lib/validations` alojarán infraestructura y lógica compartida, nunca
   componentes visuales. Los tipos compartidos vivirán en `src/types`.
-- Supabase se incorporará como backend para PostgreSQL, Auth y Storage. Su
-  acceso debe quedar centralizado en `src/lib/supabase`, con clientes de
-  servidor y navegador separados cuando se implemente.
+- Supabase es el backend previsto para PostgreSQL, Auth y Storage. Su acceso
+  debe permanecer centralizado en `src/lib/supabase`, con clientes de servidor
+  y navegador separados. La configuración pública se obtiene exclusivamente de
+  `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; el
+  desarrollo local parte de `.env.example` y guarda los valores en el archivo
+  ignorado `.env.local`.
 
 No crear archivos vacíos para materializar directorios futuros. Crear cada
 carpeta cuando exista una responsabilidad real que ubicar en ella.
@@ -75,6 +78,8 @@ Priorizar claridad, usabilidad y seguridad para usuarios no técnicos.
 
 - Nunca exponer secretos ni incluirlos en el repositorio.
 - Nunca usar la clave `service_role` de Supabase en código cliente.
+- No declarar claves secretas, contraseñas de base de datos ni credenciales
+  administrativas con el prefijo `NEXT_PUBLIC_`.
 - Respetar las futuras políticas Row Level Security (RLS).
 - No crear un flujo público de registro de administradores.
 

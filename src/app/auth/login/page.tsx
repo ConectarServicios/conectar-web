@@ -1,4 +1,18 @@
-export default function LoginPage() {
+import { redirect } from "next/navigation";
+
+import { LoginForm } from "@/components/forms/login-form";
+import { createClient } from "@/lib/supabase/server";
+
+export default async function LoginPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    redirect("/admin");
+  }
+
   return (
     <section
       aria-labelledby="login-title"
@@ -8,8 +22,9 @@ export default function LoginPage() {
         Acceso administrativo
       </h1>
       <p className="mt-3 text-slate-600">
-        La autenticación se habilitará próximamente.
+        Ingresá con las credenciales asignadas a tu cuenta.
       </p>
+      <LoginForm />
     </section>
   );
 }

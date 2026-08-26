@@ -127,6 +127,7 @@ create table public.site_settings (
   key text not null unique,
   value jsonb not null,
   description text,
+  is_public boolean not null default false,
   updated_at timestamptz not null default now()
 );
 
@@ -298,7 +299,7 @@ on public.faqs for select to anon, authenticated
 using (active);
 create policy "Public can read site settings"
 on public.site_settings for select to anon, authenticated
-using (true);
+using (is_public);
 create policy "Public can read contact information"
 on public.contact_information for select to anon, authenticated
 using (true);

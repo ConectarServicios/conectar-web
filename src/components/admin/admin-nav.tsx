@@ -31,7 +31,10 @@ export function AdminNav({ role, onNavigate }: AdminNavProps) {
             </p>
             <ul className="space-y-1">
               {sectionItems.map((item) => {
-                const isActive = pathname === item.href;
+                const isActive =
+                  pathname === item.href ||
+                  (item.href !== "/admin" &&
+                    pathname.startsWith(`${item.href}/`));
                 return (
                   <li key={item.href}>
                     <Link

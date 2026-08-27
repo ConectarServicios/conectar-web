@@ -17,7 +17,7 @@ export default async function PlansPage({ searchParams }: Readonly<{ searchParam
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("plans")
-    .select("id, name, slug, speed_mbps, description, regular_price, promotional_price, promotion_label, promotion_start, promotion_end, featured, active, display_order, plan_features(id, text, display_order)")
+    .select("id, name, slug, speed_mbps, upload_speed_mbps, description, regular_price, promotional_price, promotion_label, promotion_start, promotion_end, featured, active, display_order, plan_features(id, text, display_order)")
     .order("display_order", { ascending: true }).order("speed_mbps", { ascending: true }).order("name", { ascending: true });
   if (error) console.error("Unable to list plans", error);
   const plans = (data ?? []) as Plan[];
@@ -45,7 +45,7 @@ export default async function PlansPage({ searchParams }: Readonly<{ searchParam
           {plans.map((plan) => (
             <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:grid lg:grid-cols-[1.5fr_.7fr_1fr_.8fr_.6fr_.7fr_1.2fr] lg:items-center lg:gap-3 lg:rounded-none lg:border-0 lg:border-b lg:p-5 lg:shadow-none last:lg:border-b-0" key={plan.id}>
               <div><h2 className="font-bold text-slate-950">{plan.name}</h2>{plan.featured && <span className="mt-1 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-800">Destacado</span>}</div>
-              <p className="mt-3 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Velocidad: </span>{plan.speed_mbps} Mbps</p>
+              <div className="mt-3 space-y-1 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Velocidad</span><p><span aria-hidden="true">↓</span> <span className="sr-only">Bajada: </span>{plan.speed_mbps} Mbps</p><p><span aria-hidden="true">↑</span> <span className="sr-only">Subida: </span>{plan.upload_speed_mbps === null ? "Sin informar" : `${plan.upload_speed_mbps} Mbps`}</p></div>
               <div className="mt-2 text-sm lg:mt-0"><p className="text-slate-700">{currency.format(plan.regular_price)}</p>{plan.promotional_price !== null && <p className="font-bold text-orange-700">{currency.format(plan.promotional_price)}</p>}</div>
               <span className={`mt-3 w-fit rounded-full px-2.5 py-1 text-xs font-bold lg:mt-0 ${plan.active ? "bg-emerald-100 text-emerald-800" : "bg-slate-200 text-slate-700"}`}>{plan.active ? "Activo" : "Inactivo"}</span>
               <p className="mt-3 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Orden: </span>{plan.display_order}</p>

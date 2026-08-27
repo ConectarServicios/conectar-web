@@ -17,7 +17,7 @@ async function getPublicPlans(): Promise<PublicData<Plan>> {
   const { data, error } = await supabase
     .from("plans")
     .select(
-      "id, name, slug, speed_mbps, description, regular_price, promotional_price, promotion_label, promotion_start, promotion_end, featured, active, display_order, plan_features(id, text, display_order)",
+      "id, name, slug, speed_mbps, upload_speed_mbps, description, regular_price, promotional_price, promotion_label, promotion_start, promotion_end, featured, active, display_order, plan_features(id, text, display_order)",
     )
     .eq("active", true)
     .order("display_order", { ascending: true })
@@ -34,6 +34,42 @@ async function getPublicPlans(): Promise<PublicData<Plan>> {
   }
 
   return { data: (data ?? []) as Plan[], unavailable: false };
+}
+
+async function getInstallationPrice(): Promise<number | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("site_settings")
+    .select("value")
+    .eq("key", "internet_installation_price")
+    .eq("is_public", true)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Unable to load public internet installation price", error);
+    return null;
+  }
+
+  return typeof data?.value === "number" && Number.isFinite(data.value) && data.value >= 0
+    ? data.value
+    : null;
+}
+
+async function getInstallationBenefitsText(): Promise<string | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("site_settings")
+    .select("value")
+    .eq("key", "internet_installation_benefits_text")
+    .eq("is_public", true)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Unable to load public internet installation benefits text", error);
+    return null;
+  }
+
+  return typeof data?.value === "string" && data.value.trim() ? data.value : null;
 }
 
 async function getPublicServices(): Promise<PublicData<Service>> {
@@ -57,15 +93,17 @@ async function getPublicServices(): Promise<PublicData<Service>> {
 }
 
 export default async function HomePage() {
-  const [plans, services] = await Promise.all([
+  const [plans, services, installationPrice, installationBenefitsText] = await Promise.all([
     getPublicPlans(),
     getPublicServices(),
+    getInstallationPrice(),
+    getInstallationBenefitsText(),
   ]);
 
   return (
     <main>
       <HeroSection />
-      <PlansSection plans={plans.data} unavailable={plans.unavailable} />
+      <PlansSection installationBenefitsText={installationBenefitsText} installationPrice={installationPrice} plans={plans.data} unavailable={plans.unavailable} />
       <ServicesSection
         services={services.data}
         unavailable={services.unavailable}

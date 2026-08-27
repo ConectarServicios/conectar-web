@@ -48,9 +48,13 @@ export function PlanForm({ id, initialValues }: Readonly<{ id?: string; initialV
             <span className="mt-1 block text-xs font-normal text-slate-500">Se genera desde el nombre y podés editarlo.</span>
             {error("slug") && <span className="mt-1 block text-xs text-red-700">{error("slug")}</span>}
           </label>
-          <label className="text-sm font-semibold text-slate-700">Velocidad Mbps
+          <label className="text-sm font-semibold text-slate-700">Velocidad de bajada (Mbps)
             <input className={inputClass} defaultValue={initialValues?.speed_mbps} min="1" name="speed_mbps" required step="1" type="number" />
             {error("speed_mbps") && <span className="mt-1 block text-xs text-red-700">{error("speed_mbps")}</span>}
+          </label>
+          <label className="text-sm font-semibold text-slate-700">Velocidad de subida (Mbps)
+            <input className={inputClass} defaultValue={initialValues?.upload_speed_mbps ?? ""} min="1" name="upload_speed_mbps" required step="1" type="number" />
+            {error("upload_speed_mbps") && <span className="mt-1 block text-xs text-red-700">{error("upload_speed_mbps")}</span>}
           </label>
           <label className="text-sm font-semibold text-slate-700 sm:col-span-2">Descripción
             <textarea className={`${inputClass} min-h-28 resize-y`} defaultValue={initialValues?.description ?? ""} name="description" />

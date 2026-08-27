@@ -27,10 +27,10 @@ export function PlanCard({ plan, now }: Readonly<{ plan: Plan; now: Date }>) {
       )}
       <div className="border-b border-slate-100 pb-6">
         <p className="text-sm font-bold tracking-wide text-blue-700 uppercase">{plan.name}</p>
-        <p className="mt-3 flex items-baseline gap-2 text-slate-950">
-          <span className="text-5xl font-black tracking-tight">{plan.speed_mbps}</span>
-          <span className="font-bold text-slate-500">Mbps</span>
-        </p>
+        <dl className="mt-4 grid grid-cols-2 gap-4 text-slate-950">
+          <div><dt className="text-xs font-bold tracking-wide text-slate-500 uppercase">Bajada</dt><dd className="mt-1 text-2xl font-black tracking-tight"><span aria-hidden="true">↓ </span>{plan.speed_mbps} <span className="text-sm text-slate-500">Mbps</span></dd></div>
+          <div><dt className="text-xs font-bold tracking-wide text-slate-500 uppercase">Subida</dt><dd className="mt-1 text-2xl font-black tracking-tight"><span aria-hidden="true">↑ </span>{plan.upload_speed_mbps === null ? <span className="text-base text-slate-500">No informada</span> : <>{plan.upload_speed_mbps} <span className="text-sm text-slate-500">Mbps</span></>}</dd></div>
+        </dl>
         {plan.description && <p className="mt-3 text-sm leading-6 text-slate-600">{plan.description}</p>}
       </div>
       <div className="py-6">

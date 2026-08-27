@@ -28,6 +28,8 @@ export function parsePlanForm(formData: FormData): ParsedPlanForm {
   const slug = slugifyPlanName(text(formData, "slug"));
   const speedMbpsRaw = text(formData, "speed_mbps");
   const speedMbps = Number(speedMbpsRaw);
+  const uploadSpeedMbpsRaw = text(formData, "upload_speed_mbps");
+  const uploadSpeedMbps = Number(uploadSpeedMbpsRaw);
   const regularPriceRaw = text(formData, "regular_price");
   const regularPrice = Number(regularPriceRaw);
   const promotionalRaw = text(formData, "promotional_price");
@@ -42,6 +44,7 @@ export function parsePlanForm(formData: FormData): ParsedPlanForm {
   if (!name) errors.name = "Ingresá el nombre del plan.";
   if (!slug) errors.slug = "Ingresá un slug válido.";
   if (!speedMbpsRaw || !Number.isInteger(speedMbps) || speedMbps <= 0) errors.speed_mbps = "Ingresá un entero mayor que cero.";
+  if (!uploadSpeedMbpsRaw || !Number.isInteger(uploadSpeedMbps) || uploadSpeedMbps <= 0) errors.upload_speed_mbps = "Ingresá un entero mayor que cero.";
   if (!regularPriceRaw || !Number.isFinite(regularPrice) || regularPrice < 0) errors.regular_price = "Ingresá un precio mayor o igual a cero.";
   if (promotionalPrice !== null && (!Number.isFinite(promotionalPrice) || promotionalPrice < 0)) errors.promotional_price = "Ingresá un precio mayor o igual a cero, o dejalo vacío.";
   if (!displayOrderRaw || !Number.isInteger(displayOrder) || displayOrder < 0) errors.display_order = "Ingresá un entero mayor o igual a cero.";
@@ -76,6 +79,7 @@ export function parsePlanForm(formData: FormData): ParsedPlanForm {
       name,
       slug,
       speed_mbps: speedMbps,
+      upload_speed_mbps: uploadSpeedMbps,
       description: nullableText(formData, "description"),
       regular_price: regularPrice,
       promotional_price: promotionalPrice,

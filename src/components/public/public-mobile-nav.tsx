@@ -7,7 +7,12 @@ type NavigationItem = {
   label: string;
 };
 
-export function PublicMobileNav({ items }: Readonly<{ items: NavigationItem[] }>) {
+type PublicMobileNavProps = Readonly<{
+  items: NavigationItem[];
+  selfServiceUrl: string;
+}>;
+
+export function PublicMobileNav({ items, selfServiceUrl }: PublicMobileNavProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -43,6 +48,13 @@ export function PublicMobileNav({ items }: Readonly<{ items: NavigationItem[] }>
               {item.label}
             </a>
           ))}
+          <a
+            className="mt-2 flex min-h-12 items-center justify-center rounded-xl bg-orange-500 px-4 py-3 font-bold text-white shadow-md shadow-orange-950/30 transition hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            href={selfServiceUrl}
+            onClick={() => setOpen(false)}
+          >
+            Autogestión
+          </a>
         </nav>
       )}
     </div>

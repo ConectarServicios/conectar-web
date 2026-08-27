@@ -7,6 +7,8 @@ const navigation = [
   { href: "#contacto", label: "Contacto" },
 ];
 
+const selfServiceUrl = "https://autogestion.conectarservicios.com.ar/";
+
 export function PublicHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#071a2f]/95 text-white shadow-lg shadow-slate-950/10 backdrop-blur">
@@ -33,8 +35,14 @@ export function PublicHeader() {
               {item.label}
             </a>
           ))}
+          <a
+            className="ml-2 inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 px-5 py-2 text-sm font-bold text-white shadow-md shadow-orange-950/25 transition hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            href={selfServiceUrl}
+          >
+            Autogestión
+          </a>
         </nav>
-        <PublicMobileNav items={navigation} />
+        <PublicMobileNav items={navigation} selfServiceUrl={selfServiceUrl} />
       </div>
     </header>
   );

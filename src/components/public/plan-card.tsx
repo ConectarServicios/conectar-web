@@ -44,7 +44,7 @@ export function PlanCard({ plan, now }: Readonly<{ plan: Plan; now: Date }>) {
         ) : (
           <>
             <p className="text-3xl font-black tracking-tight text-slate-950">{currency.format(plan.regular_price)}</p>
-            <p className="mt-1 text-xs text-slate-500">Precio regular</p>
+            <p className="mt-1 text-xs text-slate-500">Por mes</p>
           </>
         )}
       </div>

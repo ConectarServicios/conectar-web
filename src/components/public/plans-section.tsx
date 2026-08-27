@@ -25,12 +25,12 @@ export function PlansSection({ installationBenefitsText, installationPrice, plan
         ) : plans.length === 0 ? (
           <p className="public-empty-state">Estamos actualizando nuestros planes disponibles.</p>
         ) : (
-          <div className="mt-12 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-12 grid grid-cols-1 gap-7 md:grid-cols-2 xl:grid-cols-4">
             {plans.map((plan) => <PlanCard key={plan.id} now={now} plan={plan} />)}
           </div>
         )}
         {installationPrice !== null && (
-          <div className="mt-10 rounded-2xl border border-blue-100 bg-white px-6 py-5 shadow-sm sm:max-w-xl">
+          <div className="mt-10 w-full rounded-2xl border border-blue-100 bg-white px-6 py-5 shadow-sm">
             <p className="font-bold text-slate-700">Instalación</p>
             <p className="mt-1 text-2xl font-black tracking-tight text-slate-950">{currency.format(installationPrice)}</p>
             <p className="mt-1 text-sm text-slate-500">Precio de lista.</p>

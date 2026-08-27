@@ -9,6 +9,7 @@ export type Plan = {
   name: string;
   slug: string;
   speed_mbps: number;
+  upload_speed_mbps: number | null;
   description: string | null;
   regular_price: number;
   promotional_price: number | null;

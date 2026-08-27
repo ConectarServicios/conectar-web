@@ -9,7 +9,7 @@ export default async function EditPlanPage({ params }: Readonly<{ params: Promis
   const { id } = await params;
   const supabase = await createClient();
   const { data, error } = await supabase.from("plans")
-    .select("id, name, slug, speed_mbps, description, regular_price, promotional_price, promotion_label, promotion_start, promotion_end, featured, active, display_order, plan_features(id, text, display_order)")
+    .select("id, name, slug, speed_mbps, upload_speed_mbps, description, regular_price, promotional_price, promotion_label, promotion_start, promotion_end, featured, active, display_order, plan_features(id, text, display_order)")
     .eq("id", id).order("display_order", { referencedTable: "plan_features", ascending: true }).maybeSingle();
   if (error) console.error("Unable to load plan for editing", error);
   if (!data || error) notFound();

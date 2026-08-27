@@ -16,6 +16,7 @@ export const ADMIN_NAVIGATION: readonly AdminNavigationItem[] = [
   { label: "Dashboard", href: "/admin", section: "Principal", roles: CONTENT_ROLES },
   { label: "Planes", href: "/admin/plans", section: "Contenido", roles: CONTENT_ROLES },
   { label: "Servicios", href: "/admin/services", section: "Contenido", roles: CONTENT_ROLES },
+  { label: "Conectar Play", href: "/admin/conectar-play", section: "Contenido", roles: CONTENT_ROLES },
   { label: "Noticias", href: "/admin/news", section: "Contenido", roles: CONTENT_ROLES },
   { label: "Eventos", href: "/admin/events", section: "Contenido", roles: CONTENT_ROLES },
   { label: "Promociones", href: "/admin/promotions", section: "Contenido", roles: CONTENT_ROLES },

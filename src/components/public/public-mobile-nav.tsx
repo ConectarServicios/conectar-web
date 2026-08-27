@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 type NavigationItem = {
   href: string;
@@ -39,14 +40,14 @@ export function PublicMobileNav({ items, selfServiceUrl }: PublicMobileNavProps)
           aria-label="Navegación mobile"
         >
           {items.map((item) => (
-            <a
+            <Link
               className="block rounded-xl px-4 py-3 font-semibold text-slate-100 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-orange-400"
               href={item.href}
               key={item.href}
               onClick={() => setOpen(false)}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
           <a
             className="mt-2 flex min-h-12 items-center justify-center rounded-xl bg-orange-500 px-4 py-3 font-bold text-white shadow-md shadow-orange-950/30 transition hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"

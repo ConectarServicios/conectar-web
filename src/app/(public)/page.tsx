@@ -10,6 +10,7 @@ import { getPlayPlans, getPlaySettings } from "@/lib/supabase/conectar-play";
 import type { Plan } from "@/types/plans";
 import type { Service } from "@/types/services";
 import type { ContactInformation } from "@/types/contact-information";
+import type { PublicHeroSlide } from "@/components/public/hero-section";
 
 type PublicData<T> = {
   data: T[];
@@ -112,8 +113,17 @@ async function getContactInformation(): Promise<{ data: ContactInformation | nul
   return { data: data as ContactInformation | null, unavailable: false };
 }
 
+async function getHeroSlides(): Promise<PublicHeroSlide[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("hero_slides")
+    .select("id, title, subtitle, image_path, button_text, button_url, featured, display_order")
+    .eq("active", true).order("featured", { ascending: false }).order("display_order", { ascending: true }).limit(3);
+  if (error) { console.error("Unable to load public hero slides", error); return []; }
+  return (data ?? []).map((slide) => ({ id: slide.id, title: slide.title, subtitle: slide.subtitle, buttonText: slide.button_text, buttonUrl: slide.button_url, imageUrl: supabase.storage.from("hero-banners").getPublicUrl(slide.image_path).data.publicUrl, featured: slide.featured, external: /^https?:\/\//.test(slide.button_url ?? "") }));
+}
+
 export default async function HomePage() {
-  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact] = await Promise.all([
+  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact, heroSlides] = await Promise.all([
     getPublicPlans(),
     getPublicServices(),
     getInstallationPrice(),
@@ -121,11 +131,12 @@ export default async function HomePage() {
     getPlaySettings(),
     getPlayPlans(),
     getContactInformation(),
+    getHeroSlides(),
   ]);
 
   return (
     <main>
-      <HeroSection />
+      <HeroSection slides={heroSlides} />
       <PlansSection installationBenefitsText={installationBenefitsText} installationPrice={installationPrice} plans={plans.data} unavailable={plans.unavailable} />
       <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
       <ServicesSection

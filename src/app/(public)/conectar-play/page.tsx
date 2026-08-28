@@ -96,12 +96,12 @@ export default async function ConectarPlayPage() {
             <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <Info
                 title="Canales"
-                text={`Más de ${settings.channel_count} canales`}
+                text={`Más de ${settings.channel_count} canales, HBO y HBO Max incluidos. El plan con Pack Fútbol suma ESPN Premium y TNT Sports.`}
               />
 
               <Info
                 title="Uso simultáneo"
-                text={`${settings.simultaneous_devices} dispositivos simultáneos`}
+                text={`Hasta ${settings.simultaneous_devices} dispositivos simultáneos`}
               />
 
               {settings.compatibility_text && (
@@ -110,6 +110,64 @@ export default async function ConectarPlayPage() {
                   text={settings.compatibility_text}
                 />
               )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {settings &&
+        (settings.compatibility_text || settings.incompatible_tv_text) && (
+          <section className="py-20" id="compatibilidad">
+            <div className="public-container grid gap-8 lg:grid-cols-2">
+              <div>
+                <p className="public-eyebrow">Compatibilidad</p>
+
+                <h2 className="public-heading mt-3">
+                  Usalo en dispositivos compatibles
+                </h2>
+              </div>
+
+              <div className="space-y-4 text-lg leading-8 text-slate-600">
+                {settings.compatibility_text && (
+                  <p>{settings.compatibility_text}</p>
+                )}
+
+                {settings.incompatible_tv_text && (
+                  <p className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
+                    {settings.incompatible_tv_text}
+                  </p>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
+      {settings?.web_url && (
+        <section className="bg-white py-12">
+          <div className="public-container">
+            <div className="flex flex-col gap-6 rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
+              <div className="max-w-2xl">
+                <p className="public-eyebrow">Acceso web</p>
+
+                <h2 className="mt-2 text-2xl font-black text-slate-950">
+                  También podés verlo desde tu navegador
+                </h2>
+
+                <p className="mt-3 leading-7 text-slate-600">
+                  Accedé a Conectar Play directamente desde una computadora o
+                  dispositivo compatible, sin necesidad de instalar la
+                  aplicación.
+                </p>
+              </div>
+
+              <a
+                className="public-button-primary shrink-0"
+                href={settings.web_url}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Abrir Conectar Play Web
+              </a>
             </div>
           </div>
         </section>
@@ -160,54 +218,6 @@ export default async function ConectarPlayPage() {
                 </div>
               )}
             </div>
-          </div>
-        </section>
-      )}
-
-      {settings &&
-        (settings.compatibility_text || settings.incompatible_tv_text) && (
-          <section className="py-20" id="compatibilidad">
-            <div className="public-container grid gap-8 lg:grid-cols-2">
-              <div>
-                <p className="public-eyebrow">Compatibilidad</p>
-
-                <h2 className="public-heading mt-3">
-                  Usalo en dispositivos compatibles
-                </h2>
-              </div>
-
-              <div className="space-y-4 text-lg leading-8 text-slate-600">
-                {settings.compatibility_text && (
-                  <p>{settings.compatibility_text}</p>
-                )}
-
-                {settings.incompatible_tv_text && (
-                  <p className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
-                    {settings.incompatible_tv_text}
-                  </p>
-                )}
-              </div>
-            </div>
-          </section>
-        )}
-
-      {settings?.web_url && (
-        <section className="bg-[#0b2440] py-14 text-white">
-          <div className="public-container flex flex-col justify-between gap-6 md:flex-row md:items-center">
-            <div>
-              <h2 className="text-2xl font-black">
-                También podés ver Conectar Play desde tu navegador.
-              </h2>
-            </div>
-
-            <a
-              className="public-button-primary"
-              href={settings.web_url}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Abrir Conectar Play Web
-            </a>
           </div>
         </section>
       )}
@@ -340,4 +350,3 @@ const money = (value: number) =>
     currency: "ARS",
     maximumFractionDigits: 2,
   }).format(value);
-  

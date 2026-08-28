@@ -1,9 +1,11 @@
 import { FinalCta } from "@/components/public/final-cta";
 import { HeroSection } from "@/components/public/hero-section";
 import { InstitutionalSection } from "@/components/public/institutional-section";
+import { ConectarPlayHomeSection } from "@/components/public/conectar-play-home-section";
 import { PlansSection } from "@/components/public/plans-section";
 import { ServicesSection } from "@/components/public/services-section";
 import { createClient } from "@/lib/supabase/server";
+import { getPlayPlans, getPlaySettings } from "@/lib/supabase/conectar-play";
 import type { Plan } from "@/types/plans";
 import type { Service } from "@/types/services";
 
@@ -93,17 +95,20 @@ async function getPublicServices(): Promise<PublicData<Service>> {
 }
 
 export default async function HomePage() {
-  const [plans, services, installationPrice, installationBenefitsText] = await Promise.all([
+  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans] = await Promise.all([
     getPublicPlans(),
     getPublicServices(),
     getInstallationPrice(),
     getInstallationBenefitsText(),
+    getPlaySettings(),
+    getPlayPlans(),
   ]);
 
   return (
     <main>
       <HeroSection />
       <PlansSection installationBenefitsText={installationBenefitsText} installationPrice={installationPrice} plans={plans.data} unavailable={plans.unavailable} />
+      <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
       <ServicesSection
         services={services.data}
         unavailable={services.unavailable}

@@ -4,10 +4,12 @@ import { InstitutionalSection } from "@/components/public/institutional-section"
 import { ConectarPlayHomeSection } from "@/components/public/conectar-play-home-section";
 import { PlansSection } from "@/components/public/plans-section";
 import { ServicesSection } from "@/components/public/services-section";
+import { ContactSection } from "@/components/public/contact-section";
 import { createClient } from "@/lib/supabase/server";
 import { getPlayPlans, getPlaySettings } from "@/lib/supabase/conectar-play";
 import type { Plan } from "@/types/plans";
 import type { Service } from "@/types/services";
+import type { ContactInformation } from "@/types/contact-information";
 
 type PublicData<T> = {
   data: T[];
@@ -94,14 +96,31 @@ async function getPublicServices(): Promise<PublicData<Service>> {
   return { data: (data ?? []) as Service[], unavailable: false };
 }
 
+async function getContactInformation(): Promise<{ data: ContactInformation | null; unavailable: boolean }> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("contact_information")
+    .select("id, phone, whatsapp, commercial_email, address, business_hours, guard_hours")
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Unable to load public contact information", error);
+    return { data: null, unavailable: true };
+  }
+  return { data: data as ContactInformation | null, unavailable: false };
+}
+
 export default async function HomePage() {
-  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans] = await Promise.all([
+  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact] = await Promise.all([
     getPublicPlans(),
     getPublicServices(),
     getInstallationPrice(),
     getInstallationBenefitsText(),
     getPlaySettings(),
     getPlayPlans(),
+    getContactInformation(),
   ]);
 
   return (
@@ -115,22 +134,7 @@ export default async function HomePage() {
       />
       <InstitutionalSection />
       <FinalCta />
-      <section
-        className="scroll-mt-24 border-t border-slate-200 bg-white py-20 sm:py-24"
-        id="contacto"
-        aria-labelledby="contact-title"
-      >
-        <div className="public-container text-center">
-          <p className="public-eyebrow">Contacto</p>
-          <h2 className="public-heading mt-3" id="contact-title">
-            Estamos preparando nuestros canales de contacto
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-            Próximamente vas a poder encontrar aquí todos nuestros canales de
-            contacto.
-          </p>
-        </div>
-      </section>
+      <ContactSection contact={contact.data} unavailable={contact.unavailable} />
     </main>
   );
 }

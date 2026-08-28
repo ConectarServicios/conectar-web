@@ -1,23 +1,47 @@
-const MAX_HOURS_LENGTH = 500;
+import type { ContactInformation } from "@/types/contact-information";
 
-function parseHours(formData: FormData, field: string, label: string) {
-  const value = String(formData.get(field) ?? "").trim();
-  if (!value) return { error: `Ingresá los ${label.toLowerCase()}.` };
-  if (value.length > MAX_HOURS_LENGTH) {
-    return { error: `${label} no puede superar los ${MAX_HOURS_LENGTH} caracteres.` };
-  }
-  return { value };
+type ContactField = Exclude<keyof ContactInformation, "id">;
+
+const MAX_TEXT_LENGTH = 500;
+const PROHIBITED_NUMBER = ["420", "002"].join("");
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function valueOf(formData: FormData, field: ContactField) {
+  return String(formData.get(field) ?? "").trim();
 }
 
-export function parseContactHours(formData: FormData) {
-  const businessHours = parseHours(formData, "business_hours", "Horarios de atención");
-  const guardHours = parseHours(formData, "guard_hours", "Horarios de guardia");
+function containsProhibitedNumber(value: string) {
+  return value.replace(/\D/g, "").includes(PROHIBITED_NUMBER);
+}
 
-  const fieldErrors = {
-    ...(businessHours.error ? { business_hours: businessHours.error } : {}),
-    ...(guardHours.error ? { guard_hours: guardHours.error } : {}),
+export function isAllowedContactNumber(value: string | null) {
+  return !value || !containsProhibitedNumber(value);
+}
+
+export function parseContactInformation(formData: FormData) {
+  const values = {
+    phone: valueOf(formData, "phone"),
+    whatsapp: valueOf(formData, "whatsapp"),
+    commercial_email: valueOf(formData, "commercial_email"),
+    address: valueOf(formData, "address"),
+    business_hours: valueOf(formData, "business_hours"),
+    guard_hours: valueOf(formData, "guard_hours"),
   };
+  const fieldErrors: Partial<Record<ContactField, string>> = {};
+
+  if (containsProhibitedNumber(values.phone)) fieldErrors.phone = "Ese número de teléfono no está permitido.";
+  if (!values.whatsapp) fieldErrors.whatsapp = "Ingresá el WhatsApp institucional.";
+  else if (containsProhibitedNumber(values.whatsapp)) fieldErrors.whatsapp = "Ese número de WhatsApp no está permitido.";
+  if (!values.commercial_email) fieldErrors.commercial_email = "Ingresá el email comercial.";
+  else if (!EMAIL_PATTERN.test(values.commercial_email)) fieldErrors.commercial_email = "Ingresá un email comercial válido.";
+  if (!values.address) fieldErrors.address = "Ingresá la dirección.";
+  if (!values.business_hours) fieldErrors.business_hours = "Ingresá los horarios de atención.";
+  if (!values.guard_hours) fieldErrors.guard_hours = "Ingresá los horarios de guardia.";
+
+  for (const [field, value] of Object.entries(values) as [ContactField, string][]) {
+    if (value.length > MAX_TEXT_LENGTH) fieldErrors[field] = `El campo no puede superar los ${MAX_TEXT_LENGTH} caracteres.`;
+  }
 
   if (Object.keys(fieldErrors).length > 0) return { fieldErrors };
-  return { businessHours: businessHours.value!, guardHours: guardHours.value! };
+  return { values: { ...values, phone: values.phone || null } };
 }

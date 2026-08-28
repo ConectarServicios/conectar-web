@@ -3,14 +3,14 @@
 import { revalidatePath } from "next/cache";
 
 import { createClient } from "@/lib/supabase/server";
-import { parseContactHours } from "@/lib/validations/contact-information";
+import { parseContactInformation } from "@/lib/validations/contact-information";
 import type { ContactInformationActionState } from "@/types/contact-information";
 
-export async function saveContactHours(
+export async function saveContactInformation(
   previous: ContactInformationActionState,
   formData: FormData,
 ): Promise<ContactInformationActionState> {
-  const parsed = parseContactHours(formData);
+  const parsed = parseContactInformation(formData);
   if (parsed.fieldErrors) {
     return { message: "Revisá los campos marcados.", fieldErrors: parsed.fieldErrors };
   }
@@ -37,23 +37,19 @@ export async function saveContactHours(
     .maybeSingle();
   if (loadError) {
     console.error("Unable to load contact information for update", loadError);
-    return { message: "No pudimos guardar los horarios. Intentá nuevamente." };
+    return { message: "No pudimos guardar los datos de contacto. Intentá nuevamente." };
   }
 
-  const values = {
-    business_hours: parsed.businessHours,
-    guard_hours: parsed.guardHours,
-  };
   const { error } = contact
-    ? await supabase.from("contact_information").update(values).eq("id", contact.id)
-    : await supabase.from("contact_information").insert(values);
+    ? await supabase.from("contact_information").update(parsed.values).eq("id", contact.id)
+    : await supabase.from("contact_information").insert(parsed.values);
 
   if (error) {
-    console.error("Unable to persist contact hours", error);
-    return { message: "No pudimos guardar los horarios. Intentá nuevamente." };
+    console.error("Unable to persist contact information", error);
+    return { message: "No pudimos guardar los datos de contacto. Intentá nuevamente." };
   }
 
   revalidatePath("/");
   revalidatePath("/admin/contact");
-  return { success: true, message: "Los horarios se guardaron correctamente." };
+  return { success: true, message: "Los datos de contacto se guardaron correctamente." };
 }

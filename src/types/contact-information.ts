@@ -11,5 +11,5 @@ export type ContactInformation = {
 export type ContactInformationActionState = {
   message?: string;
   success?: boolean;
-  fieldErrors?: Partial<Record<"business_hours" | "guard_hours", string>>;
+  fieldErrors?: Partial<Record<Exclude<keyof ContactInformation, "id">, string>>;
 };

@@ -1,4 +1,12 @@
-export function HeroSection() {
+import { HeroCarousel } from "@/components/public/hero-carousel";
+
+export type PublicHeroSlide = {
+  id: string; title: string; subtitle: string | null; buttonText: string | null;
+  buttonUrl: string | null; imageUrl: string; featured: boolean; external: boolean;
+};
+
+export function HeroSection({ slides = [] }: Readonly<{ slides?: PublicHeroSlide[] }>) {
+  if (slides.length) return <HeroCarousel slides={slides} />;
   return (
     <section
       className="relative isolate scroll-mt-20 overflow-hidden bg-[#071a2f] text-white"

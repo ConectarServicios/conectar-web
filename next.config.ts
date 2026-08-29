@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const remotePatterns = supabaseUrl
+  ? [new URL("/storage/v1/object/public/hero-banners/**", supabaseUrl)]
+  : [];
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    serverActions: { bodySizeLimit: "6mb" },
+  },
+  images: { remotePatterns },
 };
 
 export default nextConfig;

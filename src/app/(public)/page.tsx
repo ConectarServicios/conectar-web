@@ -11,6 +11,8 @@ import type { Plan } from "@/types/plans";
 import type { Service } from "@/types/services";
 import type { ContactInformation } from "@/types/contact-information";
 import type { PublicHeroSlide } from "@/components/public/hero-section";
+import { NewsHomeSection } from "@/components/public/news-home-section";
+import { getPublicNews, newsImageUrl } from "@/lib/supabase/news";
 
 type PublicData<T> = {
   data: T[];
@@ -123,7 +125,7 @@ async function getHeroSlides(): Promise<PublicHeroSlide[]> {
 }
 
 export default async function HomePage() {
-  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact, heroSlides] = await Promise.all([
+  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact, heroSlides, news] = await Promise.all([
     getPublicPlans(),
     getPublicServices(),
     getInstallationPrice(),
@@ -132,7 +134,10 @@ export default async function HomePage() {
     getPlayPlans(),
     getContactInformation(),
     getHeroSlides(),
+    getPublicNews(3),
   ]);
+  const supabase = await createClient();
+  const newsImages = Object.fromEntries(news.map((item) => [item.id, newsImageUrl(supabase, item.cover_image)]));
 
   return (
     <main>
@@ -144,6 +149,7 @@ export default async function HomePage() {
         unavailable={services.unavailable}
       />
       <InstitutionalSection />
+      <NewsHomeSection imageUrls={newsImages} items={news} />
       <FinalCta />
       <ContactSection contact={contact.data} unavailable={contact.unavailable} />
     </main>

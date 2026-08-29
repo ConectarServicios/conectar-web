@@ -1,0 +1,6 @@
+import type { Metadata } from "next";
+import { NewsCard } from "@/components/public/news-card";
+import { getPublicNews, newsImageUrl } from "@/lib/supabase/news";
+import { createClient } from "@/lib/supabase/server";
+export const metadata: Metadata = { title:"Noticias y comunicados | Conectar Servicios", description:"Novedades, comunicados e información institucional de Conectar Servicios." };
+export default async function NewsPage() { const items=await getPublicNews(); const supabase=await createClient(); return <main><section className="bg-slate-950 py-16 text-white sm:py-20"><div className="public-container"><p className="public-eyebrow">Actualidad</p><h1 className="mt-3 text-4xl font-black tracking-tight sm:text-6xl">Noticias y comunicados</h1><p className="mt-5 max-w-2xl text-lg text-slate-300">Información y novedades de Conectar Servicios.</p></div></section><section className="bg-slate-50 py-16 sm:py-20"><div className="public-container">{items.length ? <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{items.map((item)=><NewsCard imageUrl={newsImageUrl(supabase,item.cover_image)} item={item} key={item.id}/>)}</div> : <div className="public-empty-state"><h2 className="text-xl font-bold text-slate-900">Todavía no hay publicaciones</h2><p className="mt-2">Volvé pronto para conocer nuestras novedades.</p></div>}</div></section></main>; }

@@ -1,0 +1,4 @@
+import Link from "next/link";
+import { NewsCard } from "@/components/public/news-card";
+import type { NewsItem } from "@/types/news";
+export function NewsHomeSection({ items, imageUrls }: Readonly<{ items: NewsItem[]; imageUrls: Record<string,string|null> }>) { if (!items.length) return null; return <section className="bg-slate-50 py-20 sm:py-24"><div className="public-container"><p className="public-eyebrow">Actualidad</p><div className="mt-3 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"><div><h2 className="public-heading">Novedades</h2><p className="mt-3 text-lg text-slate-600">Noticias y comunicados de Conectar Servicios.</p></div><Link className="public-button-primary" href="/noticias">Ver todas las novedades</Link></div><div className="mt-10 grid gap-6 md:grid-cols-3">{items.map((item) => <NewsCard imageUrl={imageUrls[item.id]} item={item} key={item.id}/>)}</div></div></section>; }

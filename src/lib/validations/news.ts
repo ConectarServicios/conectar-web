@@ -1,4 +1,5 @@
 import { NEWS_CATEGORIES, NEWS_STATUSES, type NewsFormValues } from "@/types/news";
+import { parseArgentinaDateTimeLocal } from "@/lib/utils/news-dates";
 
 export const NEWS_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 export const NEWS_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
@@ -32,9 +33,8 @@ export function parseNewsForm(formData: FormData): { data?: NewsFormValues; erro
   if (!NEWS_STATUSES.includes(status as (typeof NEWS_STATUSES)[number])) errors.status = "Elegí un estado válido.";
   let publishedAt: string | null = null;
   if (rawDate) {
-    const date = new Date(rawDate);
-    if (Number.isNaN(date.getTime())) errors.published_at = "Ingresá una fecha válida.";
-    else publishedAt = date.toISOString();
+    publishedAt = parseArgentinaDateTimeLocal(rawDate);
+    if (!publishedAt) errors.published_at = "Ingresá una fecha válida.";
   }
   if (Object.keys(errors).length) return { errors };
   return { errors, data: { title, slug, excerpt, content, cover_image: null, category, status: status as NewsFormValues["status"], featured: formData.get("featured") === "on", published_at: publishedAt } };

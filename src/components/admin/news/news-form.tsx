@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useActionState, useState } from "react";
 import { saveNews } from "@/app/admin/news/actions";
 import { normalizeNewsSlug } from "@/lib/validations/news";
+import { formatArgentinaDateTimeLocal } from "@/lib/utils/news-dates";
 import { NEWS_CATEGORIES, type NewsActionState, type NewsFormValues } from "@/types/news";
 
 const input = "mt-2 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-slate-950 shadow-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200";
@@ -23,7 +24,7 @@ export function NewsForm({ id, initialValues }: Readonly<{ id?: string; initialV
     <fieldset className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"><legend className="px-2 text-lg font-bold">Publicación</legend><div className="grid gap-5 sm:grid-cols-3">
       <label className="text-sm font-semibold">Categoría<select className={input} defaultValue={initialValues?.category ?? NEWS_CATEGORIES[0]} name="category">{NEWS_CATEGORIES.map((c) => <option key={c}>{c}</option>)}</select>{error("category") && <span className="text-xs text-red-700">{error("category")}</span>}</label>
       <label className="text-sm font-semibold">Estado<select className={input} defaultValue={initialValues?.status ?? "draft"} name="status"><option value="draft">Borrador</option><option value="published">Publicado</option><option value="archived">Archivado</option></select></label>
-      <label className="text-sm font-semibold">Fecha de publicación<input className={input} defaultValue={initialValues?.published_at ? initialValues.published_at.slice(0,16) : ""} name="published_at" type="datetime-local"/>{error("published_at") && <span className="text-xs text-red-700">{error("published_at")}</span>}</label>
+      <label className="text-sm font-semibold">Fecha de publicación<input className={input} defaultValue={formatArgentinaDateTimeLocal(initialValues?.published_at ?? null)} name="published_at" type="datetime-local"/>{error("published_at") && <span className="text-xs text-red-700">{error("published_at")}</span>}<span className="mt-1 block text-xs font-normal text-slate-500">Horario de Argentina (Buenos Aires).</span></label>
       <label className="flex items-center gap-3 text-sm font-semibold"><input className="size-5 accent-orange-600" defaultChecked={initialValues?.featured} name="featured" type="checkbox"/> Destacada</label>
     </div></fieldset>
     <div className="flex justify-end gap-3"><Link className="rounded-xl border border-slate-300 px-5 py-2.5 font-bold" href="/admin/news">Cancelar</Link><button className="rounded-xl bg-orange-600 px-5 py-2.5 font-bold text-white disabled:opacity-60" disabled={pending}>{pending ? "Guardando…" : "Guardar noticia"}</button></div>

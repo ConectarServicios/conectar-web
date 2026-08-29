@@ -4,10 +4,11 @@ import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { NewsDeleteButton } from "@/components/admin/news/news-delete-button";
 import { createClient } from "@/lib/supabase/server";
 import type { NewsItem } from "@/types/news";
+import { argentinaAdminDateTimeFormatter } from "@/lib/utils/news-dates";
 
 const success: Record<string,string> = { created:"La noticia se creó correctamente.",updated:"La noticia se actualizó correctamente.",deleted:"La noticia se eliminó correctamente.",published:"La noticia quedó publicada.",draft:"La noticia volvió a borrador.",archived:"La noticia quedó archivada.",featured:"La noticia quedó destacada.",unfeatured:"La noticia dejó de estar destacada." };
 const labels = { draft:"Borrador", published:"Publicado", archived:"Archivado" };
-const date = (value: string | null) => value ? new Intl.DateTimeFormat("es-AR", { dateStyle:"medium", timeStyle:"short" }).format(new Date(value)) : "—";
+const date = (value: string | null) => value ? argentinaAdminDateTimeFormatter.format(new Date(value)) : "—";
 export default async function NewsAdminPage({ searchParams }: Readonly<{ searchParams: Promise<{ success?: string; error?: string }> }>) {
   const params = await searchParams; const supabase = await createClient();
   const { data, error } = await supabase.from("news").select("id,title,slug,excerpt,content,cover_image,category,status,featured,published_at,author_id,created_at,author:profiles(full_name)").order("featured",{ascending:false}).order("published_at",{ascending:false,nullsFirst:false}).order("created_at",{ascending:false});

@@ -1,0 +1,1 @@
+import{AdminPageHeader}from "@/components/admin/admin-page-header";import{PromotionForm}from "@/components/admin/promotions/promotion-form";export default function NewPromotionPage(){return <><AdminPageHeader description="Definí el contenido, la vigencia y sus ubicaciones." title="Nueva promoción"/><PromotionForm/></>}

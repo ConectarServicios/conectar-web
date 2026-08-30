@@ -13,6 +13,9 @@ import type { ContactInformation } from "@/types/contact-information";
 import type { PublicHeroSlide } from "@/components/public/hero-section";
 import { NewsHomeSection } from "@/components/public/news-home-section";
 import { getPublicNews, newsImageUrl } from "@/lib/supabase/news";
+import { getPublicPromotions, promotionImageUrl } from "@/lib/supabase/promotions";
+import { PromotionsSection } from "@/components/public/promotions-section";
+import { ContextualPromotions } from "@/components/public/contextual-promotions";
 
 type PublicData<T> = {
   data: T[];
@@ -125,7 +128,7 @@ async function getHeroSlides(): Promise<PublicHeroSlide[]> {
 }
 
 export default async function HomePage() {
-  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact, heroSlides, news] = await Promise.all([
+  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact, heroSlides, news, promotions] = await Promise.all([
     getPublicPlans(),
     getPublicServices(),
     getInstallationPrice(),
@@ -135,14 +138,18 @@ export default async function HomePage() {
     getContactInformation(),
     getHeroSlides(),
     getPublicNews(3),
+    getPublicPromotions("home", 3),
   ]);
   const supabase = await createClient();
   const newsImages = Object.fromEntries(news.map((item) => [item.id, newsImageUrl(supabase, item.cover_image)]));
+  const promotionImages = Object.fromEntries(promotions.map((item) => [item.id, promotionImageUrl(supabase, item.image_path)]));
 
   return (
     <main>
       <HeroSection slides={heroSlides} />
+      <PromotionsSection imageUrls={promotionImages} items={promotions} />
       <PlansSection installationBenefitsText={installationBenefitsText} installationPrice={installationPrice} plans={plans.data} unavailable={plans.unavailable} />
+      <ContextualPromotions exclude={promotions.map((item) => item.id)} placement="plans" />
       <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
       <ServicesSection
         services={services.data}

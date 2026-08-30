@@ -4,6 +4,7 @@ import { PublicMobileNav } from "@/components/public/public-mobile-nav";
 const navigation = [
   { href: "/#inicio", label: "Inicio" },
   { href: "/#planes", label: "Planes" },
+  { href: "/promociones", label: "Promociones" },
   { href: "/conectar-play", label: "Conectar Play" },
   { href: "/#servicios", label: "Servicios" },
   { href: "/#contacto", label: "Contacto" },

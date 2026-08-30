@@ -10,6 +10,7 @@ import {
   getPlayPlans,
   getPlaySettings,
 } from "@/lib/supabase/conectar-play";
+import { ContextualPromotions } from "@/components/public/contextual-promotions";
 
 export const metadata: Metadata = {
   title: "Conectar Play | Conectar Servicios",
@@ -67,6 +68,8 @@ export default async function ConectarPlayPage() {
           </div>
         </div>
       </section>
+
+      <ContextualPromotions placement="conectar_play" />
 
       <section className="py-20 sm:py-24" id="planes-play">
         <div className="public-container">

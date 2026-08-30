@@ -4,7 +4,10 @@ alter table public.promotions rename column image_url to image_path;
 alter table public.promotions rename column placement to placements;
 alter table public.promotions alter column placements drop not null;
 alter table public.promotions alter column placements type text[]
-  using case when placements is null or btrim(placements) = '' then '{}'::text[] else array[placements] end;
+  using case
+    when placements in ('top_bar', 'home', 'plans', 'conectar_play') then array[placements]
+    else '{}'::text[]
+  end;
 alter table public.promotions alter column placements set default '{}'::text[];
 alter table public.promotions alter column placements set not null;
 
@@ -15,8 +18,12 @@ alter table public.promotions add column featured boolean not null default false
 -- Existing rows receive deterministic, unique values without assuming the table is empty.
 update public.promotions
 set slug = 'promocion-' || replace(id::text, '-', ''),
-    summary = coalesce(nullif(btrim(description), ''), title)
-where slug is null or summary is null;
+    summary = coalesce(nullif(btrim(description), ''), title),
+    description = coalesce(nullif(btrim(description), ''), title)
+where slug is null
+   or summary is null
+   or description is null
+   or btrim(description) = '';
 
 alter table public.promotions alter column slug set not null;
 alter table public.promotions alter column summary set not null;

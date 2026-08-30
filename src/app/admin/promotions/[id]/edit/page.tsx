@@ -1,1 +1,23 @@
-import{notFound}from "next/navigation";import{AdminPageHeader}from "@/components/admin/admin-page-header";import{PromotionForm}from "@/components/admin/promotions/promotion-form";import{createClient}from "@/lib/supabase/server";import type{Promotion,PromotionFormValues}from "@/types/promotions";export default async function EditPromotionPage({params}:Readonly<{params:Promise<{id:string}>}>){const{id}=await params,supabase=await createClient();const{data,error}=await supabase.from("promotions").select("id,title,slug,summary,description,image_path,button_text,button_url,starts_at,ends_at,active,featured,placements,display_order,created_at,updated_at").eq("id",id).maybeSingle();if(error||!data)notFound();const item=data as Promotion;const values:PromotionFormValues={title:item.title,slug:item.slug,summary:item.summary,description:item.description,image_path:item.image_path,button_text:item.button_text,button_url:item.button_url,starts_at:item.starts_at,ends_at:item.ends_at,active:item.active,featured:item.featured,placements:item.placements,display_order:item.display_order};return <><AdminPageHeader description={`Actualizá “${item.title}”.`} title="Editar promoción"/><PromotionForm id={item.id} initialValues={values}/></>}
+import { notFound } from "next/navigation";
+
+import { AdminPageHeader } from "@/components/admin/admin-page-header";
+import { PromotionForm } from "@/components/admin/promotions/promotion-form";
+import { createClient } from "@/lib/supabase/server";
+import type { Promotion, PromotionFormValues } from "@/types/promotions";
+
+export default async function EditPromotionPage({ params }: Readonly<{ params: Promise<{ id: string }> }>) {
+  const { id } = await params;
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("promotions")
+    .select("id,title,slug,summary,description,image_path,button_text,button_url,starts_at,ends_at,active,featured,placements,display_order,created_at,updated_at")
+    .eq("id", id).maybeSingle();
+  if (error || !data) notFound();
+  const item = data as Promotion;
+  const values: PromotionFormValues = {
+    title: item.title, slug: item.slug, summary: item.summary, description: item.description,
+    image_path: item.image_path, button_text: item.button_text, button_url: item.button_url,
+    starts_at: item.starts_at, ends_at: item.ends_at, active: item.active,
+    featured: item.featured, placements: item.placements, display_order: item.display_order,
+  };
+  return <><AdminPageHeader description={`Actualizá “${item.title}”.`} title="Editar promoción" /><PromotionForm id={item.id} initialValues={values} /></>;
+}

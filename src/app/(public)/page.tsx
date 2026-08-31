@@ -159,8 +159,8 @@ export default async function HomePage() {
         services={services.data}
         unavailable={services.unavailable}
       />
-      <InstitutionalSection />
       <EventsHomeSection imageUrls={eventImages} items={events} />
+      <InstitutionalSection />
       <NewsHomeSection imageUrls={newsImages} items={news} />
       <FinalCta />
       <ContactSection contact={contact.data} unavailable={contact.unavailable} />

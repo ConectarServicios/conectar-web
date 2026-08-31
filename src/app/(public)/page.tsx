@@ -18,6 +18,8 @@ import { PromotionsSection } from "@/components/public/promotions-section";
 import { ContextualPromotions } from "@/components/public/contextual-promotions";
 import { EventsHomeSection } from "@/components/public/events-home-section";
 import { eventImageUrl, getUpcomingPublicEvents } from "@/lib/supabase/events";
+import { getFeaturedFaqs } from "@/lib/supabase/faqs";
+import { FaqHomeSection } from "@/components/public/faq-home-section";
 
 type PublicData<T> = {
   data: T[];
@@ -130,7 +132,7 @@ async function getHeroSlides(): Promise<PublicHeroSlide[]> {
 }
 
 export default async function HomePage() {
-  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact, heroSlides, news, promotions, events] = await Promise.all([
+  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact, heroSlides, news, promotions, events, featuredFaqs] = await Promise.all([
     getPublicPlans(),
     getPublicServices(),
     getInstallationPrice(),
@@ -142,6 +144,7 @@ export default async function HomePage() {
     getPublicNews(3),
     getPublicPromotions("home", 3),
     getUpcomingPublicEvents(3),
+    getFeaturedFaqs(6),
   ]);
   const supabase = await createClient();
   const newsImages = Object.fromEntries(news.map((item) => [item.id, newsImageUrl(supabase, item.cover_image)]));
@@ -162,6 +165,7 @@ export default async function HomePage() {
       <EventsHomeSection imageUrls={eventImages} items={events} />
       <InstitutionalSection />
       <NewsHomeSection imageUrls={newsImages} items={news} />
+      <FaqHomeSection items={featuredFaqs} />
       <FinalCta />
       <ContactSection contact={contact.data} unavailable={contact.unavailable} />
     </main>

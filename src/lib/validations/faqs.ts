@@ -1,4 +1,8 @@
-import { FAQ_CATEGORIES, type FaqCategory, type FaqFormValues } from "@/types/faqs";
+import {
+  FAQ_CATEGORIES,
+  type FaqCategory,
+  type FaqFormValues,
+} from "@/types/faqs";
 
 export function isFaqCategory(value: string): value is FaqCategory {
   return (FAQ_CATEGORIES as readonly string[]).includes(value);

@@ -30,5 +30,11 @@ export type FaqItem = {
   created_at: string;
   updated_at: string;
 };
-export type FaqFormValues = Pick<FaqItem, "question" | "answer" | "category" | "active" | "featured" | "display_order">;
-export type FaqActionState = { message?: string; fieldErrors?: Record<string, string> };
+export type FaqFormValues = Pick<
+  FaqItem,
+  "question" | "answer" | "category" | "active" | "featured" | "display_order"
+>;
+export type FaqActionState = {
+  message?: string;
+  fieldErrors?: Record<string, string>;
+};

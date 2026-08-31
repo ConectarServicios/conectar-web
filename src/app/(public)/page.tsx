@@ -16,6 +16,8 @@ import { getPublicNews, newsImageUrl } from "@/lib/supabase/news";
 import { getPublicPromotions, promotionImageUrl } from "@/lib/supabase/promotions";
 import { PromotionsSection } from "@/components/public/promotions-section";
 import { ContextualPromotions } from "@/components/public/contextual-promotions";
+import { EventsHomeSection } from "@/components/public/events-home-section";
+import { eventImageUrl, getUpcomingPublicEvents } from "@/lib/supabase/events";
 
 type PublicData<T> = {
   data: T[];
@@ -128,7 +130,7 @@ async function getHeroSlides(): Promise<PublicHeroSlide[]> {
 }
 
 export default async function HomePage() {
-  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact, heroSlides, news, promotions] = await Promise.all([
+  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact, heroSlides, news, promotions, events] = await Promise.all([
     getPublicPlans(),
     getPublicServices(),
     getInstallationPrice(),
@@ -139,10 +141,12 @@ export default async function HomePage() {
     getHeroSlides(),
     getPublicNews(3),
     getPublicPromotions("home", 3),
+    getUpcomingPublicEvents(3),
   ]);
   const supabase = await createClient();
   const newsImages = Object.fromEntries(news.map((item) => [item.id, newsImageUrl(supabase, item.cover_image)]));
   const promotionImages = Object.fromEntries(promotions.map((item) => [item.id, promotionImageUrl(supabase, item.image_path)]));
+  const eventImages = Object.fromEntries(events.map((item) => [item.id, eventImageUrl(supabase, item.image_path)]));
 
   return (
     <main>
@@ -156,6 +160,7 @@ export default async function HomePage() {
         unavailable={services.unavailable}
       />
       <InstitutionalSection />
+      <EventsHomeSection imageUrls={eventImages} items={events} />
       <NewsHomeSection imageUrls={newsImages} items={news} />
       <FinalCta />
       <ContactSection contact={contact.data} unavailable={contact.unavailable} />

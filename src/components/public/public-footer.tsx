@@ -10,6 +10,7 @@ const footerNavigation = [
   { href: "/promociones", label: "Promociones" },
   { href: "/eventos", label: "Eventos" },
   { href: "/conectar-play", label: "Conectar Play" },
+  { href: "/preguntas-frecuentes", label: "Preguntas frecuentes" },
   { href: "/#servicios", label: "Servicios" },
   { href: "/#contacto", label: "Contacto" },
 ];

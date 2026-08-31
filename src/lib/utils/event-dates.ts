@@ -8,6 +8,13 @@ export const eventDateFormatter = new Intl.DateTimeFormat("es-AR", {
 export const eventTimeFormatter = new Intl.DateTimeFormat("es-AR", {
   hour: "2-digit",
   minute: "2-digit",
+  hourCycle: "h23",
+  timeZone: ARGENTINA_TIME_ZONE,
+});
+export const eventAdminDateFormatter = new Intl.DateTimeFormat("es-AR", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
   timeZone: ARGENTINA_TIME_ZONE,
 });
 export const eventMonthFormatter = new Intl.DateTimeFormat("es-AR", {
@@ -18,6 +25,17 @@ export const eventDayFormatter = new Intl.DateTimeFormat("es-AR", {
   day: "2-digit",
   timeZone: ARGENTINA_TIME_ZONE,
 });
+
+const eventCalendarDayFormatter = new Intl.DateTimeFormat("en-CA", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  timeZone: ARGENTINA_TIME_ZONE,
+});
+
+export function eventsOccurOnSameArgentinaDay(start: Date, end: Date) {
+  return eventCalendarDayFormatter.format(start) === eventCalendarDayFormatter.format(end);
+}
 
 /** Events without an end remain ongoing until the end of their Buenos Aires calendar day. */
 export function eventTemporalStatus(

@@ -6,7 +6,11 @@ import { cache } from "react";
 
 import { EVENT_SELECT, eventImageUrl } from "@/lib/supabase/events";
 import { createClient } from "@/lib/supabase/server";
-import { eventDateFormatter, eventTimeFormatter } from "@/lib/utils/event-dates";
+import {
+  eventDateFormatter,
+  eventsOccurOnSameArgentinaDay,
+  eventTimeFormatter,
+} from "@/lib/utils/event-dates";
 import type { EventItem } from "@/types/events";
 
 const loadEvent = cache(async (slug: string) => {
@@ -95,10 +99,7 @@ export default async function EventDetail({
                 Fecha y hora
               </dt>
               <dd className="mt-1 font-bold">
-                {eventDateFormatter.format(start)} · {eventTimeFormatter.format(start)} h
-                {end && (
-                  <> — {eventDateFormatter.format(end)} · {eventTimeFormatter.format(end)} h</>
-                )}
+                <EventSchedule end={end} start={start} />
               </dd>
             </div>
           )}
@@ -128,5 +129,26 @@ export default async function EventDetail({
         )}
       </article>
     </main>
+  );
+}
+
+function EventSchedule({ end, start }: Readonly<{ end: Date | null; start: Date }>) {
+  if (!end) {
+    return <>{eventDateFormatter.format(start)} · {eventTimeFormatter.format(start)} h</>;
+  }
+  if (eventsOccurOnSameArgentinaDay(start, end)) {
+    return (
+      <>
+        {eventDateFormatter.format(start)} · {eventTimeFormatter.format(start)} a{" "}
+        {eventTimeFormatter.format(end)} h
+      </>
+    );
+  }
+  return (
+    <span className="flex flex-col gap-1">
+      <span>{eventDateFormatter.format(start)} · {eventTimeFormatter.format(start)} h</span>
+      <span className="text-sm font-medium text-slate-500">hasta</span>
+      <span>{eventDateFormatter.format(end)} · {eventTimeFormatter.format(end)} h</span>
+    </span>
   );
 }

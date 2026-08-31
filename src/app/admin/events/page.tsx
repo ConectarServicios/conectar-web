@@ -1,12 +1,15 @@
 import Link from "next/link";
 
-import { toggleEventFeatured, updateEventStatus } from "@/app/admin/events/actions";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { EventDeleteButton } from "@/components/admin/events/event-delete-button";
+import { EventActionsMenu } from "@/components/admin/events/event-actions-menu";
 import { EVENT_SELECT } from "@/lib/supabase/events";
 import { createClient } from "@/lib/supabase/server";
-import { eventTemporalStatus, sortEvents } from "@/lib/utils/event-dates";
-import { argentinaAdminDateTimeFormatter } from "@/lib/utils/news-dates";
+import {
+  eventAdminDateFormatter,
+  eventTemporalStatus,
+  eventTimeFormatter,
+  sortEvents,
+} from "@/lib/utils/event-dates";
 import type { EventItem, EventTemporalStatus } from "@/types/events";
 
 const successMessages: Record<string, string> = {
@@ -26,9 +29,6 @@ const temporalLabels: Record<EventTemporalStatus, string> = {
   finished: "Finalizado",
   unscheduled: "Sin fecha",
 };
-const formatDate = (value: string | null) =>
-  value ? argentinaAdminDateTimeFormatter.format(new Date(value)) : "—";
-
 export default async function EventsAdminPage({
   searchParams,
 }: Readonly<{ searchParams: Promise<{ success?: string; error?: string }> }>) {
@@ -80,8 +80,8 @@ export default async function EventsAdminPage({
 
 function EventTable({ events }: Readonly<{ events: EventItem[] }>) {
   return (
-    <div className="grid gap-4 xl:block xl:overflow-hidden xl:rounded-2xl xl:border xl:bg-white">
-      <div className="hidden grid-cols-[1.2fr_.75fr_.8fr_.8fr_.8fr_.6fr_.45fr_1.7fr] gap-3 bg-slate-50 px-5 py-3 text-xs font-bold uppercase text-slate-600 xl:grid">
+    <div className="grid gap-4 xl:block xl:rounded-2xl xl:border xl:bg-white">
+      <div className="hidden grid-cols-[1.3fr_.75fr_.75fr_.8fr_.8fr_.7fr_.4fr_1fr] gap-3 rounded-t-2xl bg-slate-50 px-5 py-3 text-xs font-bold uppercase text-slate-600 xl:grid">
         <span>Título</span><span>Editorial</span><span>Temporal</span><span>Inicio</span>
         <span>Finalización</span><span>Lugar</span><span>Dest.</span><span>Acciones</span>
       </div>
@@ -95,42 +95,63 @@ function EventTable({ events }: Readonly<{ events: EventItem[] }>) {
 function EventRow({ item }: Readonly<{ item: EventItem }>) {
   const temporalStatus = eventTemporalStatus(item);
   return (
-    <article className="rounded-2xl border bg-white p-5 shadow-sm xl:grid xl:grid-cols-[1.2fr_.75fr_.8fr_.8fr_.8fr_.6fr_.45fr_1.7fr] xl:items-center xl:gap-3 xl:rounded-none xl:border-0 xl:border-b xl:shadow-none">
+    <article className="rounded-2xl border bg-white p-5 shadow-sm xl:grid xl:grid-cols-[1.3fr_.75fr_.75fr_.8fr_.8fr_.7fr_.4fr_1fr] xl:items-center xl:gap-3 xl:rounded-none xl:border-0 xl:border-b xl:shadow-none">
       <h2 className="font-bold">{item.title}</h2>
-      <AdminCell label="Editorial">{editorialLabels[item.status]}</AdminCell>
-      <AdminCell label="Temporal">{temporalLabels[temporalStatus]}</AdminCell>
-      <AdminCell label="Inicio">{formatDate(item.starts_at)}</AdminCell>
-      <AdminCell label="Fin">{formatDate(item.ends_at)}</AdminCell>
+      <AdminCell label="Editorial">
+        <StatusBadge tone="editorial">{editorialLabels[item.status]}</StatusBadge>
+      </AdminCell>
+      <AdminCell label="Temporal">
+        <StatusBadge tone="temporal">{temporalLabels[temporalStatus]}</StatusBadge>
+      </AdminCell>
+      <AdminCell label="Inicio"><AdminEventDate value={item.starts_at} /></AdminCell>
+      <AdminCell label="Fin"><AdminEventDate value={item.ends_at} /></AdminCell>
       <AdminCell label="Lugar">{item.location ?? "—"}</AdminCell>
       <AdminCell label="Destacada">{item.featured ? "Sí" : "No"}</AdminCell>
-      <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm xl:mt-0">
-        <Link className="font-bold text-orange-700" href={`/admin/events/${item.id}/edit`}>
+      <div className="col-span-full mt-5 flex items-center gap-2 border-t border-slate-200 pt-4 text-sm xl:col-span-1 xl:mt-0 xl:border-0 xl:pt-0">
+        <Link
+          className="rounded-lg border border-orange-200 bg-orange-50 px-3 py-2 font-bold text-orange-800 hover:bg-orange-100 focus-visible:outline-2 focus-visible:outline-orange-500"
+          href={`/admin/events/${item.id}/edit`}
+        >
           Editar
         </Link>
-        <form action={updateEventStatus}>
-          <input name="id" type="hidden" value={item.id} />
-          <input name="status" type="hidden" value={item.status === "published" ? "draft" : "published"} />
-          <button className="font-bold text-slate-700">
-            {item.status === "published" ? "A borrador" : "Publicar"}
-          </button>
-        </form>
-        {item.status !== "archived" && (
-          <form action={updateEventStatus}>
-            <input name="id" type="hidden" value={item.id} />
-            <input name="status" type="hidden" value="archived" />
-            <button className="font-bold text-slate-700">Archivar</button>
-          </form>
-        )}
-        <form action={toggleEventFeatured}>
-          <input name="id" type="hidden" value={item.id} />
-          <input name="featured" type="hidden" value={String(!item.featured)} />
-          <button className="font-bold text-slate-700">
-            {item.featured ? "Quitar destacado" : "Destacar"}
-          </button>
-        </form>
-        <EventDeleteButton id={item.id} title={item.title} />
+        <EventActionsMenu
+          featured={item.featured}
+          id={item.id}
+          status={item.status}
+          title={item.title}
+        />
       </div>
     </article>
+  );
+}
+
+function AdminEventDate({ value }: Readonly<{ value: string | null }>) {
+  if (!value) return <>—</>;
+  const date = new Date(value);
+  return (
+    <time className="block leading-5" dateTime={value}>
+      <span className="block whitespace-nowrap">{eventAdminDateFormatter.format(date)}</span>
+      <span className="block font-semibold text-slate-700">
+        {eventTimeFormatter.format(date)}
+      </span>
+    </time>
+  );
+}
+
+function StatusBadge({
+  children,
+  tone,
+}: Readonly<{ children: React.ReactNode; tone: "editorial" | "temporal" }>) {
+  return (
+    <span
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-bold ${
+        tone === "editorial"
+          ? "bg-slate-100 text-slate-700"
+          : "bg-blue-50 text-blue-800"
+      }`}
+    >
+      {children}
+    </span>
   );
 }
 

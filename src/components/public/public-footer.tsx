@@ -3,6 +3,7 @@ import { unstable_rethrow } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { isSocialPlatform, type SocialLink, type SocialPlatform } from "@/types/social-links";
+import type { SiteConfiguration } from "@/types/site-settings";
 
 const footerNavigation = [
   { href: "/#inicio", label: "Inicio" },
@@ -40,23 +41,27 @@ async function getSocialLinks(): Promise<SocialLink[]> {
   }
 }
 
-export async function PublicFooter() {
+type PublicFooterProps = Readonly<{
+  configuration: Pick<SiteConfiguration, "siteName" | "footerTagline">;
+}>;
+
+export async function PublicFooter({ configuration }: PublicFooterProps) {
   const socialLinks = await getSocialLinks();
   return (
     <footer className="bg-[#061526] py-12 text-slate-300">
       <div className="public-container flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-lg font-bold text-white">Conectar Servicios</p>
-          <p className="mt-2 text-sm">Soluciones de conectividad.</p>
+          <p className="text-lg font-bold text-white">{configuration.siteName}</p>
+          <p className="mt-2 text-sm">{configuration.footerTagline}</p>
           {socialLinks.length > 0 && <nav className="mt-5 flex flex-wrap gap-3" aria-label="Redes sociales">
-            {socialLinks.map((socialLink) => <a className="flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold transition hover:border-slate-500 hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" href={socialLink.url} key={socialLink.id} target="_blank" rel="noopener noreferrer" aria-label={`Visitar ${socialLink.platform} de Conectar Servicios (abre en una pestaña nueva)`}><SocialIcon platform={socialLink.platform} /><span>{socialLink.platform}</span></a>)}
+            {socialLinks.map((socialLink) => <a className="flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold transition hover:border-slate-500 hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" href={socialLink.url} key={socialLink.id} target="_blank" rel="noopener noreferrer" aria-label={`Visitar ${socialLink.platform} de ${configuration.siteName} (abre en una pestaña nueva)`}><SocialIcon platform={socialLink.platform} /><span>{socialLink.platform}</span></a>)}
           </nav>}
         </div>
         <div className="sm:text-right">
           <nav className="flex flex-wrap gap-x-6 gap-y-3 text-sm" aria-label="Navegación del pie de página">
             {footerNavigation.map((item) => <Link className="rounded-sm hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" href={item.href} key={item.href}>{item.label}</Link>)}
           </nav>
-          <p className="mt-5 text-xs text-slate-400">© {new Date().getFullYear()} Conectar Servicios</p>
+          <p className="mt-5 text-xs text-slate-400">© {new Date().getFullYear()} {configuration.siteName}</p>
         </div>
       </div>
     </footer>

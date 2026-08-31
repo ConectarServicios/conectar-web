@@ -19,6 +19,7 @@ import { ContextualPromotions } from "@/components/public/contextual-promotions"
 import { EventsHomeSection } from "@/components/public/events-home-section";
 import { eventImageUrl, getUpcomingPublicEvents } from "@/lib/supabase/events";
 import { getFeaturedFaqs } from "@/lib/supabase/faqs";
+import { getPublicSiteConfiguration } from "@/lib/supabase/site-settings";
 import { FaqHomeSection } from "@/components/public/faq-home-section";
 
 type PublicData<T> = {
@@ -48,42 +49,6 @@ async function getPublicPlans(): Promise<PublicData<Plan>> {
   }
 
   return { data: (data ?? []) as Plan[], unavailable: false };
-}
-
-async function getInstallationPrice(): Promise<number | null> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("site_settings")
-    .select("value")
-    .eq("key", "internet_installation_price")
-    .eq("is_public", true)
-    .maybeSingle();
-
-  if (error) {
-    console.error("Unable to load public internet installation price", error);
-    return null;
-  }
-
-  return typeof data?.value === "number" && Number.isFinite(data.value) && data.value >= 0
-    ? data.value
-    : null;
-}
-
-async function getInstallationBenefitsText(): Promise<string | null> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("site_settings")
-    .select("value")
-    .eq("key", "internet_installation_benefits_text")
-    .eq("is_public", true)
-    .maybeSingle();
-
-  if (error) {
-    console.error("Unable to load public internet installation benefits text", error);
-    return null;
-  }
-
-  return typeof data?.value === "string" && data.value.trim() ? data.value : null;
 }
 
 async function getPublicServices(): Promise<PublicData<Service>> {
@@ -132,11 +97,10 @@ async function getHeroSlides(): Promise<PublicHeroSlide[]> {
 }
 
 export default async function HomePage() {
-  const [plans, services, installationPrice, installationBenefitsText, playSettings, playPlans, contact, heroSlides, news, promotions, events, featuredFaqs] = await Promise.all([
+  const [plans, services, siteConfiguration, playSettings, playPlans, contact, heroSlides, news, promotions, events, featuredFaqs] = await Promise.all([
     getPublicPlans(),
     getPublicServices(),
-    getInstallationPrice(),
-    getInstallationBenefitsText(),
+    getPublicSiteConfiguration(),
     getPlaySettings(),
     getPlayPlans(),
     getContactInformation(),
@@ -155,7 +119,12 @@ export default async function HomePage() {
     <main>
       <HeroSection slides={heroSlides} />
       <PromotionsSection imageUrls={promotionImages} items={promotions} />
-      <PlansSection installationBenefitsText={installationBenefitsText} installationPrice={installationPrice} plans={plans.data} unavailable={plans.unavailable} />
+      <PlansSection
+        installationBenefitsText={siteConfiguration.internetInstallationBenefitsText}
+        installationPrice={siteConfiguration.internetInstallationPrice}
+        plans={plans.data}
+        unavailable={plans.unavailable}
+      />
       <ContextualPromotions exclude={promotions.map((item) => item.id)} placement="plans" />
       <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
       <ServicesSection

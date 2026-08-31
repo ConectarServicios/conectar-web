@@ -1,7 +1,15 @@
-export type InstallationPriceActionState = {
-  message?: string;
-  success?: boolean;
-  fieldError?: string;
+export type SiteConfiguration = {
+  internetInstallationPrice: number;
+  internetInstallationBenefitsText: string;
+  siteName: string;
+  footerTagline: string;
+  selfServiceUrl: string;
+  seoDefaultTitle: string;
+  seoDefaultDescription: string;
 };
 
-export type InstallationBenefitsActionState = InstallationPriceActionState;
+export type SettingsActionState = {
+  message?: string;
+  success?: boolean;
+  fieldErrors?: Record<string, string>;
+};

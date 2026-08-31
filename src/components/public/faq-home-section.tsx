@@ -21,8 +21,7 @@ export function FaqHomeSection({ items }: Readonly<{ items: FaqItem[] }>) {
             Ver todas las preguntas frecuentes
           </Link>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-slate-50 px-5 shadow-sm sm:px-7">
-          <FaqAccordion compact items={items} />
+<div className="self-start rounded-2xl border border-slate-200 bg-slate-50 px-5 shadow-sm sm:px-7">          <FaqAccordion compact items={items} />
         </div>
       </div>
     </section>

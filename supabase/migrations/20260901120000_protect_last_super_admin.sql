@@ -7,10 +7,23 @@ language plpgsql
 security definer
 set search_path = ''
 as $$
+declare
+  removes_super_admin boolean := false;
 begin
-  if old.role = 'super_admin'::public.admin_role and old.active
-    and (tg_op = 'DELETE' or new.role <> 'super_admin'::public.admin_role or not new.active) then
-    lock table public.profiles in share row exclusive mode;
+  if old.role = 'super_admin'::public.admin_role and old.active then
+    if tg_op = 'DELETE' then
+      removes_super_admin := true;
+    elsif tg_op = 'UPDATE' then
+      removes_super_admin :=
+        new.role <> 'super_admin'::public.admin_role or not new.active;
+    end if;
+  end if;
+
+  if removes_super_admin then
+    -- Serialize only operations capable of removing an active super_admin.
+    -- This dedicated lock is held until transaction end, so the following
+    -- check observes any prior committed removal before it proceeds.
+    perform pg_catalog.pg_advisory_xact_lock(1732584193, 1);
     if not exists (
       select 1 from public.profiles as profile
       where profile.id <> old.id

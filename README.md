@@ -31,7 +31,18 @@ cp .env.example .env.local
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=tu-clave-publicable
+SUPABASE_SERVICE_ROLE_KEY=tu-clave-service-role
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
+
+`SUPABASE_SERVICE_ROLE_KEY` es un secreto exclusivo del servidor que el módulo
+de usuarios usa para invitar y consultar cuentas de Supabase Auth. No debe
+llevar el prefijo `NEXT_PUBLIC_`, exponerse al navegador ni versionarse con un
+valor real. En producción, configurá `NEXT_PUBLIC_SITE_URL` con el origen HTTPS
+real y agregá `${NEXT_PUBLIC_SITE_URL}/auth/set-password` a las Redirect URLs de
+Supabase Auth. Las invitaciones usan el proveedor de correo configurado en
+Supabase; el entorno local puede requerir un capturador de correo o la
+configuración de Auth propia de Supabase CLI.
 
 Iniciá el servidor de desarrollo:
 

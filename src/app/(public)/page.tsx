@@ -1,4 +1,3 @@
-import { FinalCta } from "@/components/public/final-cta";
 import { HeroSection } from "@/components/public/hero-section";
 import { InstitutionalSection } from "@/components/public/institutional-section";
 import { ConectarPlayHomeSection } from "@/components/public/conectar-play-home-section";
@@ -135,7 +134,6 @@ export default async function HomePage() {
       <InstitutionalSection />
       <NewsHomeSection imageUrls={newsImages} items={news} />
       <FaqHomeSection items={featuredFaqs} />
-      <FinalCta />
       <ContactSection contact={contact.data} unavailable={contact.unavailable} />
     </main>
   );

@@ -1,8 +1,7 @@
 import Link from "next/link";
 
-import { togglePlanActive } from "@/app/admin/plans/actions";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { PlanDeleteButton } from "@/components/admin/plans/plan-delete-button";
+import { PlanActionsMenu } from "@/components/admin/plans/plan-actions-menu";
 import { createClient } from "@/lib/supabase/server";
 import type { Plan } from "@/types/plans";
 
@@ -38,7 +37,7 @@ export default async function PlansPage({ searchParams }: Readonly<{ searchParam
           <Link className="mt-6 inline-block rounded-xl bg-orange-600 px-5 py-3 font-bold text-white hover:bg-orange-700" href="/admin/plans/new">Crear primer plan</Link>
         </div>
       ) : (
-        <div className="grid gap-4 lg:block lg:overflow-hidden lg:rounded-2xl lg:border lg:border-slate-200 lg:bg-white lg:shadow-sm">
+        <div className="grid gap-4 lg:block lg:rounded-2xl lg:border lg:border-slate-200 lg:bg-white lg:shadow-sm">
           <div className="hidden grid-cols-[1.5fr_.7fr_1fr_.8fr_.6fr_.7fr_1.2fr] gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-bold tracking-wide text-slate-600 uppercase lg:grid">
             <span>Plan</span><span>Velocidad</span><span>Precio</span><span>Estado</span><span>Orden</span><span>Características</span><span>Acciones</span>
           </div>
@@ -50,10 +49,9 @@ export default async function PlansPage({ searchParams }: Readonly<{ searchParam
               <span className={`mt-3 w-fit rounded-full px-2.5 py-1 text-xs font-bold lg:mt-0 ${plan.active ? "bg-emerald-100 text-emerald-800" : "bg-slate-200 text-slate-700"}`}>{plan.active ? "Activo" : "Inactivo"}</span>
               <p className="mt-3 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Orden: </span>{plan.display_order}</p>
               <p className="mt-2 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Características: </span>{plan.plan_features.length}</p>
-              <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm lg:mt-0">
-                <Link className="font-bold text-orange-700 hover:text-orange-900" href={`/admin/plans/${plan.id}/edit`}>Editar</Link>
-                <form action={togglePlanActive}><input name="id" type="hidden" value={plan.id} /><input name="active" type="hidden" value={String(!plan.active)} /><button className="font-bold text-slate-700 hover:text-slate-950" type="submit">{plan.active ? "Desactivar" : "Activar"}</button></form>
-                <PlanDeleteButton id={plan.id} name={plan.name} />
+              <div className="mt-5 flex items-center gap-2 text-sm lg:mt-0">
+                <Link className="rounded-lg border border-orange-200 bg-orange-50 px-3 py-2 font-bold text-orange-800 hover:bg-orange-100 focus-visible:outline-2 focus-visible:outline-orange-500" href={`/admin/plans/${plan.id}/edit`}>Editar</Link>
+                <PlanActionsMenu active={plan.active} id={plan.id} name={plan.name} />
               </div>
             </article>
           ))}

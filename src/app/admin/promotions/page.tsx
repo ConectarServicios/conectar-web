@@ -1,8 +1,7 @@
 import Link from "next/link";
 
-import { togglePromotionActive, togglePromotionFeatured } from "@/app/admin/promotions/actions";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { PromotionDeleteButton } from "@/components/admin/promotions/promotion-delete-button";
+import { PromotionActionsMenu } from "@/components/admin/promotions/promotion-actions-menu";
 import { promotionStatus } from "@/lib/supabase/promotions";
 import { createClient } from "@/lib/supabase/server";
 import { argentinaAdminDateTimeFormatter } from "@/lib/utils/news-dates";
@@ -46,11 +45,9 @@ export default async function PromotionsPage({ searchParams }: Readonly<{
               <div><dt className="font-semibold">Ubicaciones</dt><dd>{item.placements.map((place) => places[place]).join(", ") || "Solo listado"}</dd></div>
               <div><dt className="font-semibold">Orden</dt><dd>{item.display_order}</dd></div>
             </dl></div>
-            <div className="flex flex-wrap gap-4 text-sm">
-              <Link className="font-bold text-orange-700" href={`/admin/promotions/${item.id}/edit`}>Editar</Link>
-              <form action={togglePromotionActive}><input name="id" type="hidden" value={item.id} /><input name="value" type="hidden" value={String(!item.active)} /><button className="font-bold">{item.active ? "Desactivar" : "Activar"}</button></form>
-              <form action={togglePromotionFeatured}><input name="id" type="hidden" value={item.id} /><input name="value" type="hidden" value={String(!item.featured)} /><button className="font-bold">{item.featured ? "Quitar destacado" : "Destacar"}</button></form>
-              <PromotionDeleteButton id={item.id} title={item.title} />
+            <div className="flex items-center gap-2 text-sm">
+              <Link className="rounded-lg border border-orange-200 bg-orange-50 px-3 py-2 font-bold text-orange-800 hover:bg-orange-100 focus-visible:outline-2 focus-visible:outline-orange-500" href={`/admin/promotions/${item.id}/edit`}>Editar</Link>
+              <PromotionActionsMenu active={item.active} featured={item.featured} id={item.id} title={item.title} />
             </div>
           </div>
         </article>)}</div>}

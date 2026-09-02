@@ -1,7 +1,19 @@
 const values = [
-  { number: "01", title: "Conectividad", text: "Opciones pensadas para acompañar tus actividades cotidianas." },
-  { number: "02", title: "Atención", text: "Un vínculo cercano para ayudarte a encontrar respuestas." },
-  { number: "03", title: "Distintas necesidades", text: "Soluciones para personas, hogares y organizaciones." },
+  {
+    number: "01",
+    title: "Fibra óptica",
+    text: "Conectividad de alta velocidad y estabilidad mediante tecnología de fibra óptica.",
+  },
+  {
+    number: "02",
+    title: "Soluciones tecnológicas",
+    text: "Infraestructura, soporte, comunicaciones y software para hogares, empresas y organizaciones.",
+  },
+  {
+    number: "03",
+    title: "Atención local",
+    text: "Un equipo con presencia permanente en Sunchales para acompañar y atender las necesidades de nuestros clientes.",
+  },
 ];
 
 export function InstitutionalSection() {
@@ -11,8 +23,11 @@ export function InstitutionalSection() {
       <div className="public-container relative">
         <div className="max-w-3xl">
           <p className="text-sm font-black tracking-[.18em] text-orange-400 uppercase">Quiénes somos</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-balance sm:text-5xl" id="institutional-title">Conectar para estar más cerca</h2>
-          <p className="mt-6 text-lg leading-8 text-slate-300">Trabajamos para ofrecer soluciones de conectividad pensadas para personas, hogares y organizaciones.</p>
+          <h2 className="mt-4 text-3xl font-black tracking-tight text-balance sm:text-5xl" id="institutional-title">Tecnología y conectividad desde Sunchales</h2>
+          <div className="mt-6 space-y-4 text-lg leading-8 text-slate-300">
+            <p>Conectar Servicios es una empresa radicada en Sunchales, Santa Fe, dedicada a brindar servicios de Internet por fibra óptica y soluciones tecnológicas para hogares, empresas y organizaciones.</p>
+            <p>Trabajamos con atención local y acompañamiento cercano, incorporando servicios de conectividad, infraestructura, soporte, comunicaciones y software para responder a distintas necesidades.</p>
+          </div>
         </div>
         <div className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/10 md:grid-cols-3">
           {values.map((value) => (

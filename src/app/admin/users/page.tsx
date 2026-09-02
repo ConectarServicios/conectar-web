@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { setAdminUserActive } from "@/app/admin/users/actions";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { AccessToggleButton } from "@/components/admin/users/access-toggle-button";
+import { UserActionsMenu } from "@/components/admin/users/user-actions-menu";
 import { getAdminUsers } from "@/lib/supabase/admin-users";
 import { ADMIN_ROLE_LABELS } from "@/types/admin";
 import type { AdminUser } from "@/types/admin-users";
@@ -38,7 +37,7 @@ export default async function UsersPage() {
 
       {result.users.length ? (
         <>
-          <div className="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:block">
+          <div className="hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:block">
             <table className="w-full text-left text-sm">
               <thead className="bg-slate-100 text-xs tracking-wide text-slate-600 uppercase">
                 <tr>
@@ -146,23 +145,20 @@ function UserActions({
   user,
   currentUserId,
 }: Readonly<{ user: AdminUser; currentUserId: string }>) {
-  const action = setAdminUserActive.bind(null, user.id, !user.active);
-
   return (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex items-center gap-2 text-sm">
       <Link
-        className="font-bold text-orange-700 hover:text-orange-900"
+        className="rounded-lg border border-orange-200 bg-orange-50 px-3 py-2 font-bold text-orange-800 hover:bg-orange-100 focus-visible:outline-2 focus-visible:outline-orange-500"
         href={`/admin/users/${user.id}/edit`}
       >
         Editar
       </Link>
-      <form action={action}>
-        <AccessToggleButton
-          active={user.active}
-          disabled={user.id === currentUserId && user.active}
-          name={user.fullName}
-        />
-      </form>
+      <UserActionsMenu
+        active={user.active}
+        disabled={user.id === currentUserId && user.active}
+        id={user.id}
+        name={user.fullName}
+      />
     </div>
   );
 }

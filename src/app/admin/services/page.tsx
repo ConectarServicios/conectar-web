@@ -1,8 +1,7 @@
 import Link from "next/link";
 
-import { toggleServiceActive } from "@/app/admin/services/actions";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { ServiceDeleteButton } from "@/components/admin/services/service-delete-button";
+import { ServiceActionsMenu } from "@/components/admin/services/service-actions-menu";
 import { createClient } from "@/lib/supabase/server";
 import type { Service } from "@/types/services";
 
@@ -29,7 +28,7 @@ export default async function ServicesPage({ searchParams }: Readonly<{ searchPa
     {query.error && <p className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{query.error === "permission" ? "No tenés permiso para realizar esa acción." : "No pudimos completar la acción. Intentá nuevamente."}</p>}
     {error ? <div className="rounded-2xl border border-red-200 bg-white p-8 text-center"><h2 className="font-bold text-slate-950">No pudimos cargar los servicios</h2><p className="mt-2 text-slate-600">Intentá nuevamente en unos minutos.</p></div>
       : services.length === 0 ? <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center"><h2 className="text-xl font-bold text-slate-950">Todavía no hay servicios cargados.</h2><p className="mt-2 text-slate-600">Creá el primer servicio para comenzar.</p><Link className="mt-6 inline-block rounded-xl bg-orange-600 px-5 py-3 font-bold text-white hover:bg-orange-700" href="/admin/services/new">Crear primer servicio</Link></div>
-      : <div className="grid gap-4 lg:block lg:overflow-hidden lg:rounded-2xl lg:border lg:border-slate-200 lg:bg-white lg:shadow-sm">
+      : <div className="grid gap-4 lg:block lg:rounded-2xl lg:border lg:border-slate-200 lg:bg-white lg:shadow-sm">
         <div className="hidden grid-cols-[1.1fr_.8fr_1.5fr_.65fr_.65fr_.45fr_1.2fr] gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-bold tracking-wide text-slate-600 uppercase lg:grid"><span>Servicio</span><span>Categoría</span><span>Descripción corta</span><span>Estado</span><span>Destacado</span><span>Orden</span><span>Acciones</span></div>
         {services.map((service) => <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:grid lg:grid-cols-[1.1fr_.8fr_1.5fr_.65fr_.65fr_.45fr_1.2fr] lg:items-center lg:gap-3 lg:rounded-none lg:border-0 lg:border-b lg:p-5 lg:shadow-none last:lg:border-b-0" key={service.id}>
           <h2 className="font-bold text-slate-950">{service.name}</h2>
@@ -38,7 +37,7 @@ export default async function ServicesPage({ searchParams }: Readonly<{ searchPa
           <span className={`mt-3 w-fit rounded-full px-2.5 py-1 text-xs font-bold lg:mt-0 ${service.active ? "bg-emerald-100 text-emerald-800" : "bg-slate-200 text-slate-700"}`}>{service.active ? "Activo" : "Inactivo"}</span>
           <p className="mt-3 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Destacado: </span>{service.featured ? "Sí" : "No"}</p>
           <p className="mt-2 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Orden: </span>{service.display_order}</p>
-          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm lg:mt-0"><Link className="font-bold text-orange-700 hover:text-orange-900" href={`/admin/services/${service.id}/edit`}>Editar</Link><form action={toggleServiceActive}><input name="id" type="hidden" value={service.id} /><input name="active" type="hidden" value={String(!service.active)} /><button className="font-bold text-slate-700 hover:text-slate-950" type="submit">{service.active ? "Desactivar" : "Activar"}</button></form><ServiceDeleteButton id={service.id} name={service.name} /></div>
+          <div className="mt-5 flex items-center gap-2 text-sm lg:mt-0"><Link className="rounded-lg border border-orange-200 bg-orange-50 px-3 py-2 font-bold text-orange-800 hover:bg-orange-100 focus-visible:outline-2 focus-visible:outline-orange-500" href={`/admin/services/${service.id}/edit`}>Editar</Link><ServiceActionsMenu active={service.active} id={service.id} name={service.name} /></div>
         </article>)}
       </div>}
   </>;

@@ -29,6 +29,8 @@ export async function saveService(_previous: ServiceActionState, formData: FormD
   if (!supabase) return { message: "No tenés permiso para realizar esta acción." };
   const id = String(formData.get("id") ?? "");
   const editing = Boolean(id);
+  const { data: area } = await supabase.from("service_areas").select("id").eq("id", parsed.data.service_area_id).maybeSingle();
+  if (!area) return { message: "El área seleccionada no existe o no está disponible.", fieldErrors: { service_area_id: "Seleccioná un área válida." } };
   const result = editing
     ? await supabase.from("services").update(parsed.data).eq("id", id).select("id").maybeSingle()
     : await supabase.from("services").insert(parsed.data).select("id").single();
@@ -37,6 +39,8 @@ export async function saveService(_previous: ServiceActionState, formData: FormD
     return { message: saveErrorMessage(result.error?.code) };
   }
   revalidatePath("/admin/services");
+  revalidatePath("/servicios");
+  revalidatePath("/");
   redirect(`/admin/services?success=${editing ? "updated" : "created"}`);
 }
 

@@ -7,7 +7,6 @@ import { ContactSection } from "@/components/public/contact-section";
 import { createClient } from "@/lib/supabase/server";
 import { getPlayPlans, getPlaySettings } from "@/lib/supabase/conectar-play";
 import type { Plan } from "@/types/plans";
-import type { Service } from "@/types/services";
 import type { ContactInformation } from "@/types/contact-information";
 import type { PublicHeroSlide } from "@/components/public/hero-section";
 import { NewsHomeSection } from "@/components/public/news-home-section";
@@ -18,6 +17,7 @@ import { ContextualPromotions } from "@/components/public/contextual-promotions"
 import { EventsHomeSection } from "@/components/public/events-home-section";
 import { eventImageUrl, getUpcomingPublicEvents } from "@/lib/supabase/events";
 import { getFeaturedFaqs } from "@/lib/supabase/faqs";
+import { getPublicServiceAreas } from "@/lib/supabase/services";
 import { getPublicSiteConfiguration } from "@/lib/supabase/site-settings";
 import { FaqHomeSection } from "@/components/public/faq-home-section";
 
@@ -50,26 +50,6 @@ async function getPublicPlans(): Promise<PublicData<Plan>> {
   return { data: (data ?? []) as Plan[], unavailable: false };
 }
 
-async function getPublicServices(): Promise<PublicData<Service>> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("services")
-    .select(
-      "id, name, slug, short_description, description, image_url, icon, category, featured, active, display_order",
-    )
-    .eq("active", true)
-    .order("featured", { ascending: false })
-    .order("display_order", { ascending: true })
-    .order("name", { ascending: true });
-
-  if (error) {
-    console.error("Unable to load public services", error);
-    return { data: [], unavailable: true };
-  }
-
-  return { data: (data ?? []) as Service[], unavailable: false };
-}
-
 async function getContactInformation(): Promise<{ data: ContactInformation | null; unavailable: boolean }> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -96,9 +76,9 @@ async function getHeroSlides(): Promise<PublicHeroSlide[]> {
 }
 
 export default async function HomePage() {
-  const [plans, services, siteConfiguration, playSettings, playPlans, contact, heroSlides, news, promotions, events, featuredFaqs] = await Promise.all([
+  const [plans, serviceAreas, siteConfiguration, playSettings, playPlans, contact, heroSlides, news, promotions, events, featuredFaqs] = await Promise.all([
     getPublicPlans(),
-    getPublicServices(),
+    getPublicServiceAreas(),
     getPublicSiteConfiguration(),
     getPlaySettings(),
     getPlayPlans(),
@@ -127,8 +107,8 @@ export default async function HomePage() {
       <ContextualPromotions exclude={promotions.map((item) => item.id)} placement="plans" />
       <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
       <ServicesSection
-        services={services.data}
-        unavailable={services.unavailable}
+        areas={serviceAreas.data}
+        unavailable={serviceAreas.unavailable}
       />
       <EventsHomeSection imageUrls={eventImages} items={events} />
       <InstitutionalSection />

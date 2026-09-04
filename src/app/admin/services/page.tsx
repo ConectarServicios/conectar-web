@@ -3,7 +3,11 @@ import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { ServiceActionsMenu } from "@/components/admin/services/service-actions-menu";
 import { createClient } from "@/lib/supabase/server";
-import type { Service } from "@/types/services";
+import type { Service, ServiceArea } from "@/types/services";
+
+type AdminService = Omit<Service, "service_areas"> & {
+  service_areas?: Pick<ServiceArea, "id" | "name" | "display_order"> | Pick<ServiceArea, "id" | "name" | "display_order">[] | null;
+};
 
 const feedback: Record<string, string> = {
   created: "El servicio se creó correctamente.", updated: "El servicio se actualizó correctamente.",
@@ -14,10 +18,16 @@ export default async function ServicesPage({ searchParams }: Readonly<{ searchPa
   const query = await searchParams;
   const supabase = await createClient();
   const { data, error } = await supabase.from("services")
-    .select("id, name, slug, short_description, description, image_url, icon, category, service_area_id, featured, active, display_order, service_areas(id, name)")
-    .order("display_order", { ascending: true }).order("name", { ascending: true });
+    .select("id, name, slug, short_description, description, image_url, icon, category, service_area_id, featured, active, display_order, service_areas(id, name, display_order)");
   if (error) console.error("Unable to list services", error);
-  const services = (data ?? []) as Service[];
+  const serviceArea = (service: AdminService) => Array.isArray(service.service_areas) ? service.service_areas[0] : service.service_areas;
+  const services = ((data ?? []) as AdminService[]).sort((left, right) => {
+    const leftAreaOrder = serviceArea(left)?.display_order ?? Number.POSITIVE_INFINITY;
+    const rightAreaOrder = serviceArea(right)?.display_order ?? Number.POSITIVE_INFINITY;
+    return leftAreaOrder - rightAreaOrder
+      || left.display_order - right.display_order
+      || left.name.localeCompare(right.name, "es", { sensitivity: "base" });
+  });
 
   return <>
     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -32,7 +42,7 @@ export default async function ServicesPage({ searchParams }: Readonly<{ searchPa
         <div className="hidden grid-cols-[1.1fr_.8fr_1.5fr_.65fr_.65fr_.45fr_1.2fr] gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-bold tracking-wide text-slate-600 uppercase lg:grid"><span>Servicio</span><span>Área</span><span>Descripción corta</span><span>Estado</span><span>Destacado</span><span>Orden</span><span>Acciones</span></div>
         {services.map((service) => <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:grid lg:grid-cols-[1.1fr_.8fr_1.5fr_.65fr_.65fr_.45fr_1.2fr] lg:items-center lg:gap-3 lg:rounded-none lg:border-0 lg:border-b lg:p-5 lg:shadow-none last:lg:border-b-0" key={service.id}>
           <h2 className="font-bold text-slate-950">{service.name}</h2>
-          <p className="mt-3 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Área: </span>{(Array.isArray(service.service_areas) ? service.service_areas[0]?.name : service.service_areas?.name) ?? "Sin área"}</p>
+          <p className="mt-3 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Área: </span>{serviceArea(service)?.name ?? "Sin área"}</p>
           <p className="mt-2 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Descripción: </span>{service.short_description ?? "—"}</p>
           <span className={`mt-3 w-fit rounded-full px-2.5 py-1 text-xs font-bold lg:mt-0 ${service.active ? "bg-emerald-100 text-emerald-800" : "bg-slate-200 text-slate-700"}`}>{service.active ? "Activo" : "Inactivo"}</span>
           <p className="mt-3 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Destacado: </span>{service.featured ? "Sí" : "No"}</p>

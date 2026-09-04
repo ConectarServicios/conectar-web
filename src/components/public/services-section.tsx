@@ -1,24 +1,5 @@
-import { ServiceCard } from "@/components/public/service-card";
-import type { Service } from "@/types/services";
-
-export function ServicesSection({ services, unavailable }: Readonly<{ services: Service[]; unavailable: boolean }>) {
-  return (
-    <section className="scroll-mt-20 bg-white py-20 sm:py-28" id="servicios" aria-labelledby="services-title">
-      <div className="public-container">
-        <div className="grid gap-6 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
-          <div><p className="public-eyebrow">Servicios</p><h2 className="public-heading mt-3" id="services-title">Soluciones para seguir conectado</h2></div>
-          <p className="max-w-2xl text-lg leading-8 text-slate-600 lg:justify-self-end">Conocé los servicios activos que ofrecemos para acompañar distintas necesidades de conectividad.</p>
-        </div>
-        {unavailable ? (
-          <p className="public-empty-state" role="status">Los servicios no están disponibles temporalmente.</p>
-        ) : services.length === 0 ? (
-          <p className="public-empty-state">Estamos actualizando nuestros servicios disponibles.</p>
-        ) : (
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((service, index) => <ServiceCard index={index} key={service.id} service={service} />)}
-          </div>
-        )}
-      </div>
-    </section>
-  );
+import { ServiceAreaCard } from "@/components/public/service-area-card";
+import type { ServiceArea } from "@/types/services";
+export function ServicesSection({ areas, unavailable }: Readonly<{ areas: ServiceArea[]; unavailable: boolean }>) {
+  return <section aria-labelledby="services-title" className="scroll-mt-20 bg-white py-20 sm:py-28" id="servicios"><div className="public-container"><div className="grid gap-6 lg:grid-cols-[.9fr_1.1fr] lg:items-end"><div><p className="public-eyebrow">Servicios</p><h2 className="public-heading mt-3" id="services-title">Soluciones para hogares, empresas y organizaciones</h2></div><p className="max-w-2xl text-lg leading-8 text-slate-600 lg:justify-self-end">Conocé las distintas áreas en las que trabajamos para brindar conectividad, tecnología y soluciones adaptadas a cada necesidad.</p></div>{unavailable ? <p className="public-empty-state" role="status">Las áreas de servicio no están disponibles temporalmente.</p> : areas.length === 0 ? <p className="public-empty-state">Estamos actualizando nuestras áreas de servicio.</p> : <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">{areas.map((area) => <ServiceAreaCard area={area} key={area.id} />)}</div>}</div></section>;
 }

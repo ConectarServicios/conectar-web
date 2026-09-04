@@ -5,12 +5,12 @@ import { useActionState, useState } from "react";
 
 import { saveService } from "@/app/admin/services/actions";
 import { slugifyServiceName } from "@/lib/validations/services";
-import type { ServiceActionState, ServiceFormValues } from "@/types/services";
+import type { ServiceActionState, ServiceArea, ServiceFormValues } from "@/types/services";
 
 const inputClass = "mt-2 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-slate-950 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200";
 const initialState: ServiceActionState = {};
 
-export function ServiceForm({ id, initialValues }: Readonly<{ id?: string; initialValues?: ServiceFormValues }>) {
+export function ServiceForm({ areas, id, initialValues }: Readonly<{ areas: Pick<ServiceArea, "id" | "name">[]; id?: string; initialValues?: ServiceFormValues }>) {
   const [state, action, pending] = useActionState(saveService, initialState);
   const [slug, setSlug] = useState(initialValues?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(initialValues));
@@ -33,8 +33,12 @@ export function ServiceForm({ id, initialValues }: Readonly<{ id?: string; initi
             <span className="mt-1 block text-xs font-normal text-slate-500">Se genera desde el nombre y podés editarlo.</span>
             {error("slug") && <span className="mt-1 block text-xs text-red-700">{error("slug")}</span>}
           </label>
-          <label className="text-sm font-semibold text-slate-700 sm:col-span-2">Categoría <span className="font-normal text-slate-500">(opcional)</span>
-            <input className={inputClass} defaultValue={initialValues?.category ?? ""} name="category" />
+          <label className="text-sm font-semibold text-slate-700 sm:col-span-2">Área de servicio
+            <select className={inputClass} defaultValue={initialValues?.service_area_id ?? ""} name="service_area_id" required>
+              <option disabled value="">Sin área</option>
+              {areas.map((area) => <option key={area.id} value={area.id}>{area.name}</option>)}
+            </select>
+            {error("service_area_id") && <span className="mt-1 block text-xs text-red-700">{error("service_area_id")}</span>}
           </label>
           <label className="text-sm font-semibold text-slate-700 sm:col-span-2">Descripción corta <span className="font-normal text-slate-500">(opcional)</span>
             <textarea className={`${inputClass} min-h-20 resize-y`} defaultValue={initialValues?.short_description ?? ""} name="short_description" />

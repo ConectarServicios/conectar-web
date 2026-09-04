@@ -6,7 +6,12 @@ create table public.service_areas (
   short_description text,
   description text,
   icon text,
-  public_url text check (public_url is null or public_url ~ '^/' or public_url ~ '^https?://'),
+  public_url text check (
+    public_url is null
+    or public_url = '/'
+    or public_url ~ '^/[^/]'
+    or public_url ~* '^https?://'
+  ),
   featured boolean not null default false,
   active boolean not null default true,
   display_order integer not null default 0 check (display_order >= 0),
@@ -38,14 +43,14 @@ grant select on table public.service_areas to anon;
 grant select, insert, update, delete on table public.service_areas to authenticated;
 
 insert into public.service_areas
-  (name, slug, short_description, description, public_url, display_order)
+  (name, slug, short_description, description, icon, public_url, display_order)
 values
-  ('Internet y Wi-Fi', 'internet-wifi', 'Conectividad por fibra óptica y soluciones para mejorar la cobertura y estabilidad de tu red.', 'Soluciones de conectividad para hogares, con acceso a Internet por fibra óptica y alternativas para ampliar la cobertura Wi-Fi.', null, 1),
-  ('Conectar Play', 'conectar-play', 'Televisión y entretenimiento para disfrutar en distintos dispositivos.', 'Servicio de televisión y streaming para clientes de Internet Conectar, con más de 100 canales y acceso desde múltiples dispositivos.', '/conectar-play', 2),
-  ('Seguridad y Monitoreo', 'seguridad-monitoreo', 'Soluciones de seguridad, videoseguridad y monitoreo para hogares y organizaciones.', 'Sistemas de alarma, videoseguridad, monitoreo y control para acompañar distintas necesidades de protección.', null, 3),
-  ('Conectividad para Empresas', 'conectividad-empresas', 'Infraestructura y conectividad para empresas, industrias y organizaciones.', 'Soluciones de Internet, redes, fibra óptica e interconexión pensadas para entornos empresariales.', null, 4),
-  ('Data Center y Servicios Digitales', 'data-center-servicios-digitales', 'Infraestructura física y virtual, servidores y servicios digitales para organizaciones.', 'Servicios de Data Center, servidores, almacenamiento, dominios, DNS y correo para acompañar operaciones empresariales.', null, 5),
-  ('Software y Tecnología', 'software-tecnologia', 'Desarrollo de software y soluciones tecnológicas adaptadas a distintas necesidades.', 'Desarrollo de aplicaciones, sistemas, integraciones, telemetría, soporte, comunicaciones y otras soluciones tecnológicas.', null, 6)
+  ('Internet y Wi-Fi', 'internet-wifi', 'Conectividad por fibra óptica y soluciones para mejorar la cobertura y estabilidad de tu red.', 'Soluciones de conectividad para hogares, con acceso a Internet por fibra óptica y alternativas para ampliar la cobertura Wi-Fi.', 'wifi', null, 1),
+  ('Conectar Play', 'conectar-play', 'Televisión y entretenimiento para disfrutar en distintos dispositivos.', 'Servicio de televisión y streaming para clientes de Internet Conectar, con más de 100 canales y acceso desde múltiples dispositivos.', 'play', '/conectar-play', 2),
+  ('Seguridad y Monitoreo', 'seguridad-monitoreo', 'Soluciones de seguridad, videoseguridad y monitoreo para hogares y organizaciones.', 'Sistemas de alarma, videoseguridad, monitoreo y control para acompañar distintas necesidades de protección.', 'security', null, 3),
+  ('Conectividad para Empresas', 'conectividad-empresas', 'Infraestructura y conectividad para empresas, industrias y organizaciones.', 'Soluciones de Internet, redes, fibra óptica e interconexión pensadas para entornos empresariales.', 'business', null, 4),
+  ('Data Center y Servicios Digitales', 'data-center-servicios-digitales', 'Infraestructura física y virtual, servidores y servicios digitales para organizaciones.', 'Servicios de Data Center, servidores, almacenamiento, dominios, DNS y correo para acompañar operaciones empresariales.', 'server', null, 5),
+  ('Software y Tecnología', 'software-tecnologia', 'Desarrollo de software y soluciones tecnológicas adaptadas a distintas necesidades.', 'Desarrollo de aplicaciones, sistemas, integraciones, telemetría, soporte, comunicaciones y otras soluciones tecnológicas.', 'software', null, 6)
 on conflict (slug) do nothing;
 
 -- Existing canonical slugs keep all editorial text; only their relationship is set.

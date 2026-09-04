@@ -1,4 +1,4 @@
-import { AdminDrawerNav } from "@/components/admin/admin-drawer-nav";
+import { AdminMobileNav } from "@/components/admin/admin-mobile-nav";
 import { LogoutButton } from "@/components/admin/logout-button";
 import { ADMIN_ROLE_LABELS, type AdminRole } from "@/types/admin";
 
@@ -9,7 +9,7 @@ export function AdminHeader({ fullName, email, role }: AdminHeaderProps) {
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="flex min-h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-3">
-          <AdminDrawerNav role={role} />
+          <AdminMobileNav role={role} />
           <div className="min-w-0">
             {fullName ? <p className="truncate text-sm font-semibold text-slate-950">{fullName}</p> : null}
             <p className="truncate text-xs text-slate-500">{email}</p>

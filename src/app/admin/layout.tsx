@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 
 import { AdminHeader } from "@/components/admin/admin-header";
+import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { createClient } from "@/lib/supabase/server";
 import { isAdminRole } from "@/types/admin";
 
@@ -44,7 +45,8 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="min-h-screen">
+      <AdminSidebar role={profile.role} />
+      <div className="min-h-screen lg:pl-72">
         <AdminHeader
           email={user.email ?? "Email no disponible"}
           fullName={profile.full_name}

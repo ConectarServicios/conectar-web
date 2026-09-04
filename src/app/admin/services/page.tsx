@@ -22,7 +22,7 @@ export default async function ServicesPage({ searchParams }: Readonly<{ searchPa
   return <>
     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
       <AdminPageHeader description="Gestioná los servicios disponibles de Conectar Servicios." title="Servicios" />
-      <div className="flex flex-wrap gap-3"><Link className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-center font-bold text-slate-700 hover:bg-slate-50" href="/admin/services/areas">Administrar áreas</Link><Link className="rounded-xl bg-orange-600 px-5 py-3 text-center font-bold text-white shadow-sm hover:bg-orange-700" href="/admin/services/new">Nuevo servicio</Link></div>
+      <div className="flex flex-wrap gap-3"><Link className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-center font-bold text-slate-700 hover:bg-slate-50" href="/admin/services/areas">Administrar áreas</Link><Link className="rounded-xl border border-orange-200 bg-orange-50 px-5 py-3 text-center font-bold text-orange-800 hover:bg-orange-100" href="/admin/services/projects">Proyectos / soluciones</Link><Link className="rounded-xl bg-orange-600 px-5 py-3 text-center font-bold text-white shadow-sm hover:bg-orange-700" href="/admin/services/new">Nuevo servicio</Link></div>
     </div>
     {query.success && feedback[query.success] && <p className="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status">{feedback[query.success]}</p>}
     {query.error && <p className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{query.error === "permission" ? "No tenés permiso para realizar esa acción." : "No pudimos completar la acción. Intentá nuevamente."}</p>}

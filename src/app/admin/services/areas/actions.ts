@@ -49,7 +49,7 @@ export async function deleteServiceArea(formData: FormData) {
   const { error } = await supabase.from("service_areas").delete().eq("id", id);
   if (error) {
     console.error("Unable to delete service area", error);
-    redirect(`/admin/services/areas?error=${error.code === "23503" ? "has-services" : "unexpected"}`);
+    redirect(`/admin/services/areas?error=${error.code === "23503" ? "has-dependencies" : "unexpected"}`);
   }
   revalidatePath("/"); revalidatePath("/servicios"); revalidatePath("/admin/services/areas");
   redirect("/admin/services/areas?success=deleted");

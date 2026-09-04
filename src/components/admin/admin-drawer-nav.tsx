@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 
 import { AdminNav } from "@/components/admin/admin-nav";
 import type { AdminRole } from "@/types/admin";
@@ -39,10 +38,10 @@ export function AdminDrawerNav({ role }: Readonly<{ role: AdminRole }>) {
       >
         <span aria-hidden="true" className="text-xl leading-none">{isOpen ? "×" : "☰"}</span>
       </button>
-      {isOpen && typeof document !== "undefined" ? createPortal(
+      {isOpen ? (
         <>
-          <button aria-label="Cerrar menú" className="fixed inset-0 z-50 bg-slate-950/60" onClick={() => setIsOpen(false)} type="button" />
-          <aside id={MENU_ID} className="fixed inset-y-0 left-0 z-[60] w-[min(20rem,88vw)] overflow-y-auto bg-slate-950 p-5 shadow-2xl">
+          <button aria-label="Cerrar menú" className="fixed inset-0 z-40 bg-slate-950/60" onClick={() => setIsOpen(false)} type="button" />
+          <aside id={MENU_ID} className="fixed inset-y-0 left-0 z-50 w-[min(20rem,88vw)] overflow-y-auto bg-slate-950 p-5 shadow-2xl">
             <div className="mb-8 flex items-start justify-between border-b border-slate-800 pb-5">
               <div>
                 <p className="text-lg font-bold text-white">Conectar</p>
@@ -52,8 +51,7 @@ export function AdminDrawerNav({ role }: Readonly<{ role: AdminRole }>) {
             </div>
             <AdminNav onNavigate={() => setIsOpen(false)} role={role} />
           </aside>
-        </>,
-        document.body,
+        </>
       ) : null}
     </div>
   );

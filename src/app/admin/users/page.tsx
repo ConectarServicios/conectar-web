@@ -21,7 +21,7 @@ export default async function UsersPage() {
   if (!result) redirect("/auth/unauthorized");
 
   return (
-    <>
+    <div className="@container">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
         <AdminPageHeader
           description="Gestioná los perfiles y accesos del equipo administrativo."
@@ -37,8 +37,16 @@ export default async function UsersPage() {
 
       {result.users.length ? (
         <>
-          <div className="hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:block">
-            <table className="w-full text-left text-sm">
+          <div className="hidden rounded-2xl border border-slate-200 bg-white shadow-sm @[1120px]:block">
+            <table className="w-full table-fixed text-left text-sm">
+              <colgroup>
+                <col className="w-[20%]" />
+                <col />
+                <col className="w-36" />
+                <col className="w-28" />
+                <col className="w-40" />
+                <col className="w-44" />
+              </colgroup>
               <thead className="bg-slate-100 text-xs tracking-wide text-slate-600 uppercase">
                 <tr>
                   {tableHeadings.map((heading) => (
@@ -59,7 +67,7 @@ export default async function UsersPage() {
               </tbody>
             </table>
           </div>
-          <div className="grid gap-4 lg:hidden">
+          <div className="grid gap-4 @[1120px]:hidden">
             {result.users.map((user) => (
               <UserCard
                 currentUserId={result.currentUserId}
@@ -74,7 +82,7 @@ export default async function UsersPage() {
           No hay perfiles administrativos.
         </p>
       )}
-    </>
+    </div>
   );
 }
 
@@ -90,7 +98,7 @@ function UserRow({
           <span className="ml-2 text-xs font-normal text-slate-500">(vos)</span>
         ) : null}
       </td>
-      <td className="px-5 py-4 text-slate-600">{user.email}</td>
+      <td className="break-words px-5 py-4 text-slate-600">{user.email}</td>
       <td className="px-5 py-4">
         <RoleBadge role={user.role} />
       </td>
@@ -146,7 +154,7 @@ function UserActions({
   currentUserId,
 }: Readonly<{ user: AdminUser; currentUserId: string }>) {
   return (
-    <div className="flex items-center gap-2 text-sm">
+    <div className="flex w-max max-w-full items-center gap-2 text-sm whitespace-nowrap">
       <Link
         className="rounded-lg border border-orange-200 bg-orange-50 px-3 py-2 font-bold text-orange-800 hover:bg-orange-100 focus-visible:outline-2 focus-visible:outline-orange-500"
         href={`/admin/users/${user.id}/edit`}

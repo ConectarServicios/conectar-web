@@ -22,7 +22,7 @@ export default async function PlansPage({ searchParams }: Readonly<{ searchParam
   const plans = (data ?? []) as Plan[];
 
   return (
-    <>
+    <div className="@container">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <AdminPageHeader description="Gestioná los planes de internet, precios, velocidades y promociones." title="Planes" />
         <Link className="shrink-0 rounded-xl bg-orange-600 px-5 py-3 text-center font-bold text-white shadow-sm hover:bg-orange-700" href="/admin/plans/new">Nuevo plan</Link>
@@ -37,19 +37,19 @@ export default async function PlansPage({ searchParams }: Readonly<{ searchParam
           <Link className="mt-6 inline-block rounded-xl bg-orange-600 px-5 py-3 font-bold text-white hover:bg-orange-700" href="/admin/plans/new">Crear primer plan</Link>
         </div>
       ) : (
-        <div className="grid gap-4 lg:block lg:rounded-2xl lg:border lg:border-slate-200 lg:bg-white lg:shadow-sm">
-          <div className="hidden grid-cols-[1.5fr_.7fr_1fr_.8fr_.6fr_.7fr_1.2fr] gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-bold tracking-wide text-slate-600 uppercase lg:grid">
+        <div className="grid gap-4 @[1120px]:block @[1120px]:rounded-2xl @[1120px]:border @[1120px]:border-slate-200 @[1120px]:bg-white @[1120px]:shadow-sm">
+          <div className="hidden grid-cols-[1.5fr_.7fr_1fr_.8fr_.6fr_.7fr_1.2fr] gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-bold tracking-wide text-slate-600 uppercase @[1120px]:grid">
             <span>Plan</span><span>Velocidad</span><span>Precio</span><span>Estado</span><span>Orden</span><span>Características</span><span>Acciones</span>
           </div>
           {plans.map((plan) => (
-            <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:grid lg:grid-cols-[1.5fr_.7fr_1fr_.8fr_.6fr_.7fr_1.2fr] lg:items-center lg:gap-3 lg:rounded-none lg:border-0 lg:border-b lg:p-5 lg:shadow-none last:lg:border-b-0" key={plan.id}>
+            <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm @[1120px]:grid @[1120px]:grid-cols-[1.5fr_.7fr_1fr_.8fr_.6fr_.7fr_1.2fr] @[1120px]:items-center @[1120px]:gap-3 @[1120px]:rounded-none @[1120px]:border-0 @[1120px]:border-b @[1120px]:p-5 @[1120px]:shadow-none last:@[1120px]:border-b-0" key={plan.id}>
               <div><h2 className="font-bold text-slate-950">{plan.name}</h2>{plan.featured && <span className="mt-1 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-800">Destacado</span>}</div>
-              <div className="mt-3 space-y-1 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Velocidad</span><p><span aria-hidden="true">↓</span> <span className="sr-only">Bajada: </span>{plan.speed_mbps} Mbps</p><p><span aria-hidden="true">↑</span> <span className="sr-only">Subida: </span>{plan.upload_speed_mbps === null ? "Sin informar" : `${plan.upload_speed_mbps} Mbps`}</p></div>
-              <div className="mt-2 text-sm lg:mt-0"><p className="text-slate-700">{currency.format(plan.regular_price)}</p>{plan.promotional_price !== null && <p className="font-bold text-orange-700">{currency.format(plan.promotional_price)}</p>}</div>
-              <span className={`mt-3 w-fit rounded-full px-2.5 py-1 text-xs font-bold lg:mt-0 ${plan.active ? "bg-emerald-100 text-emerald-800" : "bg-slate-200 text-slate-700"}`}>{plan.active ? "Activo" : "Inactivo"}</span>
-              <p className="mt-3 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Orden: </span>{plan.display_order}</p>
-              <p className="mt-2 text-sm text-slate-700 lg:mt-0"><span className="font-semibold lg:hidden">Características: </span>{plan.plan_features.length}</p>
-              <div className="mt-5 flex items-center gap-2 text-sm lg:mt-0">
+              <div className="mt-3 space-y-1 text-sm text-slate-700 @[1120px]:mt-0"><span className="font-semibold @[1120px]:hidden">Velocidad</span><p><span aria-hidden="true">↓</span> <span className="sr-only">Bajada: </span>{plan.speed_mbps} Mbps</p><p><span aria-hidden="true">↑</span> <span className="sr-only">Subida: </span>{plan.upload_speed_mbps === null ? "Sin informar" : `${plan.upload_speed_mbps} Mbps`}</p></div>
+              <div className="mt-2 text-sm @[1120px]:mt-0"><p className="text-slate-700">{currency.format(plan.regular_price)}</p>{plan.promotional_price !== null && <p className="font-bold text-orange-700">{currency.format(plan.promotional_price)}</p>}</div>
+              <span className={`mt-3 w-fit rounded-full px-2.5 py-1 text-xs font-bold @[1120px]:mt-0 ${plan.active ? "bg-emerald-100 text-emerald-800" : "bg-slate-200 text-slate-700"}`}>{plan.active ? "Activo" : "Inactivo"}</span>
+              <p className="mt-3 text-sm text-slate-700 @[1120px]:mt-0"><span className="font-semibold @[1120px]:hidden">Orden: </span>{plan.display_order}</p>
+              <p className="mt-2 text-sm text-slate-700 @[1120px]:mt-0"><span className="font-semibold @[1120px]:hidden">Características: </span>{plan.plan_features.length}</p>
+              <div className="mt-5 flex items-center gap-2 text-sm @[1120px]:mt-0">
                 <Link className="rounded-lg border border-orange-200 bg-orange-50 px-3 py-2 font-bold text-orange-800 hover:bg-orange-100 focus-visible:outline-2 focus-visible:outline-orange-500" href={`/admin/plans/${plan.id}/edit`}>Editar</Link>
                 <PlanActionsMenu active={plan.active} id={plan.id} name={plan.name} />
               </div>
@@ -57,6 +57,6 @@ export default async function PlansPage({ searchParams }: Readonly<{ searchParam
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 }

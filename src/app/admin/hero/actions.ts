@@ -34,7 +34,6 @@ function errorMessage(code?: string) {
 export async function saveHeroSlide(previous: HeroActionState, formData: FormData): Promise<HeroActionState> {
   const parsed = parseHeroForm(formData);
   const id = String(formData.get("id") ?? "");
-  const currentImagePath = String(formData.get("current_image_path") ?? "");
   const fileValue = formData.get("image");
   const file = fileValue instanceof File ? fileValue : new File([], "");
   const imageError = validateHeroImage(file, !id);
@@ -43,6 +42,15 @@ export async function saveHeroSlide(previous: HeroActionState, formData: FormDat
 
   const supabase = await getAuthorizedClient();
   if (!supabase) return { message: "No tenés permiso para realizar esta acción." };
+  const { data: currentSlide, error: currentSlideError } = id
+    ? await supabase.from("hero_slides").select("image_path, featured").eq("id", id).maybeSingle()
+    : { data: null, error: null };
+  if (id && (currentSlideError || !currentSlide)) {
+    console.error("Unable to load current hero slide", currentSlideError);
+    if (!currentSlideError || currentSlideError.code === "42501") return { message: "No tenés permiso para realizar esta acción." };
+    return { message: errorMessage(currentSlideError.code) };
+  }
+  const currentImagePath = currentSlide?.image_path ?? "";
 
   let newImagePath: string | null = null;
   if (file.size > 0) {
@@ -57,16 +65,14 @@ export async function saveHeroSlide(previous: HeroActionState, formData: FormDat
   const imagePath = newImagePath ?? currentImagePath;
   if (!imagePath) return { message: "Seleccioná una imagen.", fieldErrors: { image: "Seleccioná una imagen." } };
 
-  if (parsed.data.featured) {
-    const query = supabase.from("hero_slides").update({ featured: false }).eq("featured", true);
-    const { error } = id ? await query.neq("id", id) : await query;
-    if (error) {
-      if (newImagePath) await supabase.storage.from(BUCKET).remove([newImagePath]);
-      return { message: errorMessage(error.code) };
-    }
-  }
-
-  const values = { ...parsed.data, image_path: imagePath };
+  const shouldFeature = parsed.data.featured;
+  const values = {
+    ...parsed.data,
+    // Keep the current selection until the row is safely persisted. The RPC
+    // performs the selection atomically afterwards.
+    featured: shouldFeature ? (currentSlide?.featured ?? false) : false,
+    image_path: imagePath,
+  };
   const result = id
     ? await supabase.from("hero_slides").update(values).eq("id", id).select("id").maybeSingle()
     : await supabase.from("hero_slides").insert(values).select("id").single();
@@ -74,6 +80,14 @@ export async function saveHeroSlide(previous: HeroActionState, formData: FormDat
     if (newImagePath) await supabase.storage.from(BUCKET).remove([newImagePath]);
     console.error("Unable to persist hero slide", result.error);
     return { message: errorMessage(result.error?.code) };
+  }
+
+  if (shouldFeature) {
+    const { error } = await supabase.rpc("set_featured_hero_slide", { slide_id: result.data.id });
+    if (error) {
+      console.error("Unable to select featured hero slide", error);
+      return { message: errorMessage(error.code) };
+    }
   }
 
   let cleanupFailed = false;
@@ -101,9 +115,11 @@ export async function featureHeroSlide(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   const supabase = await getAuthorizedClient();
   if (!supabase || !id) redirect("/admin/hero?error=permission");
-  const { error: clearError } = await supabase.from("hero_slides").update({ featured: false }).eq("featured", true).neq("id", id);
-  const { data, error } = clearError ? { data: null, error: clearError } : await supabase.from("hero_slides").update({ featured: true }).eq("id", id).select("id").maybeSingle();
-  if (error || !data) redirect(`/admin/hero?error=${error?.code === "42501" || !data ? "permission" : "unexpected"}`);
+  const { error } = await supabase.rpc("set_featured_hero_slide", { slide_id: id });
+  if (error) {
+    console.error("Unable to select featured hero slide", error);
+    redirect(`/admin/hero?error=${error.code === "42501" || error.code === "P0002" ? "permission" : "unexpected"}`);
+  }
   revalidatePath("/"); revalidatePath("/admin/hero");
   redirect("/admin/hero?success=featured");
 }

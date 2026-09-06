@@ -14,7 +14,7 @@ export function HeroSlideForm({ id, initialValues }: Readonly<{ id?: string; ini
   const error = (name: string) => state.fieldErrors?.[name];
   return (
     <form action={action} className="space-y-6">
-      {id && <><input name="id" type="hidden" value={id} /><input name="current_image_path" type="hidden" value={initialValues?.image_path} /></>}
+      {id && <input name="id" type="hidden" value={id} />}
       {state.message && <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{state.message}</p>}
       <fieldset className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
         <legend className="px-2 text-lg font-bold text-slate-950">Contenido</legend>

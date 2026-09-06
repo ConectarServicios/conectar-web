@@ -45,8 +45,15 @@ export async function saveServiceProject(_state: ServiceProjectActionState, form
     if (!service) return { message: "El servicio no pertenece al área seleccionada.", fieldErrors: { service_id: "Elegí un servicio de la misma área." } };
   }
   const id = String(formData.get("id") ?? "");
-  const oldImage = String(formData.get("current_image_path") ?? "") || null;
-  const previousAreaId = String(formData.get("current_service_area_id") ?? "") || null;
+  const { data: currentProject, error: currentProjectError } = id
+    ? await supabase.from("service_projects").select("image_path, service_area_id").eq("id", id).maybeSingle()
+    : { data: null, error: null };
+  if (id && (currentProjectError || !currentProject)) {
+    console.error("Unable to load current service project", currentProjectError);
+    return { message: currentProjectError?.code === "42501" || !currentProject ? "No tenés permiso para realizar esta acción." : "No pudimos guardar el proyecto. Intentá nuevamente." };
+  }
+  const oldImage = currentProject?.image_path ?? null;
+  const previousAreaId = currentProject?.service_area_id ?? null;
   let uploaded: string | null = null;
   if (file.size) {
     uploaded = imagePath(file);

@@ -30,28 +30,26 @@ export async function savePlan(previous: PlanActionState, formData: FormData): P
   const id = String(formData.get("id") ?? "");
   const editing = Boolean(id);
 
-  const planResult = editing
-    ? await supabase.from("plans").update(parsed.data).eq("id", id).select("id").maybeSingle()
-    : await supabase.from("plans").insert(parsed.data).select("id").single();
-  if (planResult.error || !planResult.data) {
-    console.error("Unable to persist plan", planResult.error);
-    return { message: databaseMessage(planResult.error?.code) };
-  }
-
-  const planId = planResult.data.id;
-  if (editing) {
-    const { error } = await supabase.from("plan_features").delete().eq("plan_id", planId);
-    if (error) {
-      console.error("Unable to replace plan features", error);
-      return { message: "El plan se guardó, pero no pudimos actualizar sus características." };
-    }
-  }
-  if (parsed.features.length) {
-    const { error } = await supabase.from("plan_features").insert(parsed.features.map((feature) => ({ ...feature, plan_id: planId })));
-    if (error) {
-      console.error("Unable to insert plan features", error);
-      return { message: "El plan se guardó, pero no pudimos guardar sus características." };
-    }
+  const { error } = await supabase.rpc("save_plan_with_features", {
+    p_id: editing ? id : null,
+    p_name: parsed.data.name,
+    p_slug: parsed.data.slug,
+    p_speed_mbps: parsed.data.speed_mbps,
+    p_upload_speed_mbps: parsed.data.upload_speed_mbps,
+    p_description: parsed.data.description,
+    p_regular_price: parsed.data.regular_price,
+    p_promotional_price: parsed.data.promotional_price,
+    p_promotion_label: parsed.data.promotion_label,
+    p_promotion_start: parsed.data.promotion_start,
+    p_promotion_end: parsed.data.promotion_end,
+    p_featured: parsed.data.featured,
+    p_active: parsed.data.active,
+    p_display_order: parsed.data.display_order,
+    p_features: parsed.features,
+  });
+  if (error) {
+    console.error("Unable to persist plan and features", error);
+    return { message: databaseMessage(error.code) };
   }
   revalidatePath("/admin/plans");
   redirect(`/admin/plans?success=${editing ? "updated" : "created"}`);

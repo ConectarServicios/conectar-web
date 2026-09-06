@@ -12,7 +12,7 @@ export function NewsForm({ id, initialValues }: Readonly<{ id?: string; initialV
   const [slug, setSlug] = useState(initialValues?.slug ?? ""); const [manual, setManual] = useState(Boolean(id));
   const error = (key: string) => state.fieldErrors?.[key];
   return <form action={action} className="space-y-6">
-    {id && <><input name="id" type="hidden" value={id}/><input name="current_cover_image" type="hidden" value={initialValues?.cover_image ?? ""}/></>}
+    {id && <input name="id" type="hidden" value={id}/>}
     {state.message && <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{state.message}</p>}
     <fieldset className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"><legend className="px-2 text-lg font-bold">Contenido editorial</legend><div className="grid gap-5 sm:grid-cols-2">
       <label className="text-sm font-semibold sm:col-span-2">Título<input className={input} defaultValue={initialValues?.title} name="title" onChange={(e) => { if (!manual) setSlug(normalizeNewsSlug(e.target.value)); }} required/>{error("title") && <span className="text-xs text-red-700">{error("title")}</span>}</label>

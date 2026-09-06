@@ -29,7 +29,6 @@ function refresh() { revalidatePath("/"); revalidatePath("/noticias"); revalidat
 export async function saveNews(previous: NewsActionState, formData: FormData): Promise<NewsActionState> {
   const parsed = parseNewsForm(formData);
   const id = String(formData.get("id") ?? "");
-  const oldImage = String(formData.get("current_cover_image") ?? "") || null;
   const value = formData.get("cover_image");
   const file = value instanceof File ? value : new File([], "");
   const imageError = validateNewsImage(file);
@@ -37,6 +36,15 @@ export async function saveNews(previous: NewsActionState, formData: FormData): P
   if (!parsed.data || Object.keys(parsed.errors).length) return { message: "Revisá los campos marcados.", fieldErrors: parsed.errors };
   const auth = await authorized();
   if (!auth) return { message: "No tenés permiso para realizar esta acción." };
+  const { data: currentNews, error: currentNewsError } = id
+    ? await auth.supabase.from("news").select("cover_image").eq("id", id).maybeSingle()
+    : { data: null, error: null };
+  if (id && (currentNewsError || !currentNews)) {
+    console.error("Unable to load current news image", currentNewsError);
+    if (!currentNewsError || currentNewsError.code === "42501") return { message: "No tenés permiso para realizar esta acción." };
+    return { message: dbMessage(currentNewsError.code) };
+  }
+  const oldImage = currentNews?.cover_image ?? null;
   let uploaded: string | null = null;
   if (file.size) {
     uploaded = objectPath(file);
@@ -55,6 +63,7 @@ export async function saveNews(previous: NewsActionState, formData: FormData): P
   let cleanup = false;
   if (uploaded && oldImage && uploaded !== oldImage) {
     const { error } = await auth.supabase.storage.from(NEWS_BUCKET).remove([oldImage]); cleanup = Boolean(error);
+    if (error) console.error("Unable to remove replaced news image", error);
   }
   refresh();
   redirect(`/admin/news?success=${id ? "updated" : "created"}${cleanup ? "&error=image-cleanup" : ""}`);

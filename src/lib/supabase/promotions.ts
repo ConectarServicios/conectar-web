@@ -3,6 +3,19 @@ import type { Promotion, PromotionPlacement, PromotionStatus } from "@/types/pro
 
 export const PROMOTIONS_BUCKET = "promotion-images";
 const fields = "id,title,slug,summary,description,image_path,button_text,button_url,starts_at,ends_at,active,featured,placements,display_order,created_at,updated_at";
+const detailFields = "title,slug,summary,description,image_path,button_text,button_url,starts_at,ends_at";
+type PublicPromotionDetail = Pick<
+  Promotion,
+  | "title"
+  | "slug"
+  | "summary"
+  | "description"
+  | "image_path"
+  | "button_text"
+  | "button_url"
+  | "starts_at"
+  | "ends_at"
+>;
 
 export function promotionImageUrl(supabase: Awaited<ReturnType<typeof createClient>>, path: string | null) {
   if (!path) return null;
@@ -42,6 +55,21 @@ export async function getPublicPromotions(placement?: PromotionPlacement, limit?
 }
 
 export async function getPublicPromotion(slug: string) {
-  const items = await getPublicPromotions();
-  return items.find((item) => item.slug === slug) ?? null;
+  const supabase = await createClient();
+  const now = new Date().toISOString();
+  const { data, error } = await supabase
+    .from("promotions")
+    .select(detailFields)
+    .eq("slug", slug)
+    .eq("active", true)
+    .or(`starts_at.is.null,starts_at.lte.${now}`)
+    .or(`ends_at.is.null,ends_at.gte.${now}`)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Unable to load public promotion detail", error);
+    return null;
+  }
+
+  return data as PublicPromotionDetail | null;
 }

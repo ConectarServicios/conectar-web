@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
-import { eventTemporalStatus, sortEvents } from "@/lib/utils/event-dates";
+import { sortEvents } from "@/lib/utils/event-dates";
+import { ARGENTINA_TIME_ZONE } from "@/lib/utils/news-dates";
 import type { EventItem } from "@/types/events";
 
 export const EVENTS_BUCKET = "event-images";
@@ -31,8 +32,32 @@ export async function getPublicEvents() {
 }
 
 export async function getUpcomingPublicEvents(limit?: number) {
-  const items = (await getPublicEvents()).filter((item) =>
-    ["upcoming", "ongoing"].includes(eventTemporalStatus(item)),
-  );
-  return limit ? items.slice(0, limit) : items;
+  const supabase = await createClient();
+  const now = new Date();
+  const nowIso = now.toISOString();
+  const argentinaDay = new Intl.DateTimeFormat("en-CA", {
+    timeZone: ARGENTINA_TIME_ZONE,
+  }).format(now);
+  const argentinaDayStart = new Date(`${argentinaDay}T00:00:00-03:00`).toISOString();
+
+  let query = supabase
+    .from("events")
+    .select(EVENT_SELECT)
+    .eq("status", "published")
+    .not("starts_at", "is", null)
+    .or(
+      `starts_at.gt.${nowIso},and(starts_at.lte.${nowIso},ends_at.gte.${nowIso}),and(starts_at.gte.${argentinaDayStart},starts_at.lte.${nowIso},ends_at.is.null)`,
+    )
+    .order("featured", { ascending: false })
+    .order("starts_at", { ascending: true });
+
+  if (limit) query = query.limit(limit);
+
+  const { data, error } = await query;
+  if (error) {
+    console.error("Unable to load upcoming public events", error);
+    return [];
+  }
+
+  return (data ?? []) as EventItem[];
 }

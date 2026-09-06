@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { getSiteUrl } from "@/lib/utils/site-url";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: getSiteUrl() ?? undefined,
   title: {
     default: "Conectar Servicios",
     template: "%s | Conectar Servicios",

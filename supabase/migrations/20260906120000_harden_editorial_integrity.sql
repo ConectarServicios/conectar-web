@@ -66,6 +66,10 @@ as $$
 $$;
 
 revoke all on function public.is_safe_public_url(text) from public, anon, authenticated;
+-- Editorial writes evaluate this helper through the CHECK constraints below.
+-- EXECUTE does not grant table access; events/promotions grants and RLS remain
+-- the authorization boundary for INSERT and UPDATE operations.
+grant execute on function public.is_safe_public_url(text) to authenticated;
 
 do $$
 declare

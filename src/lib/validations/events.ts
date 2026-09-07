@@ -1,4 +1,5 @@
 import { parseArgentinaDateTimeLocal } from "@/lib/utils/news-dates";
+import { isSafePublicNavigationUrl } from "@/lib/validations/public-urls";
 import { EVENT_STATUSES, type EventFormValues } from "@/types/events";
 
 export const EVENT_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -33,7 +34,7 @@ export function parseEventForm(
   const endsAt = endRaw ? parseArgentinaDateTimeLocal(endRaw) : null;
   const status = text("status") || "draft";
   const buttonText = text("button_text") || null;
-  const buttonUrl = text("button_url") || null;
+  const buttonUrl = String(form.get("button_url") ?? "") || null;
   const errors: Record<string, string> = {};
 
   if (!title) errors.title = "Ingresá un título.";
@@ -48,7 +49,7 @@ export function parseEventForm(
   if (!EVENT_STATUSES.includes(status as EventFormValues["status"])) {
     errors.status = "Elegí un estado válido.";
   }
-  if (buttonUrl && !/^(https?:\/\/|\/)/.test(buttonUrl)) {
+  if (buttonUrl && !isSafePublicNavigationUrl(buttonUrl)) {
     errors.button_url = "Usá una URL http://, https:// o una ruta que comience con /.";
   }
   if (buttonText && !buttonUrl) errors.button_url = "Ingresá la URL del botón.";

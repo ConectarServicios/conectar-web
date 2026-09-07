@@ -1,7 +1,7 @@
 import type { ServiceAreaFormValues, ServiceFormValues } from "@/types/services";
+import { isSafePublicNavigationUrl } from "@/lib/validations/public-urls";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const SAFE_URL = /^(\/[^/]|\/$|https?:\/\/)/i;
 const text = (formData: FormData, key: string) => String(formData.get(key) ?? "").trim();
 const nullableText = (formData: FormData, key: string) => text(formData, key) || null;
 
@@ -38,8 +38,9 @@ export function parseServiceForm(formData: FormData): { data?: ServiceFormValues
 
 export function parseServiceAreaForm(formData: FormData): { data?: ServiceAreaFormValues; errors: Record<string, string> } {
   const result = common(formData);
-  const public_url = nullableText(formData, "public_url");
-  if (public_url && !SAFE_URL.test(public_url)) result.errors.public_url = "Usá una ruta interna o una URL http/https segura.";
+  const publicUrlValue = String(formData.get("public_url") ?? "");
+  const public_url = publicUrlValue || null;
+  if (public_url && !isSafePublicNavigationUrl(public_url)) result.errors.public_url = "Usá una ruta interna o una URL http/https segura.";
   if (Object.keys(result.errors).length) return { errors: result.errors };
   return { errors: {}, data: {
     name: result.name, slug: result.slug, short_description: nullableText(formData, "short_description"),

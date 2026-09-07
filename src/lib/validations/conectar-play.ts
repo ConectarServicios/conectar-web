@@ -1,4 +1,5 @@
 import type { ConectarPlayFaq, ConectarPlayPack, ConectarPlayPlan, ConectarPlaySettings } from "@/types/conectar-play";
+import { isSafeExternalHttpUrl } from "@/lib/validations/public-urls";
 
 const text = (form: FormData, key: string) => String(form.get(key) ?? "").trim();
 const nullable = (form: FormData, key: string) => text(form, key) || null;
@@ -14,9 +15,10 @@ export function parsePlaySettings(form: FormData) {
   if (!Number.isInteger(channel) || channel <= 0) errors.channel_count = "Ingresá un entero mayor que cero.";
   if (!Number.isInteger(devices) || devices <= 0) errors.simultaneous_devices = "Ingresá un entero mayor que cero.";
   const sale = optionalNumber(form, "onn_sale_price", errors); const rental = optionalNumber(form, "onn_rental_price", errors);
-  try { const url = nullable(form, "web_url"); if (url) new URL(url); } catch { errors.web_url = "Ingresá una URL válida."; }
+  const webUrlValue = String(form.get("web_url") ?? ""); const webUrl = webUrlValue || null;
+  if (webUrl && !isSafeExternalHttpUrl(webUrl)) errors.web_url = "Ingresá una URL válida.";
   if (Object.keys(errors).length) return { errors };
-  const data: Omit<ConectarPlaySettings, "id"> = { active: form.get("active") === "on", channel_count: channel, simultaneous_devices: devices, web_url: nullable(form, "web_url"), short_description: nullable(form, "short_description"), compatibility_text: nullable(form, "compatibility_text"), incompatible_tv_text: nullable(form, "incompatible_tv_text"), onn_enabled: form.get("onn_enabled") === "on", onn_sale_price: sale, onn_rental_price: rental, onn_description: nullable(form, "onn_description"), support_text: nullable(form, "support_text") };
+  const data: Omit<ConectarPlaySettings, "id"> = { active: form.get("active") === "on", channel_count: channel, simultaneous_devices: devices, web_url: webUrl, short_description: nullable(form, "short_description"), compatibility_text: nullable(form, "compatibility_text"), incompatible_tv_text: nullable(form, "incompatible_tv_text"), onn_enabled: form.get("onn_enabled") === "on", onn_sale_price: sale, onn_rental_price: rental, onn_description: nullable(form, "onn_description"), support_text: nullable(form, "support_text") };
   return { errors, data };
 }
 

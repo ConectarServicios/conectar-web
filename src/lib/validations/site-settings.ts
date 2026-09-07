@@ -1,4 +1,5 @@
 import type { SiteConfiguration } from "@/types/site-settings";
+import { isSafeExternalHttpUrl } from "@/lib/validations/public-urls";
 
 type ParsedSettings<T> = { values?: T; fieldErrors: Record<string, string> };
 
@@ -47,18 +48,11 @@ export function parseIdentitySettings(
   const fieldErrors: Record<string, string> = {};
   const siteName = requiredText(formData, "site_name", "el nombre del sitio", 80, fieldErrors);
   const footerTagline = requiredText(formData, "footer_tagline", "el texto del footer", 200, fieldErrors);
-  const selfServiceUrl = requiredText(formData, "self_service_url", "la URL de Autogestión", 2048, fieldErrors);
+  const selfServiceUrl = String(formData.get("self_service_url") ?? "");
+  if (!selfServiceUrl) fieldErrors.self_service_url = "Ingresá la URL de Autogestión.";
+  else if (selfServiceUrl.length > 2048) fieldErrors.self_service_url = "No puede superar los 2048 caracteres.";
 
-  if (selfServiceUrl) {
-    try {
-      const url = new URL(selfServiceUrl);
-      if (!(["http:", "https:"] as string[]).includes(url.protocol) || !url.hostname) {
-        fieldErrors.self_service_url = "Ingresá una URL absoluta que comience con http:// o https://.";
-      }
-    } catch {
-      fieldErrors.self_service_url = "Ingresá una URL absoluta válida.";
-    }
-  }
+  if (selfServiceUrl && !isSafeExternalHttpUrl(selfServiceUrl)) fieldErrors.self_service_url = "Ingresá una URL absoluta que comience con http:// o https://.";
   if (Object.keys(fieldErrors).length) return { fieldErrors };
   return { fieldErrors, values: { siteName, footerTagline, selfServiceUrl } };
 }

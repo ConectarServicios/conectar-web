@@ -29,31 +29,21 @@ export function PublicMobileNav({ items, selfServiceUrl }: PublicMobileNavProps)
       if (event.key === "Escape") {
         event.preventDefault();
         setOpen(false);
-        return;
-      }
-      if (event.key !== "Tab" || !menu) return;
-
-      const focusable = Array.from(
-        menu.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        ),
-      );
-      const first = focusable[0];
-      const last = focusable.at(-1);
-      if (!first || !last) return;
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
       }
     };
 
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (menu?.contains(target) || trigger?.contains(target)) return;
+      setOpen(false);
+    };
+
     document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("pointerdown", handlePointerDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("pointerdown", handlePointerDown);
       trigger?.focus();
     };
   }, [open]);
@@ -81,9 +71,7 @@ export function PublicMobileNav({ items, selfServiceUrl }: PublicMobileNavProps)
           className="absolute inset-x-4 top-[4.75rem] rounded-2xl border border-slate-700 bg-[#0b2440] p-3 shadow-2xl"
           id="mobile-navigation"
           aria-label="Navegación mobile"
-          aria-modal="true"
           ref={menuRef}
-          role="dialog"
         >
           {items.map((item) => (
             <Link

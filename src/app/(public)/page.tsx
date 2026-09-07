@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { HeroSection } from "@/components/public/hero-section";
 import { InstitutionalSection } from "@/components/public/institutional-section";
 import { ConectarPlayHomeSection } from "@/components/public/conectar-play-home-section";
@@ -20,6 +22,10 @@ import { getFeaturedFaqs } from "@/lib/supabase/faqs";
 import { getPublicServiceAreas } from "@/lib/supabase/services";
 import { getPublicSiteConfiguration } from "@/lib/supabase/site-settings";
 import { FaqHomeSection } from "@/components/public/faq-home-section";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 type PublicData<T> = {
   data: T[];

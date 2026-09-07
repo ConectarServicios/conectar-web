@@ -2,29 +2,32 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 
 import { getPublicPromotion, promotionImageUrl } from "@/lib/supabase/promotions";
 import { createClient } from "@/lib/supabase/server";
 import { argentinaDateFormatter } from "@/lib/utils/news-dates";
 
 type Props = Readonly<{ params: Promise<{ slug: string }> }>;
+const loadPromotion = cache(getPublicPromotion);
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const item = await getPublicPromotion(slug);
+  const item = await loadPromotion(slug);
   if (!item) return {};
   const supabase = await createClient();
   const image = promotionImageUrl(supabase, item.image_path);
   return {
     title: `${item.title} | Conectar Servicios`,
     description: item.summary,
+    alternates: { canonical: `/promociones/${slug}` },
     openGraph: { title: item.title, description: item.summary, ...(image ? { images: [image] } : {}) },
   };
 }
 
 export default async function PromotionDetail({ params }: Props) {
   const { slug } = await params;
-  const item = await getPublicPromotion(slug);
+  const item = await loadPromotion(slug);
   if (!item) notFound();
   const supabase = await createClient();
   const image = promotionImageUrl(supabase, item.image_path);

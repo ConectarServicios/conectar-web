@@ -10,7 +10,7 @@ type Props = Readonly<{ params: Promise<{ slug: string }> }>;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params; const { data: area } = await getPublicServiceAreaBySlug(slug);
   if (!area) return { title: "Área no encontrada | Conectar Servicios" };
-  return { title: `${area.name} | Conectar Servicios`, description: area.short_description ?? area.description ?? "Servicios de Conectar Servicios." };
+  return { title: `${area.name} | Conectar Servicios`, description: area.short_description ?? area.description ?? "Servicios de Conectar Servicios.", alternates: { canonical: `/servicios/${slug}` } };
 }
 export default async function ServiceAreaPage({ params }: Props) {
   const { slug } = await params; const { data: area } = await getPublicServiceAreaBySlug(slug);

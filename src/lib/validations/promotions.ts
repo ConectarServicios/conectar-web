@@ -1,4 +1,5 @@
 import { parseArgentinaDateTimeLocal } from "@/lib/utils/news-dates";
+import { isSafePublicNavigationUrl } from "@/lib/validations/public-urls";
 import { PROMOTION_PLACEMENTS, type PromotionFormValues, type PromotionPlacement } from "@/types/promotions";
 
 export function normalizePromotionSlug(value: string) {
@@ -37,8 +38,8 @@ export function parsePromotionForm(form: FormData): { data?: PromotionFormValues
   const placements = form.getAll("placements").map(String)
     .filter((placement): placement is PromotionPlacement => PROMOTION_PLACEMENTS.includes(placement as PromotionPlacement));
   const button_text = text("button_text") || null;
-  const button_url = text("button_url") || null;
-  if (button_url && !/^(https?:\/\/|\/)/.test(button_url)) errors.button_url = "Usá una URL https:// o una ruta que comience con /.";
+  const button_url = String(form.get("button_url") ?? "") || null;
+  if (button_url && !isSafePublicNavigationUrl(button_url)) errors.button_url = "Usá una URL https:// o una ruta que comience con /.";
   if (Object.keys(errors).length) return { errors };
 
   return {

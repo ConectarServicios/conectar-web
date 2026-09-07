@@ -7,6 +7,7 @@ import { PlansSection } from "@/components/public/plans-section";
 import { ServicesSection } from "@/components/public/services-section";
 import { ContactSection } from "@/components/public/contact-section";
 import { createClient } from "@/lib/supabase/server";
+import { isSafeExternalHttpUrl } from "@/lib/validations/public-urls";
 import { getPlayPlans, getPlaySettings } from "@/lib/supabase/conectar-play";
 import type { Plan } from "@/types/plans";
 import type { ContactInformation } from "@/types/contact-information";
@@ -78,7 +79,7 @@ async function getHeroSlides(): Promise<PublicHeroSlide[]> {
     .select("id, title, subtitle, image_path, button_text, button_url, featured, display_order")
     .eq("active", true).order("featured", { ascending: false }).order("display_order", { ascending: true }).limit(3);
   if (error) { console.error("Unable to load public hero slides", error); return []; }
-  return (data ?? []).map((slide) => ({ id: slide.id, title: slide.title, subtitle: slide.subtitle, buttonText: slide.button_text, buttonUrl: slide.button_url, imageUrl: supabase.storage.from("hero-banners").getPublicUrl(slide.image_path).data.publicUrl, featured: slide.featured, external: /^https?:\/\//.test(slide.button_url ?? "") }));
+  return (data ?? []).map((slide) => ({ id: slide.id, title: slide.title, subtitle: slide.subtitle, buttonText: slide.button_text, buttonUrl: slide.button_url, imageUrl: supabase.storage.from("hero-banners").getPublicUrl(slide.image_path).data.publicUrl, featured: slide.featured, external: slide.button_url ? isSafeExternalHttpUrl(slide.button_url) : false }));
 }
 
 export default async function HomePage() {

@@ -4,22 +4,13 @@ import { revalidatePath } from "next/cache";
 
 import { requireSuperAdmin } from "@/lib/auth/require-super-admin";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getSiteUrl } from "@/lib/utils/site-url";
 import { isUuid, parseUserForm } from "@/lib/validations/admin-users";
 import type { AdminUserActionState } from "@/types/admin-users";
 
 const forbiddenMessage = "No tenés permiso para administrar usuarios.";
 const lastSuperAdminMessage =
   "La operación dejaría al sistema sin un super administrador activo.";
-
-function siteUrl() {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  try {
-    const url = new URL(raw);
-    return url.origin;
-  } catch {
-    throw new Error("NEXT_PUBLIC_SITE_URL no contiene una URL válida.");
-  }
-}
 
 export async function inviteAdminUser(
   _state: AdminUserActionState,
@@ -32,6 +23,13 @@ export async function inviteAdminUser(
   const authorization = await requireSuperAdmin();
   if (!authorization) return { message: forbiddenMessage };
 
+  const siteUrl = getSiteUrl();
+  if (!siteUrl) {
+    return {
+      message: "El sitio no tiene configurada una URL pública válida para enviar invitaciones.",
+    };
+  }
+
   let admin;
   try {
     admin = createAdminClient();
@@ -42,7 +40,7 @@ export async function inviteAdminUser(
 
   const { data, error: invitationError } =
     await admin.auth.admin.inviteUserByEmail(parsed.data.email, {
-      redirectTo: `${siteUrl()}/auth/set-password`,
+      redirectTo: new URL("/auth/set-password", siteUrl).toString(),
     });
 
   if (invitationError || !data.user) {

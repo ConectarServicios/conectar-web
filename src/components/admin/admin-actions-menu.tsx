@@ -21,6 +21,7 @@ export function AdminActionsMenu({
 }>) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
 
   useEffect(() => {
@@ -30,7 +31,10 @@ export function AdminActionsMenu({
       if (!containerRef.current?.contains(event.target as Node)) setOpen(false);
     };
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
     };
 
     document.addEventListener("mousedown", closeOnOutsideClick);
@@ -46,9 +50,9 @@ export function AdminActionsMenu({
       <button
         aria-controls={menuId}
         aria-expanded={open}
-        aria-haspopup="menu"
         className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-orange-500"
         onClick={() => setOpen((current) => !current)}
+        ref={triggerRef}
         type="button"
       >
         Acciones <span aria-hidden="true">▾</span>
@@ -59,7 +63,7 @@ export function AdminActionsMenu({
             aria-label={accessibleLabel}
             className="absolute left-0 z-30 mt-2 w-56 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl sm:right-0 sm:left-auto"
             id={menuId}
-            role="menu"
+            role="group"
           >
             {children}
           </div>
@@ -99,7 +103,6 @@ export function AdminMenuAction({
         }
         closeMenu?.();
       }}
-      role="none"
     >
       {children}
       <MenuSubmitButton
@@ -133,7 +136,6 @@ function MenuSubmitButton({
           : "text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-orange-500"
       }`}
       disabled={disabled || pending}
-      role="menuitem"
       title={title}
       type="submit"
     >

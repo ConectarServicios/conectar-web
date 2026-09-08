@@ -11,6 +11,7 @@ const remotePatterns = supabaseUrl
   : [];
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   experimental: {
     serverActions: { bodySizeLimit: "6mb" },
   },

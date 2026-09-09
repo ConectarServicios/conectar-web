@@ -49,6 +49,7 @@ export function PromotionForm({ id, initialValues }: Readonly<{ id?: string; ini
           </label>
           <label className="text-sm font-semibold sm:col-span-2">Imagen JPG, PNG o WebP (máximo 5 MB)
             <input accept="image/jpeg,image/png,image/webp" className={input} name="image" type="file" />
+            <small className="mt-1 block font-normal text-slate-500">Tamaño recomendado: 1600 × 800 px (2:1). Evitá ubicar información importante cerca de los bordes.</small>
             {error("image") && <span className="text-xs text-red-700">{error("image")}</span>}
           </label>
           <label className="text-sm font-semibold">Texto del botón

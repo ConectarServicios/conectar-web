@@ -17,7 +17,7 @@ function WideContextualPromotion({ item, imageUrl }: Readonly<{ item: Promotion;
         {imageUrl ? (
           <Image
             alt=""
-            className="object-cover transition duration-300 group-hover:scale-[1.02]"
+            className="object-contain transition duration-300 group-hover:scale-[1.02]"
             fill
             sizes="(max-width: 768px) 100vw, 40vw"
             src={imageUrl}

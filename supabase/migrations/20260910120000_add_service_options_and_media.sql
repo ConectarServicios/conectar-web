@@ -67,7 +67,7 @@ begin
   if pg_catalog.coalesce((select public.current_admin_role())::text,'') not in ('editor','admin','super_admin') then raise exception using errcode='insufficient_privilege'; end if;
   if p_type = 'hero' and p_active then perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtext(p_service_id::text)); update public.service_media set active=false where service_id=p_service_id and type='hero' and active and id is distinct from p_id; end if;
   if p_id is null then insert into public.service_media(service_id,type,image_path,alt_text,caption,active,display_order) values(p_service_id,p_type,p_image_path,p_alt_text,p_caption,p_active,p_display_order) returning id into saved_id;
-  else update public.service_media set type=p_type, alt_text=p_alt_text, caption=p_caption, active=p_active, display_order=p_display_order where id=p_id and service_id=p_service_id returning id into saved_id; end if;
+  else update public.service_media set type=p_type, image_path=p_image_path, alt_text=p_alt_text, caption=p_caption, active=p_active, display_order=p_display_order where id=p_id and service_id=p_service_id returning id into saved_id; end if;
   if saved_id is null then raise exception using errcode='no_data_found'; end if; return saved_id;
 end $$;
 revoke all on function public.save_service_media(uuid,uuid,text,text,text,text,boolean,integer) from public,anon,authenticated;

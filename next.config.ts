@@ -7,6 +7,7 @@ const remotePatterns = supabaseUrl
       new URL("/storage/v1/object/public/news-images/**", supabaseUrl),
       new URL("/storage/v1/object/public/event-images/**", supabaseUrl),
       new URL("/storage/v1/object/public/service-project-images/**", supabaseUrl),
+      new URL("/storage/v1/object/public/service-media/**", supabaseUrl),
     ]
   : [];
 

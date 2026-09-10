@@ -23,6 +23,8 @@ import { getFeaturedFaqs } from "@/lib/supabase/faqs";
 import { getPublicServiceAreas } from "@/lib/supabase/services";
 import { getPublicSiteConfiguration } from "@/lib/supabase/site-settings";
 import { FaqHomeSection } from "@/components/public/faq-home-section";
+import { FeaturedServicesSection } from "@/components/public/featured-services-section";
+import { getFeaturedServices, serviceMediaUrl } from "@/lib/supabase/services";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -83,9 +85,10 @@ async function getHeroSlides(): Promise<PublicHeroSlide[]> {
 }
 
 export default async function HomePage() {
-  const [plans, serviceAreas, siteConfiguration, playSettings, playPlans, contact, heroSlides, news, promotions, events, featuredFaqs] = await Promise.all([
+  const [plans, serviceAreas, featuredServices, siteConfiguration, playSettings, playPlans, contact, heroSlides, news, promotions, events, featuredFaqs] = await Promise.all([
     getPublicPlans(),
     getPublicServiceAreas(),
+    getFeaturedServices(3),
     getPublicSiteConfiguration(),
     getPlaySettings(),
     getPlayPlans(),
@@ -100,6 +103,7 @@ export default async function HomePage() {
   const newsImages = Object.fromEntries(news.map((item) => [item.id, newsImageUrl(supabase, item.cover_image)]));
   const promotionImages = Object.fromEntries(promotions.map((item) => [item.id, promotionImageUrl(supabase, item.image_path)]));
   const eventImages = Object.fromEntries(events.map((item) => [item.id, eventImageUrl(supabase, item.image_path)]));
+  const serviceImages = Object.fromEntries(featuredServices.data.map((item) => [item.id, serviceMediaUrl(supabase, item.service_media?.[0]?.image_path ?? null)]));
 
   return (
     <main>
@@ -117,6 +121,7 @@ export default async function HomePage() {
         areas={serviceAreas.data}
         unavailable={serviceAreas.unavailable}
       />
+      <FeaturedServicesSection imageUrls={serviceImages} services={featuredServices.data} />
       <EventsHomeSection imageUrls={eventImages} items={events} />
       <InstitutionalSection />
       <NewsHomeSection imageUrls={newsImages} items={news} />

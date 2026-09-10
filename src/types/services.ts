@@ -27,6 +27,14 @@ export type Service = {
   service_areas?: Pick<ServiceArea, "id" | "name"> | Pick<ServiceArea, "id" | "name">[] | null;
 };
 
+export const SERVICE_OPTION_MODES = ["rental", "purchase"] as const;
+export type ServiceOptionMode = (typeof SERVICE_OPTION_MODES)[number];
+export type ServiceOption = { id: string; service_id: string; title: string; mode: ServiceOptionMode; equipment_count: number | null; price: number; price_label: string | null; description: string | null; active: boolean; display_order: number };
+export const SERVICE_MEDIA_TYPES = ["hero", "equipment", "coverage", "gallery"] as const;
+export type ServiceMediaType = (typeof SERVICE_MEDIA_TYPES)[number];
+export type ServiceMedia = { id: string; service_id: string; type: ServiceMediaType; image_path: string; alt_text: string | null; caption: string | null; active: boolean; display_order: number };
+export type PublicService = Omit<Service, "service_areas"> & { service_areas: Pick<ServiceArea, "id" | "name" | "slug"> | Pick<ServiceArea, "id" | "name" | "slug">[] | null; service_options?: ServiceOption[]; service_media?: ServiceMedia[] };
+
 export type ServiceFormValues = Omit<Service, "id" | "service_areas" | "category">;
 export type ServiceAreaFormValues = Omit<ServiceArea, "id">;
 

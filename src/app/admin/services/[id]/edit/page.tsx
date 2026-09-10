@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
@@ -22,5 +23,5 @@ export default async function EditServicePage({ params }: Readonly<{ params: Pro
     service_area_id: service.service_area_id, featured: service.featured,
     active: service.active, display_order: service.display_order,
   };
-  return <><AdminPageHeader description={`Actualizá los datos y la presentación de ${service.name}.`} title="Editar servicio" /><ServiceForm areas={areas ?? []} id={serviceId} initialValues={initialValues} /></>;
+  return <><AdminPageHeader description={`Actualizá los datos y la presentación de ${service.name}.`} title="Editar servicio" /><div className="mb-6"><Link className="inline-flex rounded-xl border border-orange-200 bg-orange-50 px-5 py-3 font-bold text-orange-800" href={`/admin/services/${serviceId}/content`}>Administrar opciones y medios</Link></div><ServiceForm areas={areas ?? []} id={serviceId} initialValues={initialValues} /></>;
 }

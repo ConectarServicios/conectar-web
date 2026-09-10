@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { PublicMobileNav } from "@/components/public/public-mobile-nav";
 import type { SiteConfiguration } from "@/types/site-settings";
@@ -24,8 +25,14 @@ export function PublicHeader({ configuration }: PublicHeaderProps) {
           href="/#inicio"
           aria-label={`${configuration.siteName}, ir al inicio`}
         >
-          <span className="grid size-10 place-items-center rounded-xl bg-orange-500 text-lg font-black shadow-lg shadow-orange-950/30" aria-hidden="true">
-            C
+          <span className="relative h-11 w-9 shrink-0" aria-hidden="true">
+            <Image
+              alt=""
+              className="object-contain"
+              fill
+              sizes="36px"
+              src="/brand/conectar-isotipo.png"
+            />
           </span>
           <span className="text-base font-bold tracking-tight sm:text-lg">{configuration.siteName}</span>
         </Link>

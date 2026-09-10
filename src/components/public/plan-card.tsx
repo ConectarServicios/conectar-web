@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import type { Plan } from "@/types/plans";
 
 const currency = new Intl.NumberFormat("es-AR", {
@@ -20,6 +21,7 @@ export function PlanCard({ plan, now }: Readonly<{ plan: Plan; now: Date }>) {
 
   return (
     <article className={`relative flex h-full flex-col rounded-3xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:p-8 ${plan.featured ? "border-orange-400 ring-4 ring-orange-100" : "border-slate-200"}`}>
+      <span className="absolute inset-x-6 top-0 h-1 rounded-b-full bg-orange-500" aria-hidden="true" />
       {plan.featured && (
         <span className="absolute -top-3 left-6 rounded-full bg-orange-500 px-3 py-1 text-xs font-black tracking-wide text-white uppercase shadow-sm">
           Plan destacado
@@ -27,7 +29,7 @@ export function PlanCard({ plan, now }: Readonly<{ plan: Plan; now: Date }>) {
       )}
       <div className="border-b border-slate-100 pb-6">
         <p className="text-sm font-bold tracking-wide text-blue-700 uppercase">{plan.name}</p>
-        <dl className="mt-4 grid grid-cols-2 gap-4 text-slate-950">
+        <dl className="mt-4 grid grid-cols-2 gap-4 text-[#071a2f]">
           <div><dt className="text-xs font-bold tracking-wide text-slate-500 uppercase">Bajada</dt><dd className="mt-1 text-2xl font-black tracking-tight"><span aria-hidden="true">↓ </span>{plan.speed_mbps} <span className="text-sm text-slate-500">Mbps</span></dd></div>
           <div><dt className="text-xs font-bold tracking-wide text-slate-500 uppercase">Subida</dt><dd className="mt-1 text-2xl font-black tracking-tight"><span aria-hidden="true">↑ </span>{plan.upload_speed_mbps === null ? <span className="text-base text-slate-500">No informada</span> : <>{plan.upload_speed_mbps} <span className="text-sm text-slate-500">Mbps</span></>}</dd></div>
         </dl>
@@ -38,12 +40,12 @@ export function PlanCard({ plan, now }: Readonly<{ plan: Plan; now: Date }>) {
           <>
             {plan.promotion_label && <p className="mb-2 text-sm font-bold text-orange-700">{plan.promotion_label}</p>}
             <p className="text-sm text-slate-500 line-through">{currency.format(plan.regular_price)}</p>
-            <p className="mt-1 text-3xl font-black tracking-tight text-slate-950">{currency.format(plan.promotional_price!)}</p>
+            <p className="mt-1 text-3xl font-black tracking-tight text-[#071a2f]">{currency.format(plan.promotional_price!)}</p>
             <p className="mt-1 text-xs text-slate-500">Precio promocional</p>
           </>
         ) : (
           <>
-            <p className="text-3xl font-black tracking-tight text-slate-950">{currency.format(plan.regular_price)}</p>
+            <p className="text-3xl font-black tracking-tight text-[#071a2f]">{currency.format(plan.regular_price)}</p>
             <p className="mt-1 text-xs text-slate-500">Por mes</p>
           </>
         )}
@@ -52,7 +54,9 @@ export function PlanCard({ plan, now }: Readonly<{ plan: Plan; now: Date }>) {
         <ul className="mt-auto space-y-3 border-t border-slate-100 pt-6" aria-label={`Características de ${plan.name}`}>
           {plan.plan_features.map((feature) => (
             <li className="flex gap-3 text-sm leading-6 text-slate-700" key={feature.id ?? `${feature.display_order}-${feature.text}`}>
-              <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-full bg-blue-50 font-bold text-blue-700" aria-hidden="true">✓</span>
+              <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-full bg-blue-950 text-white" aria-hidden="true">
+                <Check size={13} strokeWidth={3} />
+              </span>
               {feature.text}
             </li>
           ))}

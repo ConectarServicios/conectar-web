@@ -1,14 +1,61 @@
-import type { ContactInformation } from "@/types/contact-information";
-import { isAllowedContactNumber } from "@/lib/validations/contact-information";
+import { ArrowRight, Clock3, Headset, Mail, MapPin, MessageCircle, Phone, type LucideIcon } from "lucide-react";
 
-function Hours({ value }: Readonly<{ value: string }>) {
-  return <p className="mt-4 whitespace-pre-line text-sm leading-7 text-slate-600 sm:text-base">{value}</p>;
+import { isAllowedContactNumber } from "@/lib/validations/contact-information";
+import type { ContactInformation } from "@/types/contact-information";
+
+const channelCardClass =
+  "group flex min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md";
+
+const channelLinkClass =
+  "mt-auto inline-flex min-h-11 items-center self-start rounded-lg pt-6 text-sm font-bold text-orange-700 underline-offset-4 transition hover:text-orange-800 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-600";
+
+function ChannelIcon({ icon: Icon }: Readonly<{ icon: LucideIcon }>) {
+  return (
+    <span className="flex size-12 items-center justify-center rounded-xl bg-[#071a2f] text-white shadow-sm">
+      <Icon aria-hidden="true" size={23} strokeWidth={2} />
+    </span>
+  );
+}
+
+function HoursList({ value, variant }: Readonly<{ value: string; variant: "regular" | "guard" }>) {
+  const lines = value.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  const valueClass = variant === "guard"
+    ? "bg-orange-100 text-orange-800"
+    : "bg-slate-100 text-[#071a2f]";
+  const rowPaddingClass = variant === "guard" ? "py-2.5" : "py-3";
+
+  return (
+    <ul className="mt-4">
+      {lines.map((line, index) => {
+        const separatorIndex = line.indexOf(":");
+
+        if (separatorIndex === -1) {
+          return <li className={`break-words border-b border-slate-200 text-sm leading-6 text-slate-600 last:border-b-0 sm:text-base ${rowPaddingClass}`} key={`${line}-${index}`}>{line}</li>;
+        }
+
+        const label = line.slice(0, separatorIndex).trim();
+        const hours = line.slice(separatorIndex + 1).trim();
+
+        return (
+          <li className={`flex min-w-0 flex-col items-start gap-2 border-b border-slate-200 last:border-b-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4 ${rowPaddingClass}`} key={`${line}-${index}`}>
+            <span className="min-w-0 break-words font-semibold text-slate-900">{label}</span>
+            <span className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-sm font-bold ${valueClass}`}>{hours}</span>
+          </li>
+        );
+      })}
+    </ul>
+  );
 }
 
 export function ContactSection({ contact, unavailable }: Readonly<{ contact: ContactInformation | null; unavailable: boolean }>) {
   const whatsapp = contact?.whatsapp && isAllowedContactNumber(contact.whatsapp) ? contact.whatsapp : null;
   const whatsappDigits = whatsapp?.replace(/\D/g, "") ?? "";
-  const phone = contact?.phone && isAllowedContactNumber(contact.phone) ? contact.phone : null;
+  const validPhone = contact?.phone && isAllowedContactNumber(contact.phone) ? contact.phone : null;
+  const phoneDigits = validPhone?.replace(/\D/g, "") ?? "";
+  const phone = validPhone && phoneDigits !== whatsappDigits ? validPhone : null;
+  const mapUrl = contact?.address
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}`
+    : null;
 
   return (
     <section className="scroll-mt-24 border-t border-slate-200 bg-slate-50 py-20 sm:py-24" id="contacto" aria-labelledby="contact-title">
@@ -16,30 +63,60 @@ export function ContactSection({ contact, unavailable }: Readonly<{ contact: Con
         <div className="text-center">
           <p className="public-eyebrow">Contacto</p>
           <h2 className="public-heading mt-3" id="contact-title">Estamos para ayudarte</h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">Consultanos durante nuestros horarios de atención o escribí a la guardia de soporte.</p>
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">Elegí el canal que necesites. También contamos con guardia de soporte fuera del horario habitual.</p>
         </div>
         {unavailable ? <p className="public-empty-state" role="status">Los datos de contacto no están disponibles en este momento.</p> : contact ? (
-          <div className="mx-auto mt-10 grid max-w-5xl gap-5 md:grid-cols-2">
-            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:col-span-2">
-              <h3 className="text-xl font-bold text-slate-950">Canales de contacto</h3>
-              <dl className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                {whatsapp && <div><dt className="text-xs font-black uppercase tracking-[0.14em] text-slate-500">WhatsApp</dt><dd className="mt-1"><a className="font-semibold text-emerald-700 underline-offset-4 hover:underline" href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">{whatsapp}</a></dd></div>}
-                {contact.commercial_email && <div><dt className="text-xs font-black uppercase tracking-[0.14em] text-slate-500">Email comercial</dt><dd className="mt-1 break-words"><a className="font-semibold text-orange-700 underline-offset-4 hover:underline" href={`mailto:${contact.commercial_email}`}>{contact.commercial_email}</a></dd></div>}
-                {contact.address && <div><dt className="text-xs font-black uppercase tracking-[0.14em] text-slate-500">Dirección</dt><dd className="mt-1 text-slate-700">{contact.address}</dd></div>}
-                {phone && <div><dt className="text-xs font-black uppercase tracking-[0.14em] text-slate-500">Teléfono</dt><dd className="mt-1"><a className="font-semibold text-slate-800 underline-offset-4 hover:underline" href={`tel:${phone.replace(/[^\d+]/g, "")}`}>{phone}</a></dd></div>}
-              </dl>
-            </article>
-            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Atención habitual</p>
-              <h3 className="mt-2 text-xl font-bold text-slate-950">Horarios de atención</h3>
-              {contact.business_hours && <Hours value={contact.business_hours} />}
-            </article>
-            <article className="rounded-2xl border border-orange-200 bg-orange-50 p-6 shadow-sm">
-              <p className="text-xs font-black uppercase tracking-[0.16em] text-orange-700">Fuera del horario habitual</p>
-              <h3 className="mt-2 text-xl font-bold text-slate-950">Guardia de soporte</h3>
-              {contact.guard_hours && <Hours value={contact.guard_hours} />}
-              {whatsapp && <a className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 py-2.5 font-bold text-white transition hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600" href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">WhatsApp de guardia: {whatsapp}</a>}
-            </article>
+          <div className="mx-auto mt-10 max-w-6xl">
+            <ul className="grid list-none gap-5 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
+              {whatsapp && (
+                <li className={channelCardClass}>
+                  <ChannelIcon icon={MessageCircle} />
+                  <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">WhatsApp</p>
+                  <p className="mt-2 break-words text-lg font-bold text-slate-950">{whatsapp}</p>
+                  <a className={`${channelLinkClass} text-emerald-700 hover:text-emerald-800 focus-visible:outline-emerald-600`} href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">Escribir por WhatsApp <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                </li>
+              )}
+              {contact.commercial_email && (
+                <li className={channelCardClass}>
+                  <ChannelIcon icon={Mail} />
+                  <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Email comercial</p>
+                  <p className="mt-2 min-w-0 break-words text-[15px] font-bold text-slate-950">{contact.commercial_email}</p>
+                  <a className={channelLinkClass} href={`mailto:${contact.commercial_email}`}>Enviar email <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                </li>
+              )}
+              {contact.address && mapUrl && (
+                <li className={channelCardClass}>
+                  <ChannelIcon icon={MapPin} />
+                  <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Dónde estamos</p>
+                  <p className="mt-2 break-words text-lg font-bold text-slate-950">{contact.address}</p>
+                  <a className={channelLinkClass} href={mapUrl} rel="noreferrer" target="_blank">Cómo llegar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                </li>
+              )}
+              {phone && (
+                <li className={channelCardClass}>
+                  <ChannelIcon icon={Phone} />
+                  <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Teléfono</p>
+                  <p className="mt-2 break-words text-lg font-bold text-slate-950">{phone}</p>
+                  <a className={channelLinkClass} href={`tel:${phone.replace(/[^\d+]/g, "")}`}>Llamar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                </li>
+              )}
+            </ul>
+
+            <div className="mt-5 grid items-start gap-5 md:grid-cols-2">
+              <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
+                <ChannelIcon icon={Clock3} />
+                <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Atención habitual</p>
+                <h3 className="mt-2 text-xl font-bold text-slate-950">Horarios de atención</h3>
+                {contact.business_hours && <HoursList value={contact.business_hours} variant="regular" />}
+              </article>
+              <article className="rounded-2xl border border-orange-200 bg-orange-50 p-6 shadow-sm sm:p-7">
+                <ChannelIcon icon={Headset} />
+                <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-orange-700">Fuera del horario habitual</p>
+                <h3 className="mt-2 text-xl font-bold text-slate-950">Guardia de soporte</h3>
+                {contact.guard_hours && <HoursList value={contact.guard_hours} variant="guard" />}
+                {whatsapp && <a className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 py-2.5 text-center font-bold text-white transition hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600" href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">WhatsApp de guardia</a>}
+              </article>
+            </div>
           </div>
         ) : <p className="public-empty-state">Próximamente vas a poder encontrar aquí todos nuestros canales de contacto.</p>}
       </div>

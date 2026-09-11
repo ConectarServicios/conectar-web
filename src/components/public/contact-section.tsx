@@ -22,6 +22,7 @@ function HoursList({ value, variant }: Readonly<{ value: string; variant: "regul
   const valueClass = variant === "guard"
     ? "bg-orange-100 text-orange-800"
     : "bg-slate-100 text-[#071a2f]";
+  const rowPaddingClass = variant === "guard" ? "py-2.5" : "py-3";
 
   return (
     <ul className="mt-4">
@@ -29,14 +30,14 @@ function HoursList({ value, variant }: Readonly<{ value: string; variant: "regul
         const separatorIndex = line.indexOf(":");
 
         if (separatorIndex === -1) {
-          return <li className="break-words border-b border-slate-200 py-3 text-sm leading-6 text-slate-600 last:border-b-0 sm:text-base" key={`${line}-${index}`}>{line}</li>;
+          return <li className={`break-words border-b border-slate-200 text-sm leading-6 text-slate-600 last:border-b-0 sm:text-base ${rowPaddingClass}`} key={`${line}-${index}`}>{line}</li>;
         }
 
         const label = line.slice(0, separatorIndex).trim();
         const hours = line.slice(separatorIndex + 1).trim();
 
         return (
-          <li className="flex min-w-0 flex-col items-start gap-2 border-b border-slate-200 py-3 last:border-b-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4" key={`${line}-${index}`}>
+          <li className={`flex min-w-0 flex-col items-start gap-2 border-b border-slate-200 last:border-b-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4 ${rowPaddingClass}`} key={`${line}-${index}`}>
             <span className="min-w-0 break-words font-semibold text-slate-900">{label}</span>
             <span className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-sm font-bold ${valueClass}`}>{hours}</span>
           </li>
@@ -79,7 +80,7 @@ export function ContactSection({ contact, unavailable }: Readonly<{ contact: Con
                 <li className={channelCardClass}>
                   <ChannelIcon icon={Mail} />
                   <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Email comercial</p>
-                  <p className="mt-2 min-w-0 break-words text-base font-bold text-slate-950">{contact.commercial_email}</p>
+                  <p className="mt-2 min-w-0 break-words text-[15px] font-bold text-slate-950">{contact.commercial_email}</p>
                   <a className={channelLinkClass} href={`mailto:${contact.commercial_email}`}>Enviar email <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
@@ -113,7 +114,7 @@ export function ContactSection({ contact, unavailable }: Readonly<{ contact: Con
                 <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-orange-700">Fuera del horario habitual</p>
                 <h3 className="mt-2 text-xl font-bold text-slate-950">Guardia de soporte</h3>
                 {contact.guard_hours && <HoursList value={contact.guard_hours} variant="guard" />}
-                {whatsapp && <a className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 py-2.5 text-center font-bold text-white transition hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600" href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">WhatsApp de guardia</a>}
+                {whatsapp && <a className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 py-2.5 text-center font-bold text-white transition hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600" href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">WhatsApp de guardia</a>}
               </article>
             </div>
           </div>

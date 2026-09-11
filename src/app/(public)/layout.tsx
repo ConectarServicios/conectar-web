@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s",
     },
     description: configuration.seoDefaultDescription,
-    applicationName: "Conectar Servicios",
+    applicationName: configuration.siteName,
     creator: "Conectar Servicios",
     publisher: "Conectar Servicios",
     openGraph: {

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { getSiteUrl } from "@/lib/utils/site-url";
 import "./globals.css";
 
@@ -9,6 +9,10 @@ export const metadata: Metadata = {
     template: "%s | Conectar Servicios",
   },
   description: "Sitio web oficial de Conectar Servicios.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#071a2f",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

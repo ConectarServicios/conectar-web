@@ -54,7 +54,7 @@ export function ContactSection({ contact, unavailable }: Readonly<{ contact: Con
                 <li className={channelCardClass}>
                   <ChannelIcon icon={Mail} />
                   <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Email comercial</p>
-                  <p className="mt-2 min-w-0 break-words text-lg font-bold text-slate-950">{contact.commercial_email}</p>
+                  <p className="mt-2 min-w-0 break-words text-base font-bold text-slate-950">{contact.commercial_email}</p>
                   <a className={channelLinkClass} href={`mailto:${contact.commercial_email}`}>Enviar email <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
@@ -76,7 +76,7 @@ export function ContactSection({ contact, unavailable }: Readonly<{ contact: Con
               )}
             </ul>
 
-            <div className="mt-5 grid gap-5 md:grid-cols-2">
+            <div className="mt-5 grid items-start gap-5 md:grid-cols-2">
               <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
                 <ChannelIcon icon={Clock3} />
                 <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Atención habitual</p>

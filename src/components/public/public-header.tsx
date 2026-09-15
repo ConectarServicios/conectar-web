@@ -25,7 +25,7 @@ export function PublicHeader({ configuration, whatsapp }: PublicHeaderProps) {
   const whatsappDigits = whatsapp && isAllowedContactNumber(whatsapp)
     ? whatsapp.replace(/\D/g, "")
     : "";
-  const accentClass = segment === "hogar"
+  const whatsappAccentClass = segment === "hogar"
     ? "bg-[#12b886] text-[#03221b] hover:bg-[#18c996] focus-visible:outline-[#55e0b8]"
     : "bg-[#2f6bff] text-white hover:bg-[#477dff] focus-visible:outline-[#7da1ff]";
 
@@ -56,9 +56,15 @@ export function PublicHeader({ configuration, whatsapp }: PublicHeaderProps) {
               {item.label}
             </Link>
           ))}
+          <a
+            className="ml-2 inline-flex min-h-10 items-center justify-center rounded-lg border border-white/20 bg-white/[0.04] px-4 text-sm font-bold text-white transition hover:border-white/40 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            href={configuration.selfServiceUrl}
+          >
+            Autogestión
+          </a>
           {whatsappDigits && (
             <a
-              className="ml-2 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-white/20 px-4 text-sm font-bold text-white transition hover:border-white/40 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className={`ml-2 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-extrabold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${whatsappAccentClass}`}
               href={`https://wa.me/${whatsappDigits}`}
               rel="noopener noreferrer"
               target="_blank"
@@ -68,12 +74,6 @@ export function PublicHeader({ configuration, whatsapp }: PublicHeaderProps) {
               WhatsApp
             </a>
           )}
-          <a
-            className={`ml-2 inline-flex min-h-10 items-center justify-center rounded-lg px-4 text-sm font-extrabold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${accentClass}`}
-            href={configuration.selfServiceUrl}
-          >
-            Autogestión
-          </a>
         </nav>
         <PublicMobileNav
           items={navigation}

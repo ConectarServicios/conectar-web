@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Building2, Clock3, Cloud, Headphones, Home, Network, Server, ShieldCheck, Wifi } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { usePublicSegment, type PublicSegment } from "@/components/public/public-segment-context";
 
@@ -34,16 +34,16 @@ const content = {
 
 const trustItems = {
   hogar: [
-    { title: "Fibra óptica propia", detail: "Red FTTH hasta tu casa", icon: Wifi },
-    { title: "Atención local", detail: "Equipo en Sunchales", icon: Home },
-    { title: "Guardia fin de semana", detail: "Sáb, dom y feriados", icon: Headphones },
-    { title: "Autogestión online", detail: "Tu cuenta, 24 h", icon: Clock3 },
+    { title: "Fibra óptica propia", detail: "Red FTTH hasta tu casa" },
+    { title: "Atención local", detail: "Equipo en Sunchales" },
+    { title: "Guardia fin de semana", detail: "Sáb, dom y feriados" },
+    { title: "Autogestión online", detail: "Tu cuenta, 24 h" },
   ],
   corporativo: [
-    { title: "Un solo proveedor", detail: "Red + infra + seguridad", icon: Network },
-    { title: "Datos en Argentina", detail: "Control total de tu información", icon: Server },
-    { title: "Monitoreo 24/7", detail: "Con guardia de soporte", icon: ShieldCheck },
-    { title: "Respuesta local", detail: "Cercana y directa", icon: Building2 },
+    { title: "Un solo proveedor", detail: "Red + infra + seguridad" },
+    { title: "Datos en Argentina", detail: "Control total de tu información" },
+    { title: "Monitoreo 24/7", detail: "Con guardia de soporte" },
+    { title: "Respuesta local", detail: "Cercana y directa" },
   ],
 };
 
@@ -66,13 +66,13 @@ export function HeroSection({ slides }: Readonly<{ slides?: PublicHeroSlide[] }>
           <div className="public-grid-pattern absolute inset-0 opacity-70" />
         </div>
 
-        <div className="public-container grid min-h-[610px] items-center gap-14 py-20 lg:grid-cols-[1.12fr_.88fr] lg:py-24">
-          <div className="max-w-[760px]">
+        <div className="public-container flex min-h-[520px] items-center py-16 sm:py-20 lg:min-h-[560px] lg:py-24">
+          <div className="max-w-[820px]">
             <p className={`mb-6 flex items-center gap-3 text-xs font-extrabold tracking-[0.14em] uppercase sm:text-sm ${isHome ? "text-[#61dfb7]" : "text-[#83a8ff]"}`}>
               <span className={`size-2 rounded-full ${isHome ? "bg-[#12b886] shadow-[0_0_18px_#12b886]" : "bg-[#2f6bff] shadow-[0_0_18px_#2f6bff]"}`} aria-hidden="true" />
               {current.eyebrow}
             </p>
-            <h1 className="font-display text-[clamp(2.6rem,6vw,4.75rem)] leading-[1.05] font-bold tracking-[-0.045em] text-balance" id="public-hero-title">
+            <h1 className="font-display text-[clamp(2.5rem,5vw,3.7rem)] leading-[1.08] font-bold tracking-[-0.04em] text-balance" id="public-hero-title">
               {current.title}
             </h1>
             <p className="mt-7 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
@@ -87,31 +87,15 @@ export function HeroSection({ slides }: Readonly<{ slides?: PublicHeroSlide[] }>
               </a>
             </div>
           </div>
-
-          <div className="relative mx-auto hidden aspect-square w-full max-w-[430px] lg:block" aria-hidden="true">
-            <div className={`absolute inset-[4%] rounded-full border ${isHome ? "border-[#12b886]/20" : "border-[#2f6bff]/25"}`} />
-            <div className="absolute inset-[20%] rounded-full border border-white/10" />
-            <div className={`absolute inset-[35%] grid place-items-center rounded-[2rem] border border-white/15 bg-white/[0.07] shadow-2xl backdrop-blur-sm ${isHome ? "text-[#61dfb7] shadow-emerald-950/50" : "text-[#83a8ff] shadow-blue-950/50"}`}>
-              {isHome ? <Home className="size-16" strokeWidth={1.4} /> : <Cloud className="size-16" strokeWidth={1.4} />}
-            </div>
-            <span className={`absolute left-[5%] top-[48%] size-3 rounded-full ${isHome ? "bg-[#12b886]" : "bg-[#2f6bff]"}`} />
-            <span className="absolute right-[11%] top-[22%] size-2.5 rounded-full bg-white/70" />
-            <span className={`absolute bottom-[16%] right-[15%] size-5 rounded-full border-2 ${isHome ? "border-[#61dfb7]" : "border-[#83a8ff]"}`} />
-          </div>
         </div>
       </section>
 
-      <aside className="border-b border-slate-200 bg-white" aria-label="Razones para elegir Conectar Servicios">
-        <ul className="public-container grid list-none grid-cols-1 divide-y divide-slate-200 py-2 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x">
-          {trustItems[segment].map(({ title, detail, icon: Icon }) => (
-            <li className="flex items-center gap-3 px-2 py-5 first:pl-0 sm:px-5 lg:py-6" key={title}>
-              <span className={`grid size-10 shrink-0 place-items-center rounded-full ${isHome ? "bg-emerald-50 text-[#0b966d]" : "bg-blue-50 text-[#2f6bff]"}`}>
-                <Icon aria-hidden="true" className="size-5" strokeWidth={2} />
-              </span>
-              <span>
-                <strong className="font-display block text-sm font-bold text-[#071a2f]">{title}</strong>
-                <span className="mt-0.5 block text-xs text-slate-500">{detail}</span>
-              </span>
+      <aside className="bg-[#0d2740] text-white" aria-label="Razones para elegir Conectar Servicios">
+        <ul className="public-container grid list-none grid-cols-1 divide-y divide-white/10 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x lg:divide-white/10">
+          {trustItems[segment].map(({ title, detail }) => (
+            <li className="px-1 py-5 sm:px-5 lg:py-6 lg:first:pl-0 lg:last:pr-0" key={title}>
+              <strong className="font-display block text-sm font-bold text-white">{title}</strong>
+              <span className="mt-1 block text-xs text-[#a9bfd2]">{detail}</span>
             </li>
           ))}
         </ul>

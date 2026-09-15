@@ -92,9 +92,16 @@ export function PublicMobileNav({ items, selfServiceUrl, whatsappUrl }: PublicMo
               {item.label}
             </Link>
           ))}
+          <a
+            className="mt-2 flex min-h-12 items-center justify-center rounded-xl border border-white/20 bg-white/[0.04] px-4 py-3 font-bold text-white transition hover:border-white/40 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            href={selfServiceUrl}
+            onClick={() => setOpen(false)}
+          >
+            Autogestión
+          </a>
           {whatsappUrl && (
             <a
-              className="mt-2 flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/20 px-4 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className={`mt-2 flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 py-3 font-extrabold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${segment === "hogar" ? "bg-[#12b886] text-[#03221b] hover:bg-[#18c996]" : "bg-[#2f6bff] text-white hover:bg-[#477dff]"}`}
               href={whatsappUrl}
               onClick={() => setOpen(false)}
               rel="noopener noreferrer"
@@ -104,13 +111,6 @@ export function PublicMobileNav({ items, selfServiceUrl, whatsappUrl }: PublicMo
               WhatsApp
             </a>
           )}
-          <a
-            className={`mt-2 flex min-h-12 items-center justify-center rounded-xl px-4 py-3 font-extrabold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${segment === "hogar" ? "bg-[#12b886] text-[#03221b] hover:bg-[#18c996]" : "bg-[#2f6bff] text-white hover:bg-[#477dff]"}`}
-            href={selfServiceUrl}
-            onClick={() => setOpen(false)}
-          >
-            Autogestión
-          </a>
         </nav>
       )}
     </div>

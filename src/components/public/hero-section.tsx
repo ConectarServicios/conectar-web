@@ -15,7 +15,7 @@ const content = {
     title: "Conectividad para tu hogar, con atención de acá.",
     description: "Fibra óptica estable y rápida, televisión con Conectar Play y alarmas y cámaras para cuidar tu casa — todo con un equipo local que te atiende también los fines de semana.",
     primary: { label: "Ver planes", href: "#planes" },
-    secondary: { label: "Conocer Conectar Play", href: "#play" },
+    secondary: { label: "Conocer Conectar Play", href: "#conectar-play" },
   },
   corporativo: {
     eyebrow: "Conectividad · Infraestructura · Seguridad",

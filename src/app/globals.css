@@ -8,13 +8,23 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: Arial, Helvetica, sans-serif;
+  --font-sans: var(--font-manrope), Arial, Helvetica, sans-serif;
+  --font-display: var(--font-sora), Arial, Helvetica, sans-serif;
   --font-mono: "Courier New", Courier, monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-sora), Arial, Helvetica, sans-serif;
 }
 
 html {
@@ -45,6 +55,7 @@ html {
   }
 
   .public-heading {
+    font-family: var(--font-sora), Arial, Helvetica, sans-serif;
     font-size: 2.25rem;
     line-height: 1.1;
     font-weight: 900;

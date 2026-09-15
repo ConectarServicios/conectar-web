@@ -1,59 +1,85 @@
+"use client";
+
+import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
 import { PublicMobileNav } from "@/components/public/public-mobile-nav";
+import { usePublicSegment } from "@/components/public/public-segment-context";
+import { SegmentSelector } from "@/components/public/segment-selector";
+import { isAllowedContactNumber } from "@/lib/validations/contact-information";
 import type { SiteConfiguration } from "@/types/site-settings";
 
 const navigation = [
-  { href: "/#inicio", label: "Inicio" },
-  { href: "/#planes", label: "Planes" },
-  { href: "/promociones", label: "Promociones" },
-  { href: "/conectar-play", label: "Conectar Play" },
   { href: "/#servicios", label: "Servicios" },
   { href: "/#contacto", label: "Contacto" },
 ];
 
 type PublicHeaderProps = Readonly<{
   configuration: Pick<SiteConfiguration, "siteName" | "selfServiceUrl">;
+  whatsapp: string | null;
 }>;
 
-export function PublicHeader({ configuration }: PublicHeaderProps) {
+export function PublicHeader({ configuration, whatsapp }: PublicHeaderProps) {
+  const { segment } = usePublicSegment();
+  const whatsappDigits = whatsapp && isAllowedContactNumber(whatsapp)
+    ? whatsapp.replace(/\D/g, "")
+    : "";
+  const accentClass = segment === "hogar"
+    ? "bg-[#12b886] text-[#03221b] hover:bg-[#18c996] focus-visible:outline-[#55e0b8]"
+    : "bg-[#2f6bff] text-white hover:bg-[#477dff] focus-visible:outline-[#7da1ff]";
+
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#071a2f]/95 text-white shadow-lg shadow-slate-950/10 backdrop-blur">
-      <div className="public-container flex h-18 items-center justify-between gap-6">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#071a2f]/95 text-white shadow-lg shadow-slate-950/20 backdrop-blur-xl">
+      <div className="public-container flex h-[72px] items-center justify-between gap-4">
         <Link
-          className="group flex items-center gap-3 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-400"
+          className="group flex shrink-0 items-center gap-2.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           href="/#inicio"
           aria-label={`${configuration.siteName}, ir al inicio`}
         >
-          <span className="relative h-11 w-9 shrink-0" aria-hidden="true">
-            <Image
-              alt=""
-              className="object-contain"
-              fill
-              sizes="36px"
-              src="/brand/conectar-isotipo.png"
-            />
+          <span className="relative h-10 w-8 shrink-0" aria-hidden="true">
+            <Image alt="" className="object-contain" fill sizes="32px" src="/brand/conectar-isotipo.png" priority />
           </span>
-          <span className="text-base font-bold tracking-tight sm:text-lg">{configuration.siteName}</span>
+          <span className="font-display text-[15px] font-bold tracking-[-0.02em] sm:text-base">
+            {configuration.siteName}
+          </span>
         </Link>
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Navegación principal">
+
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegación principal">
+          <SegmentSelector className="mr-3" />
           {navigation.map((item) => (
             <Link
-              className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400"
+              className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/[0.07] hover:text-white focus-visible:outline-2 focus-visible:outline-white"
               href={item.href}
               key={item.href}
             >
               {item.label}
             </Link>
           ))}
+          {whatsappDigits && (
+            <a
+              className="ml-2 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-white/20 px-4 text-sm font-bold text-white transition hover:border-white/40 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              href={`https://wa.me/${whatsappDigits}`}
+              rel="noopener noreferrer"
+              target="_blank"
+              aria-label="Contactar por WhatsApp (abre en una pestaña nueva)"
+            >
+              <MessageCircle aria-hidden="true" className="size-4" />
+              WhatsApp
+            </a>
+          )}
           <a
-            className="ml-2 inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 px-5 py-2 text-sm font-bold text-white shadow-md shadow-orange-950/25 transition hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className={`ml-2 inline-flex min-h-10 items-center justify-center rounded-lg px-4 text-sm font-extrabold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${accentClass}`}
             href={configuration.selfServiceUrl}
           >
             Autogestión
           </a>
         </nav>
-        <PublicMobileNav items={navigation} selfServiceUrl={configuration.selfServiceUrl} />
+        <PublicMobileNav
+          items={navigation}
+          selfServiceUrl={configuration.selfServiceUrl}
+          whatsappUrl={whatsappDigits ? `https://wa.me/${whatsappDigits}` : null}
+        />
       </div>
     </header>
   );

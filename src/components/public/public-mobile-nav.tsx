@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { MessageCircle } from "lucide-react";
+import { usePublicSegment } from "@/components/public/public-segment-context";
+import { SegmentSelector } from "@/components/public/segment-selector";
 
 type NavigationItem = {
   href: string;
@@ -11,10 +14,12 @@ type NavigationItem = {
 type PublicMobileNavProps = Readonly<{
   items: NavigationItem[];
   selfServiceUrl: string;
+  whatsappUrl: string | null;
 }>;
 
-export function PublicMobileNav({ items, selfServiceUrl }: PublicMobileNavProps) {
+export function PublicMobileNav({ items, selfServiceUrl, whatsappUrl }: PublicMobileNavProps) {
   const [open, setOpen] = useState(false);
+  const { segment } = usePublicSegment();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLElement>(null);
 
@@ -49,9 +54,9 @@ export function PublicMobileNav({ items, selfServiceUrl }: PublicMobileNavProps)
   }, [open]);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
-        className="grid size-11 place-items-center rounded-xl border border-white/20 text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400"
+        className="grid size-11 place-items-center rounded-xl border border-white/20 text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         type="button"
         aria-controls="mobile-navigation"
         aria-expanded={open}
@@ -68,14 +73,18 @@ export function PublicMobileNav({ items, selfServiceUrl }: PublicMobileNavProps)
       </button>
       {open && (
         <nav
-          className="absolute inset-x-4 top-[4.75rem] rounded-2xl border border-slate-700 bg-[#0b2440] p-3 shadow-2xl"
+          className="absolute inset-x-4 top-[4.75rem] rounded-2xl border border-white/10 bg-[#0b2440] p-3 shadow-2xl shadow-black/30"
           id="mobile-navigation"
           aria-label="Navegación mobile"
           ref={menuRef}
         >
+          <div className="mb-2 border-b border-white/10 px-2 pb-3">
+            <p className="mb-2 text-xs font-bold tracking-[0.12em] text-slate-400 uppercase">Segmento</p>
+            <SegmentSelector />
+          </div>
           {items.map((item) => (
             <Link
-              className="block rounded-xl px-4 py-3 font-semibold text-slate-100 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-orange-400"
+              className="block rounded-xl px-4 py-3 font-semibold text-slate-100 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-white"
               href={item.href}
               key={item.href}
               onClick={() => setOpen(false)}
@@ -83,8 +92,20 @@ export function PublicMobileNav({ items, selfServiceUrl }: PublicMobileNavProps)
               {item.label}
             </Link>
           ))}
+          {whatsappUrl && (
+            <a
+              className="mt-2 flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/20 px-4 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              href={whatsappUrl}
+              onClick={() => setOpen(false)}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <MessageCircle aria-hidden="true" className="size-5" />
+              WhatsApp
+            </a>
+          )}
           <a
-            className="mt-2 flex min-h-12 items-center justify-center rounded-xl bg-orange-500 px-4 py-3 font-bold text-white shadow-md shadow-orange-950/30 transition hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className={`mt-2 flex min-h-12 items-center justify-center rounded-xl px-4 py-3 font-extrabold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${segment === "hogar" ? "bg-[#12b886] text-[#03221b] hover:bg-[#18c996]" : "bg-[#2f6bff] text-white hover:bg-[#477dff]"}`}
             href={selfServiceUrl}
             onClick={() => setOpen(false)}
           >

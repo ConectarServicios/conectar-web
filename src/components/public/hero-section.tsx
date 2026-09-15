@@ -68,8 +68,8 @@ export function HeroSection({ slides }: Readonly<{ slides?: PublicHeroSlide[] }>
 
         <div className="public-container flex min-h-[520px] items-center py-16 sm:py-20 lg:min-h-[560px] lg:py-24">
           <div className="max-w-[820px]">
-            <p className={`mb-6 flex items-center gap-3 text-xs font-extrabold tracking-[0.14em] uppercase sm:text-sm ${isHome ? "text-[#61dfb7]" : "text-[#83a8ff]"}`}>
-              <span className={`size-2 rounded-full ${isHome ? "bg-[#12b886] shadow-[0_0_18px_#12b886]" : "bg-[#2f6bff] shadow-[0_0_18px_#2f6bff]"}`} aria-hidden="true" />
+            <p className={`mb-6 inline-flex max-w-full items-center gap-2.5 rounded-full border px-4 py-2 text-xs leading-5 font-bold sm:text-sm ${isHome ? "border-[#12b886]/35 bg-[#12b886]/10 text-[#79e7c5]" : "border-[#2f6bff]/40 bg-[#2f6bff]/12 text-[#9bb7ff]"}`}>
+              <span className={`size-2 shrink-0 rounded-full ${isHome ? "bg-[#12b886] shadow-[0_0_14px_#12b886]" : "bg-[#2f6bff] shadow-[0_0_14px_#2f6bff]"}`} aria-hidden="true" />
               {current.eyebrow}
             </p>
             <h1 className="font-display text-[clamp(2.5rem,5vw,3.7rem)] leading-[1.08] font-bold tracking-[-0.04em] text-balance" id="public-hero-title">

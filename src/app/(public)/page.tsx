@@ -10,7 +10,7 @@ import { createClient } from "@/lib/supabase/server";
 import { isSafeExternalHttpUrl } from "@/lib/validations/public-urls";
 import { getPlayPlans, getPlaySettings } from "@/lib/supabase/conectar-play";
 import type { Plan } from "@/types/plans";
-import type { ContactInformation } from "@/types/contact-information";
+import { getPublicContactInformation } from "@/lib/supabase/contact-information";
 import type { PublicHeroSlide } from "@/components/public/hero-section";
 import { NewsHomeSection } from "@/components/public/news-home-section";
 import { getPublicNews, newsImageUrl } from "@/lib/supabase/news";
@@ -59,22 +59,6 @@ async function getPublicPlans(): Promise<PublicData<Plan>> {
   return { data: (data ?? []) as Plan[], unavailable: false };
 }
 
-async function getContactInformation(): Promise<{ data: ContactInformation | null; unavailable: boolean }> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("contact_information")
-    .select("id, phone, whatsapp, commercial_email, address, business_hours, guard_hours")
-    .order("created_at", { ascending: true })
-    .limit(1)
-    .maybeSingle();
-
-  if (error) {
-    console.error("Unable to load public contact information", error);
-    return { data: null, unavailable: true };
-  }
-  return { data: data as ContactInformation | null, unavailable: false };
-}
-
 async function getHeroSlides(): Promise<PublicHeroSlide[]> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("hero_slides")
@@ -92,7 +76,7 @@ export default async function HomePage() {
     getPublicSiteConfiguration(),
     getPlaySettings(),
     getPlayPlans(),
-    getContactInformation(),
+    getPublicContactInformation(),
     getHeroSlides(),
     getPublicNews(3),
     getPublicPromotions("home", 3),

@@ -60,7 +60,7 @@ export function ConectarPlayPlans({
             key={plan.id}
           >
             {plan.featured && (
-              <p className={variant === "home" ? "mb-3 w-fit rounded-full bg-emerald-100 px-3 py-1 text-xs font-black tracking-wider text-emerald-800 uppercase" : "mb-3 text-xs font-black tracking-wider text-orange-700 uppercase"}>
+              <p className={variant === "home" ? "absolute -top-3 left-6 rounded-full bg-[#087f5b] px-3 py-1 text-xs font-black tracking-wider text-white uppercase shadow-sm" : "mb-3 text-xs font-black tracking-wider text-orange-700 uppercase"}>
                 {variant === "home" ? "Más elegido" : "Destacado"}
               </p>
             )}
@@ -75,7 +75,7 @@ export function ConectarPlayPlans({
                 {descriptionLines.map((line, index) => (
                   <li className="flex gap-2 leading-7" key={`${line}-${index}`}>
                     <span
-                      className="font-black text-orange-600"
+                      className={`font-black ${variant === "home" ? "text-[#087f5b]" : "text-orange-600"}`}
                       aria-hidden="true"
                     >
                       ✓

@@ -52,28 +52,51 @@ export const getFeaturedServices = cache(async (limit = 3): Promise<PublicResult
  * catalogue migration. Editors remain in control of visibility, prominence,
  * copy, media and ordering from Admin.
  */
-export const getHomeSecurityServices = cache(async (limit = 2): Promise<PublicResult<PublicService[]>> => {
+export const getHomeSecurityServices = cache(async (): Promise<PublicResult<PublicService[]>> => {
   const supabase = await createClient();
   const { data, error } = await supabase.from("services")
-    .select(`${serviceFields}, service_areas!inner(id, name, slug), service_media(id, service_id, type, image_path, alt_text, caption, active, display_order)`)
+    .select(`${serviceFields}, service_areas!inner(id, name, slug)`)
     .eq("active", true)
     .in("slug", homeSecurityServiceSlugs)
     .eq("service_areas.slug", "seguridad-monitoreo")
     .eq("service_areas.active", true)
-    .eq("service_media.active", true)
-    .eq("service_media.type", "hero")
     .order("featured", { ascending: false })
     .order("display_order", { ascending: true })
-    .order("name", { ascending: true })
-    .order("display_order", { referencedTable: "service_media", ascending: true })
-    .limit(limit);
+    .order("name", { ascending: true });
 
   if (error) {
     console.error("Unable to load home security services", error);
     return { data: [], unavailable: true };
   }
 
-  return { data: (data ?? []) as unknown as PublicService[], unavailable: false };
+  const services = (data ?? []) as unknown as PublicService[];
+  if (services.length === 0) return { data: [], unavailable: false };
+
+  const { data: mediaData, error: mediaError } = await supabase.from("service_media")
+    .select("id, service_id, type, image_path, alt_text, caption, active, display_order")
+    .in("service_id", services.map((service) => service.id))
+    .eq("active", true)
+    .eq("type", "hero")
+    .order("display_order", { ascending: true });
+
+  if (mediaError) {
+    console.error("Unable to load home security service media", mediaError);
+  }
+
+  const mediaByService = new Map<string, ServiceMedia[]>();
+  for (const media of (mediaData ?? []) as ServiceMedia[]) {
+    const serviceMedia = mediaByService.get(media.service_id) ?? [];
+    serviceMedia.push(media);
+    mediaByService.set(media.service_id, serviceMedia);
+  }
+
+  return {
+    data: services.map((service) => ({
+      ...service,
+      service_media: mediaByService.get(service.id) ?? [],
+    })),
+    unavailable: false,
+  };
 });
 
 export const getPublicServiceBySlugs = cache(async (areaSlug: string, serviceSlug: string): Promise<PublicResult<PublicService | null>> => {

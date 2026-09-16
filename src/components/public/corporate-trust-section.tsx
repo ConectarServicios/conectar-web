@@ -5,13 +5,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-const indicators = [
-  { value: "AR", description: "Infraestructura y datos en Argentina" },
-  { value: "24/7", description: "Monitoreo gestionado" },
-  { value: "Local", description: "Soporte desde Sunchales" },
-  { value: "SLA", description: "Tiempos de respuesta acordados" },
-] as const;
-
 const trustPrinciples: ReadonlyArray<{
   title: string;
   description: string;
@@ -41,7 +34,7 @@ export function CorporateTrustSection() {
   return (
     <section
       aria-labelledby="corporate-trust-title"
-      className="relative isolate overflow-hidden bg-slate-50 py-20 sm:py-24 lg:py-28"
+      className="relative isolate overflow-hidden bg-slate-50 py-16 sm:py-20 lg:py-24"
     >
       <div
         aria-hidden="true"
@@ -67,27 +60,7 @@ export function CorporateTrustSection() {
           </p>
         </div>
 
-        <dl className="mt-10 grid grid-cols-1 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)] min-[420px]:grid-cols-2 lg:mt-14 lg:grid-cols-4">
-          {indicators.map(({ value, description }, index) => (
-            <div
-              className={`flex flex-col px-6 py-7 sm:px-7 sm:py-8 lg:px-8 ${
-                index > 0 ? "border-t border-slate-200 min-[420px]:border-t-0" : ""
-              } ${index % 2 === 1 ? "min-[420px]:border-l" : ""} ${
-                index >= 2 ? "min-[420px]:border-t" : ""
-              } ${index > 0 ? "lg:border-t-0 lg:border-l" : "lg:border-l-0"}`}
-              key={value}
-            >
-              <dt className="text-sm leading-6 font-medium text-slate-600">
-                {description}
-              </dt>
-              <dd className="font-display -order-1 mb-3 text-3xl font-bold tracking-[-0.04em] text-[#1746bd] sm:text-4xl">
-                {value}
-              </dd>
-            </div>
-          ))}
-        </dl>
-
-        <div className="mt-14 border-t border-slate-200 pt-12 sm:mt-16 sm:pt-14 lg:grid lg:grid-cols-[minmax(260px,.7fr)_minmax(0,1.3fr)] lg:gap-16">
+        <div className="mt-10 border-t border-slate-200 pt-10 sm:mt-12 sm:pt-12 lg:grid lg:grid-cols-[minmax(260px,.7fr)_minmax(0,1.3fr)] lg:gap-16">
           <div>
             <h3 className="font-display text-2xl font-bold tracking-[-0.03em] text-[#0b2038] sm:text-3xl">
               Una relación técnica cercana

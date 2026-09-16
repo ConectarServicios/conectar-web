@@ -69,7 +69,7 @@ export function CorporateConnectivitySection() {
   return (
     <section
       aria-labelledby="corporate-connectivity-title"
-      className="bg-slate-50 py-20 sm:py-24 lg:py-28"
+      className="bg-slate-50 py-16 sm:py-20 lg:py-20"
     >
       <div className="public-container">
         <div className="max-w-3xl">
@@ -84,7 +84,7 @@ export function CorporateConnectivitySection() {
           </h2>
         </div>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:mt-10 lg:grid-cols-3 lg:gap-5">
           {services.map((service) => (
             <CorporateServiceCard ctaLabel="Consultar" key={service.title} tone="slate" {...service} />
           ))}

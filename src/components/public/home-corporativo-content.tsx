@@ -1,6 +1,9 @@
 import { Check, Network, Server, ShieldCheck, type LucideIcon } from "lucide-react";
 
+import { CorporateComparisonSection } from "@/components/public/corporate-comparison-section";
+import { CorporateCommitmentsSection } from "@/components/public/corporate-commitments-section";
 import { CorporateInfrastructureSection } from "@/components/public/corporate-infrastructure-section";
+import { CorporateProcessSection } from "@/components/public/corporate-process-section";
 import { CorporateSecuritySection } from "@/components/public/corporate-security-section";
 
 const benefits = ["Una sola factura", "Un solo contacto técnico", "Escalás sin migrar"];
@@ -90,6 +93,9 @@ export function HomeCorporativoContent() {
       </section>
       <CorporateInfrastructureSection />
       <CorporateSecuritySection />
+      <CorporateComparisonSection />
+      <CorporateProcessSection />
+      <CorporateCommitmentsSection />
     </>
   );
 }

@@ -4,11 +4,6 @@ import { ArrowRight } from "lucide-react";
 
 import { usePublicSegment, type PublicSegment } from "@/components/public/public-segment-context";
 
-export type PublicHeroSlide = {
-  id: string; title: string; subtitle: string | null; buttonText: string | null;
-  buttonUrl: string | null; imageUrl: string; featured: boolean; external: boolean;
-};
-
 const content = {
   hogar: {
     eyebrow: "Internet 100% fibra óptica · Sunchales",
@@ -47,8 +42,7 @@ const trustItems = {
   ],
 };
 
-export function HeroSection({ slides }: Readonly<{ slides?: PublicHeroSlide[] }>) {
-  void slides;
+export function HeroSection() {
   const { segment } = usePublicSegment();
   const current = content[segment];
   const isHome = segment === "hogar";

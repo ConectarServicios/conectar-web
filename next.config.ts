@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const remotePatterns = supabaseUrl
   ? [
-      new URL("/storage/v1/object/public/hero-banners/**", supabaseUrl),
       new URL("/storage/v1/object/public/news-images/**", supabaseUrl),
       new URL("/storage/v1/object/public/event-images/**", supabaseUrl),
       new URL("/storage/v1/object/public/service-project-images/**", supabaseUrl),

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import { HeroSection } from "@/components/public/hero-section";
+import { HomeCorporativoContent } from "@/components/public/home-corporativo-content";
+import { HomeSegmentContent } from "@/components/public/home-segment-content";
 import { InstitutionalSection } from "@/components/public/institutional-section";
 import { ConectarPlayHomeSection } from "@/components/public/conectar-play-home-section";
 import { PlansSection } from "@/components/public/plans-section";
@@ -92,24 +94,31 @@ export default async function HomePage() {
   return (
     <main>
       <HeroSection slides={heroSlides} />
-      <PromotionsSection imageUrls={promotionImages} items={promotions} />
-      <PlansSection
-        installationBenefitsText={siteConfiguration.internetInstallationBenefitsText}
-        installationPrice={siteConfiguration.internetInstallationPrice}
-        plans={plans.data}
-        unavailable={plans.unavailable}
+      <HomeSegmentContent
+        corporativo={<HomeCorporativoContent />}
+        hogar={(
+          <>
+            <PromotionsSection imageUrls={promotionImages} items={promotions} />
+            <PlansSection
+              installationBenefitsText={siteConfiguration.internetInstallationBenefitsText}
+              installationPrice={siteConfiguration.internetInstallationPrice}
+              plans={plans.data}
+              unavailable={plans.unavailable}
+            />
+            <ContextualPromotions exclude={promotions.map((item) => item.id)} placement="plans" />
+            <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
+            <ServicesSection
+              areas={serviceAreas.data}
+              unavailable={serviceAreas.unavailable}
+            />
+            <FeaturedServicesSection imageUrls={serviceImages} services={featuredServices.data} />
+            <EventsHomeSection imageUrls={eventImages} items={events} />
+            <InstitutionalSection />
+            <NewsHomeSection imageUrls={newsImages} items={news} />
+            <FaqHomeSection items={featuredFaqs} />
+          </>
+        )}
       />
-      <ContextualPromotions exclude={promotions.map((item) => item.id)} placement="plans" />
-      <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
-      <ServicesSection
-        areas={serviceAreas.data}
-        unavailable={serviceAreas.unavailable}
-      />
-      <FeaturedServicesSection imageUrls={serviceImages} services={featuredServices.data} />
-      <EventsHomeSection imageUrls={eventImages} items={events} />
-      <InstitutionalSection />
-      <NewsHomeSection imageUrls={newsImages} items={news} />
-      <FaqHomeSection items={featuredFaqs} />
       <ContactSection contact={contact.data} unavailable={contact.unavailable} />
     </main>
   );

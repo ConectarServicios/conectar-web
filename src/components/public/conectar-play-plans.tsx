@@ -102,7 +102,7 @@ export function ConectarPlayPlans({
                 Incluye Pack Fútbol
               </p>
             )}
-            {showActions && (
+            {showActions && variant !== "home" && (
               <Link
                 className="mt-auto pt-6 text-sm font-black text-emerald-700 underline decoration-2 underline-offset-4 outline-none transition hover:text-emerald-900 focus-visible:rounded focus-visible:ring-2 focus-visible:ring-emerald-600"
                 href="/conectar-play#planes-play"

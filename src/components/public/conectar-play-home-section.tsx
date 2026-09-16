@@ -39,8 +39,8 @@ export function ConectarPlayHomeSection({
       aria-labelledby="home-play-title"
     >
       <div className="public-container">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-          <div className="min-w-0 max-w-4xl">
+        <div className="max-w-4xl">
+          <div className="min-w-0">
             <p className="public-eyebrow">Conectar Play</p>
             <h2 className="public-heading mt-3" id="home-play-title">
               {settings?.channel_count
@@ -52,14 +52,14 @@ export function ConectarPlayHomeSection({
                 {settings.short_description}
               </p>
             )}
-          </div>
 
-          <Link
-            className="public-button-primary w-full justify-center sm:w-fit lg:shrink-0"
-            href="/conectar-play"
-          >
-            Conocer Conectar Play
-          </Link>
+            <Link
+              className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-[#12b886] px-6 py-3 text-center font-extrabold text-[#03221b] transition hover:-translate-y-0.5 hover:bg-[#18c996] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#087f5b] motion-reduce:transform-none sm:w-fit"
+              href="/conectar-play"
+            >
+              Conocer Conectar Play
+            </Link>
+          </div>
         </div>
 
         {settings && (
@@ -81,7 +81,6 @@ export function ConectarPlayHomeSection({
             <ConectarPlayPlans
               className="contents"
               plans={plans}
-              showActions
               variant="home"
             />
 
@@ -133,7 +132,7 @@ function StickCard({ settings }: { settings: ConectarPlaySettings }) {
           {settings.onn_description}
         </p>
       )}
-      <div className="mt-5 space-y-2">
+      <div className="mt-5 grid gap-2 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2">
         {settings.onn_sale_price !== null && (
           <StickPrice label="Venta" value={settings.onn_sale_price} />
         )}
@@ -142,7 +141,7 @@ function StickCard({ settings }: { settings: ConectarPlaySettings }) {
         )}
       </div>
       <Link
-        className="mt-auto pt-6 text-sm font-black text-emerald-300 underline decoration-2 underline-offset-4 outline-none transition hover:text-white focus-visible:rounded focus-visible:ring-2 focus-visible:ring-emerald-300"
+        className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-emerald-300/60 bg-emerald-300/10 px-4 py-3 text-center text-sm font-black text-emerald-200 transition hover:border-emerald-200 hover:bg-emerald-300/20 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300"
         href="/conectar-play#compatibilidad"
       >
         Ver compatibilidad y condiciones
@@ -153,9 +152,13 @@ function StickCard({ settings }: { settings: ConectarPlaySettings }) {
 
 function StickPrice({ label, value }: { label: string; value: number }) {
   return (
-    <p className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-t border-white/10 pt-2">
-      <span className="text-sm text-slate-300">{label}</span>
-      <strong className="text-lg font-black">{money(Number(value))}</strong>
+    <p className="min-w-0 rounded-xl border border-emerald-300/20 bg-white/10 px-4 py-3">
+      <span className="block text-xs font-bold tracking-wide text-emerald-200 uppercase">
+        {label}
+      </span>
+      <strong className="mt-1 block break-words text-lg leading-tight font-black text-white">
+        {money(Number(value))}
+      </strong>
     </p>
   );
 }

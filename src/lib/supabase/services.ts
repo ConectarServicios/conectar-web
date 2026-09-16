@@ -9,6 +9,7 @@ export const SERVICE_MEDIA_BUCKET = "service-media";
 export type PublicResult<T> = { data: T; unavailable: boolean };
 const areaFields = "id, name, slug, short_description, description, icon, public_url, featured, active, display_order";
 const serviceFields = "id, name, slug, short_description, description, image_url, icon, category, service_area_id, featured, active, display_order";
+const homeSecurityServiceSlugs = ["alarmas-monitoreadas", "videoseguridad-camaras"];
 
 export const getPublicServiceAreas = cache(async (): Promise<PublicResult<ServiceArea[]>> => {
   const supabase = await createClient();
@@ -41,6 +42,37 @@ export const getFeaturedServices = cache(async (limit = 3): Promise<PublicResult
     .eq("service_media.active", true).eq("service_media.type", "hero")
     .order("display_order", { ascending: true }).order("name", { ascending: true }).limit(limit);
   if (error) { console.error("Unable to load featured services", error); return { data: [], unavailable: true }; }
+  return { data: (data ?? []) as unknown as PublicService[], unavailable: false };
+});
+
+/**
+ * Returns the residential-security services configured in the catalogue.
+ *
+ * The service area and its initial ordering are versioned in the service
+ * catalogue migration. Editors remain in control of visibility, prominence,
+ * copy, media and ordering from Admin.
+ */
+export const getHomeSecurityServices = cache(async (limit = 2): Promise<PublicResult<PublicService[]>> => {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("services")
+    .select(`${serviceFields}, service_areas!inner(id, name, slug), service_media(id, service_id, type, image_path, alt_text, caption, active, display_order)`)
+    .eq("active", true)
+    .in("slug", homeSecurityServiceSlugs)
+    .eq("service_areas.slug", "seguridad-monitoreo")
+    .eq("service_areas.active", true)
+    .eq("service_media.active", true)
+    .eq("service_media.type", "hero")
+    .order("featured", { ascending: false })
+    .order("display_order", { ascending: true })
+    .order("name", { ascending: true })
+    .order("display_order", { referencedTable: "service_media", ascending: true })
+    .limit(limit);
+
+  if (error) {
+    console.error("Unable to load home security services", error);
+    return { data: [], unavailable: true };
+  }
+
   return { data: (data ?? []) as unknown as PublicService[], unavailable: false };
 });
 

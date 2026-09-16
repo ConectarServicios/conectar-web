@@ -177,7 +177,10 @@ export default async function ConectarPlayPage() {
       )}
 
       {settings?.onn_enabled && (
-        <section className="bg-[#0b2440] py-20 text-white">
+        <section
+          className="scroll-mt-24 bg-[#0b2440] py-20 text-white"
+          id="stick"
+        >
           <div className="public-container grid gap-10 lg:grid-cols-[1.3fr_.7fr] lg:items-center">
             <div>
               <p className="text-xs font-black tracking-[.18em] text-orange-400 uppercase">

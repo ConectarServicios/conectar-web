@@ -1,4 +1,4 @@
-import { Gauge, MapPin, MonitorSmartphone } from "lucide-react";
+import { ArrowRight, Gauge, MapPin, MonitorSmartphone } from "lucide-react";
 import Link from "next/link";
 
 import { ConectarPlayPlans } from "@/components/public/conectar-play-plans";
@@ -70,6 +70,36 @@ export function ConectarPlayHomeSection({
               variant="home"
             />
           </div>
+        )}
+
+        {settings?.onn_enabled && (
+          <aside
+            className="mt-6 flex flex-col gap-5 rounded-2xl border border-emerald-200 bg-emerald-50/70 px-5 py-5 sm:px-6 md:flex-row md:items-center md:justify-between"
+            aria-labelledby="home-play-stick-title"
+          >
+            <div className="max-w-2xl">
+              <p className="text-xs font-black tracking-[.16em] text-emerald-700 uppercase">
+                Stick Conectar Play
+              </p>
+              <h3
+                className="mt-1.5 text-xl font-black text-[#0b2440]"
+                id="home-play-stick-title"
+              >
+                ¿Tu TV no es compatible?
+              </h3>
+              <p className="mt-2 leading-7 text-slate-600">
+                También podés disfrutar Conectar Play con nuestro Stick.
+              </p>
+            </div>
+
+            <Link
+              className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 self-start rounded-xl border border-emerald-600 bg-white px-5 py-2.5 text-sm font-extrabold text-emerald-800 transition hover:border-emerald-700 hover:bg-emerald-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 md:self-auto"
+              href="/conectar-play#stick"
+            >
+              Ver opciones del Stick
+              <ArrowRight aria-hidden="true" size={18} strokeWidth={2.5} />
+            </Link>
+          </aside>
         )}
 
         {unavailable && plans.length === 0 && (

@@ -8,6 +8,7 @@ import { CorporateProcessSection } from "@/components/public/corporate-process-s
 import { CorporateSecuritySection } from "@/components/public/corporate-security-section";
 import { CorporateSectorsSection } from "@/components/public/corporate-sectors-section";
 import { CorporateTechnologySection } from "@/components/public/corporate-technology-section";
+import { CorporateTrustSection } from "@/components/public/corporate-trust-section";
 
 const benefits = ["Una sola factura", "Un solo contacto técnico", "Escalás sin migrar"];
 
@@ -102,6 +103,7 @@ export function HomeCorporativoContent() {
       <CorporateConnectivitySection />
       <CorporateSectorsSection />
       <CorporateTechnologySection />
+      <CorporateTrustSection />
     </>
   );
 }

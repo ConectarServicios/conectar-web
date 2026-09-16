@@ -1,4 +1,4 @@
-import { Gauge, MapPin, MonitorSmartphone, Tv } from "lucide-react";
+import { Gauge, MapPin, MonitorSmartphone } from "lucide-react";
 import Link from "next/link";
 
 import { ConectarPlayPlans } from "@/components/public/conectar-play-plans";
@@ -6,13 +6,6 @@ import type {
   ConectarPlayPlan,
   ConectarPlaySettings,
 } from "@/types/conectar-play";
-
-const money = (value: number) =>
-  new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-    maximumFractionDigits: 2,
-  }).format(value);
 
 export function ConectarPlayHomeSection({
   settings,
@@ -24,13 +17,6 @@ export function ConectarPlayHomeSection({
   unavailable: boolean;
 }) {
   if (!settings && plans.length === 0 && !unavailable) return null;
-
-  const showStick = Boolean(
-    settings?.onn_enabled &&
-      (settings.onn_description ||
-        settings.onn_sale_price !== null ||
-        settings.onn_rental_price !== null),
-  );
 
   return (
     <section
@@ -76,19 +62,17 @@ export function ConectarPlayHomeSection({
           </ul>
         )}
 
-        {(plans.length > 0 || showStick) && (
+        {plans.length > 0 && (
           <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             <ConectarPlayPlans
               className="contents"
               plans={plans}
               variant="home"
             />
-
-            {showStick && settings && <StickCard settings={settings} />}
           </div>
         )}
 
-        {unavailable && plans.length === 0 && !showStick && (
+        {unavailable && plans.length === 0 && (
           <p className="public-empty-state">
             La información no está disponible temporalmente.
           </p>
@@ -112,53 +96,5 @@ function Benefit({
       </span>
       <span>{text}</span>
     </li>
-  );
-}
-
-function StickCard({ settings }: { settings: ConectarPlaySettings }) {
-  return (
-    <article className="flex min-w-0 flex-col rounded-3xl border border-slate-200 bg-[#0b2440] p-6 text-white shadow-sm sm:p-7">
-      <span className="grid size-11 place-items-center rounded-xl bg-white/10 text-emerald-300">
-        <Tv aria-hidden="true" size={22} strokeWidth={2.25} />
-      </span>
-      <p className="mt-5 text-xs font-black tracking-[.16em] text-emerald-300 uppercase">
-        Stick Conectar Play
-      </p>
-      <h3 className="mt-2 text-2xl font-black tracking-tight">
-        Disfrutá Play en tu TV
-      </h3>
-      {settings.onn_description && (
-        <p className="mt-3 whitespace-pre-line leading-7 text-slate-200">
-          {settings.onn_description}
-        </p>
-      )}
-      <div className="mt-5 grid gap-2 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2">
-        {settings.onn_sale_price !== null && (
-          <StickPrice label="Venta" value={settings.onn_sale_price} />
-        )}
-        {settings.onn_rental_price !== null && (
-          <StickPrice label="Alquiler mensual" value={settings.onn_rental_price} />
-        )}
-      </div>
-      <Link
-        className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-emerald-300/60 bg-emerald-300/10 px-4 py-3 text-center text-sm font-black text-emerald-200 transition hover:border-emerald-200 hover:bg-emerald-300/20 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300"
-        href="/conectar-play#compatibilidad"
-      >
-        Ver compatibilidad y condiciones
-      </Link>
-    </article>
-  );
-}
-
-function StickPrice({ label, value }: { label: string; value: number }) {
-  return (
-    <p className="min-w-0 rounded-xl border border-emerald-300/20 bg-white/10 px-4 py-3">
-      <span className="block text-xs font-bold tracking-wide text-emerald-200 uppercase">
-        {label}
-      </span>
-      <strong className="mt-1 block break-words text-lg leading-tight font-black text-white">
-        {money(Number(value))}
-      </strong>
-    </p>
   );
 }

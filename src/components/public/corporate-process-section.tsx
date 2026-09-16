@@ -5,11 +5,18 @@ const steps = [
   { title: "Soporte y monitoreo", description: "Acompañamiento continuo, con monitoreo y guardia." },
 ] as const;
 
+const commitments = [
+  { value: "24/7", label: "Monitoreo de infraestructura" },
+  { value: "Local", label: "Soporte en Sunchales" },
+  { value: "AR", label: "Tus datos en Argentina" },
+  { value: "SLA", label: "Tiempos de respuesta acordados" },
+] as const;
+
 export function CorporateProcessSection() {
   return (
     <section
       aria-labelledby="corporate-process-title"
-      className="border-y border-slate-200 bg-slate-50 py-20 sm:py-24 lg:py-28"
+      className="border-y border-slate-200 bg-slate-50 py-16 sm:py-20 lg:py-24"
     >
       <div className="public-container">
         <div className="max-w-3xl">
@@ -22,13 +29,13 @@ export function CorporateProcessSection() {
           </h2>
         </div>
 
-        <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-6">
+        <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-5">
           {steps.map((step, index) => (
-            <li className="relative rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7" key={step.title}>
+            <li className="relative rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6" key={step.title}>
               <span className="font-display flex size-11 items-center justify-center rounded-xl bg-[#2f6bff] text-lg font-bold text-white" aria-hidden="true">
                 {index + 1}
               </span>
-              <h3 className="font-display mt-7 text-xl font-bold tracking-[-0.02em] text-[#0b2038]">{step.title}</h3>
+              <h3 className="font-display mt-5 text-xl font-bold tracking-[-0.02em] text-[#0b2038]">{step.title}</h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">{step.description}</p>
               {index < steps.length - 1 && (
                 <span className="absolute top-12 -right-3 hidden h-px w-6 bg-[#2f6bff]/40 lg:block" aria-hidden="true" />
@@ -36,6 +43,20 @@ export function CorporateProcessSection() {
             </li>
           ))}
         </ol>
+
+        <dl className="mt-8 grid overflow-hidden rounded-2xl bg-[#071a2f] text-white sm:grid-cols-2 lg:mt-10 lg:grid-cols-4">
+          {commitments.map((commitment) => (
+            <div
+              className="border-white/10 px-5 py-5 not-last:border-b sm:px-6 sm:odd:border-r sm:nth-[2]:border-r-0 sm:nth-[3]:border-b-0 lg:not-last:border-r lg:not-last:border-b-0"
+              key={commitment.value}
+            >
+              <dt className="font-display text-2xl font-bold tracking-[-0.04em] text-[#8eabff] sm:text-3xl">
+                {commitment.value}
+              </dt>
+              <dd className="mt-2 text-sm leading-6 text-[#b8c9d9]">{commitment.label}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );

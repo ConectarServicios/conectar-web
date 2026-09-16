@@ -1,6 +1,7 @@
 import { ArrowUpRight, type LucideIcon } from "lucide-react";
 
 type CorporateServiceCardProps = {
+  ctaLabel?: string;
   description: string;
   icon: LucideIcon;
   title: string;
@@ -8,6 +9,7 @@ type CorporateServiceCardProps = {
 };
 
 export function CorporateServiceCard({
+  ctaLabel = "Conocer más",
   description,
   icon: Icon,
   title,
@@ -35,7 +37,7 @@ export function CorporateServiceCard({
         className="mt-6 inline-flex w-fit items-center gap-2 rounded-sm text-sm font-bold text-[#2456d6] outline-none transition-colors hover:text-[#173b99] focus-visible:ring-2 focus-visible:ring-[#2f6bff] focus-visible:ring-offset-4"
         href="#contacto"
       >
-        Conocer más
+        {ctaLabel}
         <ArrowUpRight aria-hidden="true" size={16} strokeWidth={2.5} />
       </a>
     </article>

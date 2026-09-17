@@ -47,7 +47,7 @@ function HoursList({ value, variant }: Readonly<{ value: string; variant: "regul
   );
 }
 
-export function ContactSection({ contact, unavailable }: Readonly<{ contact: ContactInformation | null; unavailable: boolean }>) {
+export function ContactSection({ contact, unavailable, homeHogar = false }: Readonly<{ contact: ContactInformation | null; unavailable: boolean; homeHogar?: boolean }>) {
   const whatsapp = contact?.whatsapp && isAllowedContactNumber(contact.whatsapp) ? contact.whatsapp : null;
   const whatsappDigits = whatsapp?.replace(/\D/g, "") ?? "";
   const validPhone = contact?.phone && isAllowedContactNumber(contact.phone) ? contact.phone : null;
@@ -58,16 +58,16 @@ export function ContactSection({ contact, unavailable }: Readonly<{ contact: Con
     : null;
 
   return (
-    <section className="scroll-mt-24 border-t border-slate-200 bg-slate-50 py-20 sm:py-24" id="contacto" aria-labelledby="contact-title">
+    <section className={`scroll-mt-24 py-16 sm:py-20 lg:py-24 ${homeHogar ? "bg-[#071a2f] text-white" : "border-t border-slate-200 bg-slate-50"}`} id="contacto" aria-labelledby="contact-title">
       <div className="public-container">
         <div className="text-center">
-          <p className="public-eyebrow">Contacto</p>
-          <h2 className="public-heading mt-3" id="contact-title">Estamos para ayudarte</h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">Elegí el canal que necesites. También contamos con guardia de soporte fuera del horario habitual.</p>
+          <p className={homeHogar ? "text-xs font-black uppercase tracking-[0.2em] text-emerald-400 sm:text-sm" : "public-eyebrow"}>Contacto</p>
+          <h2 className={`mt-3 text-4xl font-black tracking-tight text-balance sm:text-5xl ${homeHogar ? "text-white" : "text-slate-950"}`} id="contact-title">Estamos para ayudarte</h2>
+          <p className={`mx-auto mt-5 max-w-2xl text-base leading-7 sm:text-lg ${homeHogar ? "text-slate-300" : "text-slate-600"}`}>Elegí el canal que necesites. También contamos con guardia de soporte fuera del horario habitual.</p>
         </div>
         {unavailable ? <p className="public-empty-state" role="status">Los datos de contacto no están disponibles en este momento.</p> : contact ? (
           <div className="mx-auto mt-10 max-w-6xl">
-            <ul className="grid list-none gap-5 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
+            <ul className={`grid list-none gap-5 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] ${homeHogar ? "[&_li]:border-white/15 [&_li]:shadow-black/10" : ""}`}>
               {whatsapp && (
                 <li className={channelCardClass}>
                   <ChannelIcon icon={MessageCircle} />
@@ -81,7 +81,7 @@ export function ContactSection({ contact, unavailable }: Readonly<{ contact: Con
                   <ChannelIcon icon={Mail} />
                   <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Email comercial</p>
                   <p className="mt-2 min-w-0 break-words text-[15px] font-bold text-slate-950">{contact.commercial_email}</p>
-                  <a className={channelLinkClass} href={`mailto:${contact.commercial_email}`}>Enviar email <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                  <a className={`${channelLinkClass} ${homeHogar ? "text-emerald-700 hover:text-emerald-800 focus-visible:outline-emerald-600" : ""}`} href={`mailto:${contact.commercial_email}`}>Enviar email <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
               {contact.address && mapUrl && (
@@ -89,7 +89,7 @@ export function ContactSection({ contact, unavailable }: Readonly<{ contact: Con
                   <ChannelIcon icon={MapPin} />
                   <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Dónde estamos</p>
                   <p className="mt-2 break-words text-lg font-bold text-slate-950">{contact.address}</p>
-                  <a className={channelLinkClass} href={mapUrl} rel="noreferrer" target="_blank">Cómo llegar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                  <a className={`${channelLinkClass} ${homeHogar ? "text-emerald-700 hover:text-emerald-800 focus-visible:outline-emerald-600" : ""}`} href={mapUrl} rel="noreferrer" target="_blank">Cómo llegar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
               {phone && (
@@ -97,12 +97,12 @@ export function ContactSection({ contact, unavailable }: Readonly<{ contact: Con
                   <ChannelIcon icon={Phone} />
                   <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Teléfono</p>
                   <p className="mt-2 break-words text-lg font-bold text-slate-950">{phone}</p>
-                  <a className={channelLinkClass} href={`tel:${phone.replace(/[^\d+]/g, "")}`}>Llamar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                  <a className={`${channelLinkClass} ${homeHogar ? "text-emerald-700 hover:text-emerald-800 focus-visible:outline-emerald-600" : ""}`} href={`tel:${phone.replace(/[^\d+]/g, "")}`}>Llamar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
             </ul>
 
-            <div className="mt-5 grid items-start gap-5 md:grid-cols-2">
+            <div className={`mt-5 grid items-start gap-5 md:grid-cols-2 ${homeHogar ? "[&_article]:border-white/15 [&_article]:shadow-black/10" : ""}`}>
               <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
                 <ChannelIcon icon={Clock3} />
                 <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Atención habitual</p>

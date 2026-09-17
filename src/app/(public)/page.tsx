@@ -103,7 +103,7 @@ export default async function HomePage() {
         corporativo={(
           <>
             <HomeCorporativoContent />
-            <ContactSection contact={contact.data} unavailable={contact.unavailable} />
+            <ContactSection contact={contact.data} homeCorporativo unavailable={contact.unavailable} />
           </>
         )}
       />

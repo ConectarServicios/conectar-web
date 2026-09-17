@@ -61,6 +61,12 @@ export function getServicesBySegment(
     .toSorted((first, second) => first.order - second.order);
 }
 
+export function getIndexableServicePaths(): readonly string[] {
+  return serviceCatalog
+    .filter((service) => service.hasDetailPage)
+    .map((service) => `/servicios/${service.group}/${service.slug}`);
+}
+
 export function getHomeServicesByGroup(
   group: ServiceGroup,
 ): readonly ServiceDefinition[] {

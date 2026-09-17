@@ -2,6 +2,66 @@ import type { ServiceDefinition } from "@/data/services/types";
 
 export const serviceCatalog = [
   {
+    slug: "wifi-power-mesh",
+    title: "WiFi Power Mesh",
+    shortDescription:
+      "Ampliá la cobertura Wi-Fi con una red más estable y mejor señal en todos los ambientes.",
+    segments: ["hogar"],
+    group: "internet-wifi",
+    icon: "wifi",
+    order: 1,
+    showOnHomeHogar: true,
+    showOnHomeCorporativo: false,
+    cta: { label: "Conocer más" },
+    href: "#contacto",
+    hasDetailPage: false,
+  },
+  {
+    slug: "alarma-monitoreada",
+    title: "Alarma monitoreada 24/7",
+    shortDescription:
+      "Sistema de alarma con monitoreo permanente y avisos en tiempo real ante cualquier evento.",
+    segments: ["hogar"],
+    group: "seguridad-hogar",
+    icon: "bell-ring",
+    order: 1,
+    showOnHomeHogar: true,
+    showOnHomeCorporativo: false,
+    cta: { label: "Quiero proteger mi casa" },
+    href: "#contacto",
+    hasDetailPage: false,
+  },
+  {
+    slug: "camaras-videovigilancia",
+    title: "Cámaras de videovigilancia",
+    shortDescription:
+      "Cámaras HD con acceso remoto: mirá tu casa desde el celular, estés donde estés.",
+    segments: ["hogar"],
+    group: "seguridad-hogar",
+    icon: "cctv",
+    order: 2,
+    showOnHomeHogar: true,
+    showOnHomeCorporativo: false,
+    cta: { label: "Ver cámaras" },
+    href: "#contacto",
+    hasDetailPage: false,
+  },
+  {
+    slug: "conectar-play",
+    title: "Conectar Play",
+    shortDescription:
+      "Sumá televisión con más de 100 canales en hasta 5 dispositivos a tu plan de internet.",
+    segments: ["hogar"],
+    group: "entretenimiento",
+    icon: "tv",
+    order: 1,
+    showOnHomeHogar: true,
+    showOnHomeCorporativo: false,
+    cta: { label: "Conocer más" },
+    href: "/conectar-play",
+    hasDetailPage: false,
+  },
+  {
     slug: "internet-corporativo",
     title: "Internet corporativo",
     shortDescription:

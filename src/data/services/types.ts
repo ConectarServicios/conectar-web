@@ -2,17 +2,20 @@ export type ServiceSegment = "hogar" | "corporativo";
 
 export type ServiceGroup =
   | "conectividad"
+  | "internet-wifi"
   | "infraestructura"
   | "seguridad-gestionada"
   | "seguridad-hogar"
-  | "mas-que-internet";
+  | "entretenimiento";
 
 export type ServiceIcon =
   | "arrow-left-right"
   | "binary"
+  | "bell-ring"
   | "boxes"
   | "brick-wall"
   | "cable"
+  | "cctv"
   | "cloud"
   | "database-backup"
   | "ethernet-port"
@@ -25,6 +28,7 @@ export type ServiceIcon =
   | "radio-tower"
   | "server-cog"
   | "shield-check"
+  | "tv"
   | "warehouse"
   | "wifi";
 

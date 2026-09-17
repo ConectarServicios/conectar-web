@@ -6,23 +6,30 @@ import type { ContactInformation } from "@/types/contact-information";
 const channelCardClass =
   "group flex min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md";
 
-const channelLinkClass =
-  "mt-auto inline-flex min-h-11 items-center self-start rounded-lg pt-6 text-sm font-bold text-orange-700 underline-offset-4 transition hover:text-orange-800 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-600";
+const darkChannelCardClass =
+  "group flex min-w-0 flex-col rounded-2xl border border-white/10 bg-white/[0.055] p-5 transition duration-200 hover:-translate-y-0.5 hover:border-emerald-400/30 hover:bg-white/[0.075] sm:p-6";
 
-function ChannelIcon({ icon: Icon }: Readonly<{ icon: LucideIcon }>) {
+const channelLinkClass =
+  "mt-auto inline-flex min-h-11 items-center self-start rounded-lg pt-6 text-sm font-bold underline-offset-4 transition hover:underline focus-visible:outline-2 focus-visible:outline-offset-4";
+
+function ChannelIcon({ dark = false, icon: Icon }: Readonly<{ dark?: boolean; icon: LucideIcon }>) {
   return (
-    <span className="flex size-12 items-center justify-center rounded-xl bg-[#071a2f] text-white shadow-sm">
+    <span className={`flex items-center justify-center rounded-xl ${dark ? "size-11 bg-emerald-400/10 text-emerald-300 ring-1 ring-inset ring-emerald-300/15" : "size-12 bg-[#071a2f] text-white shadow-sm"}`}>
       <Icon aria-hidden="true" size={23} strokeWidth={2} />
     </span>
   );
 }
 
-function HoursList({ value, variant }: Readonly<{ value: string; variant: "regular" | "guard" }>) {
+function HoursList({ dark = false, value, variant }: Readonly<{ dark?: boolean; value: string; variant: "regular" | "guard" }>) {
   const lines = value.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-  const valueClass = variant === "guard"
+  const valueClass = dark
+    ? "bg-emerald-400/10 text-emerald-200 ring-1 ring-inset ring-emerald-300/15"
+    : variant === "guard"
     ? "bg-orange-100 text-orange-800"
     : "bg-slate-100 text-[#071a2f]";
   const rowPaddingClass = variant === "guard" ? "py-2.5" : "py-3";
+  const rowClass = dark ? "border-white/10 text-slate-300" : "border-slate-200 text-slate-600";
+  const labelClass = dark ? "text-white" : "text-slate-900";
 
   return (
     <ul className="mt-4">
@@ -30,15 +37,15 @@ function HoursList({ value, variant }: Readonly<{ value: string; variant: "regul
         const separatorIndex = line.indexOf(":");
 
         if (separatorIndex === -1) {
-          return <li className={`break-words border-b border-slate-200 text-sm leading-6 text-slate-600 last:border-b-0 sm:text-base ${rowPaddingClass}`} key={`${line}-${index}`}>{line}</li>;
+          return <li className={`break-words border-b text-sm leading-6 last:border-b-0 sm:text-base ${rowClass} ${rowPaddingClass}`} key={`${line}-${index}`}>{line}</li>;
         }
 
         const label = line.slice(0, separatorIndex).trim();
         const hours = line.slice(separatorIndex + 1).trim();
 
         return (
-          <li className={`flex min-w-0 flex-col items-start gap-2 border-b border-slate-200 last:border-b-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4 ${rowPaddingClass}`} key={`${line}-${index}`}>
-            <span className="min-w-0 break-words font-semibold text-slate-900">{label}</span>
+          <li className={`flex min-w-0 flex-col items-start gap-2 border-b last:border-b-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4 ${rowClass} ${rowPaddingClass}`} key={`${line}-${index}`}>
+            <span className={`min-w-0 break-words font-semibold ${labelClass}`}>{label}</span>
             <span className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-sm font-bold ${valueClass}`}>{hours}</span>
           </li>
         );
@@ -56,65 +63,74 @@ export function ContactSection({ contact, unavailable, homeHogar = false }: Read
   const mapUrl = contact?.address
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}`
     : null;
+  const cardClass = homeHogar ? darkChannelCardClass : channelCardClass;
+  const cardEyebrowClass = homeHogar ? "text-slate-400" : "text-slate-500";
+  const cardValueClass = homeHogar ? "text-white" : "text-slate-950";
+  const linkClass = homeHogar
+    ? "text-emerald-300 hover:text-emerald-200 focus-visible:outline-emerald-300"
+    : "text-orange-700 hover:text-orange-800 focus-visible:outline-orange-600";
+  const scheduleCardClass = homeHogar
+    ? "rounded-2xl border border-white/10 bg-white/[0.055] p-5 sm:p-6"
+    : "rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7";
 
   return (
-    <section className={`scroll-mt-24 py-16 sm:py-20 lg:py-24 ${homeHogar ? "bg-[#071a2f] text-white" : "border-t border-slate-200 bg-slate-50"}`} id="contacto" aria-labelledby="contact-title">
+    <section className={`scroll-mt-24 ${homeHogar ? "bg-[#06182c] py-16 text-white sm:py-20" : "border-t border-slate-200 bg-slate-50 py-20 sm:py-24"}`} id="contacto" aria-labelledby="contact-title">
       <div className="public-container">
         <div className="text-center">
           <p className={homeHogar ? "text-xs font-black uppercase tracking-[0.2em] text-emerald-400 sm:text-sm" : "public-eyebrow"}>Contacto</p>
-          <h2 className={`mt-3 text-4xl font-black tracking-tight text-balance sm:text-5xl ${homeHogar ? "text-white" : "text-slate-950"}`} id="contact-title">Estamos para ayudarte</h2>
+          <h2 className={homeHogar ? "mt-3 text-4xl font-black tracking-tight text-white text-balance sm:text-5xl" : "public-heading mt-3"} id="contact-title">Estamos para ayudarte</h2>
           <p className={`mx-auto mt-5 max-w-2xl text-base leading-7 sm:text-lg ${homeHogar ? "text-slate-300" : "text-slate-600"}`}>Elegí el canal que necesites. También contamos con guardia de soporte fuera del horario habitual.</p>
         </div>
         {unavailable ? <p className="public-empty-state" role="status">Los datos de contacto no están disponibles en este momento.</p> : contact ? (
-          <div className="mx-auto mt-10 max-w-6xl">
-            <ul className={`grid list-none gap-5 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] ${homeHogar ? "[&_li]:border-white/15 [&_li]:shadow-black/10" : ""}`}>
+          <div className={`mx-auto max-w-6xl ${homeHogar ? "mt-9 sm:mt-10" : "mt-10"}`}>
+            <ul className={`grid list-none sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] ${homeHogar ? "gap-4" : "gap-5"}`}>
               {whatsapp && (
-                <li className={channelCardClass}>
-                  <ChannelIcon icon={MessageCircle} />
-                  <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">WhatsApp</p>
-                  <p className="mt-2 break-words text-lg font-bold text-slate-950">{whatsapp}</p>
-                  <a className={`${channelLinkClass} text-emerald-700 hover:text-emerald-800 focus-visible:outline-emerald-600`} href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">Escribir por WhatsApp <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                <li className={cardClass}>
+                  <ChannelIcon dark={homeHogar} icon={MessageCircle} />
+                  <p className={`${homeHogar ? "mt-5" : "mt-6"} text-xs font-black uppercase tracking-[0.16em] ${cardEyebrowClass}`}>WhatsApp</p>
+                  <p className={`mt-2 break-words text-lg font-bold ${cardValueClass}`}>{whatsapp}</p>
+                  <a className={`${channelLinkClass} ${homeHogar ? linkClass : "text-emerald-700 hover:text-emerald-800 focus-visible:outline-emerald-600"}`} href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">Escribir por WhatsApp <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
               {contact.commercial_email && (
-                <li className={channelCardClass}>
-                  <ChannelIcon icon={Mail} />
-                  <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Email comercial</p>
-                  <p className="mt-2 min-w-0 break-words text-[15px] font-bold text-slate-950">{contact.commercial_email}</p>
-                  <a className={`${channelLinkClass} ${homeHogar ? "text-emerald-700 hover:text-emerald-800 focus-visible:outline-emerald-600" : ""}`} href={`mailto:${contact.commercial_email}`}>Enviar email <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                <li className={cardClass}>
+                  <ChannelIcon dark={homeHogar} icon={Mail} />
+                  <p className={`${homeHogar ? "mt-5" : "mt-6"} text-xs font-black uppercase tracking-[0.16em] ${cardEyebrowClass}`}>Email comercial</p>
+                  <p className={`mt-2 min-w-0 break-words text-[15px] font-bold ${cardValueClass}`}>{contact.commercial_email}</p>
+                  <a className={`${channelLinkClass} ${linkClass}`} href={`mailto:${contact.commercial_email}`}>Enviar email <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
               {contact.address && mapUrl && (
-                <li className={channelCardClass}>
-                  <ChannelIcon icon={MapPin} />
-                  <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Dónde estamos</p>
-                  <p className="mt-2 break-words text-lg font-bold text-slate-950">{contact.address}</p>
-                  <a className={`${channelLinkClass} ${homeHogar ? "text-emerald-700 hover:text-emerald-800 focus-visible:outline-emerald-600" : ""}`} href={mapUrl} rel="noreferrer" target="_blank">Cómo llegar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                <li className={cardClass}>
+                  <ChannelIcon dark={homeHogar} icon={MapPin} />
+                  <p className={`${homeHogar ? "mt-5" : "mt-6"} text-xs font-black uppercase tracking-[0.16em] ${cardEyebrowClass}`}>Dónde estamos</p>
+                  <p className={`mt-2 break-words text-lg font-bold ${cardValueClass}`}>{contact.address}</p>
+                  <a className={`${channelLinkClass} ${linkClass}`} href={mapUrl} rel="noreferrer" target="_blank">Cómo llegar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
               {phone && (
-                <li className={channelCardClass}>
-                  <ChannelIcon icon={Phone} />
-                  <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Teléfono</p>
-                  <p className="mt-2 break-words text-lg font-bold text-slate-950">{phone}</p>
-                  <a className={`${channelLinkClass} ${homeHogar ? "text-emerald-700 hover:text-emerald-800 focus-visible:outline-emerald-600" : ""}`} href={`tel:${phone.replace(/[^\d+]/g, "")}`}>Llamar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                <li className={cardClass}>
+                  <ChannelIcon dark={homeHogar} icon={Phone} />
+                  <p className={`${homeHogar ? "mt-5" : "mt-6"} text-xs font-black uppercase tracking-[0.16em] ${cardEyebrowClass}`}>Teléfono</p>
+                  <p className={`mt-2 break-words text-lg font-bold ${cardValueClass}`}>{phone}</p>
+                  <a className={`${channelLinkClass} ${linkClass}`} href={`tel:${phone.replace(/[^\d+]/g, "")}`}>Llamar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
             </ul>
 
-            <div className={`mt-5 grid items-start gap-5 md:grid-cols-2 ${homeHogar ? "[&_article]:border-white/15 [&_article]:shadow-black/10" : ""}`}>
-              <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
-                <ChannelIcon icon={Clock3} />
-                <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-slate-500">Atención habitual</p>
-                <h3 className="mt-2 text-xl font-bold text-slate-950">Horarios de atención</h3>
-                {contact.business_hours && <HoursList value={contact.business_hours} variant="regular" />}
+            <div className={`grid items-start md:grid-cols-2 ${homeHogar ? "mt-4 gap-4" : "mt-5 gap-5"}`}>
+              <article className={scheduleCardClass}>
+                <ChannelIcon dark={homeHogar} icon={Clock3} />
+                <p className={`${homeHogar ? "mt-5" : "mt-6"} text-xs font-black uppercase tracking-[0.16em] ${cardEyebrowClass}`}>Atención habitual</p>
+                <h3 className={`mt-2 text-xl font-bold ${cardValueClass}`}>Horarios de atención</h3>
+                {contact.business_hours && <HoursList dark={homeHogar} value={contact.business_hours} variant="regular" />}
               </article>
-              <article className="rounded-2xl border border-orange-200 bg-orange-50 p-6 shadow-sm sm:p-7">
-                <ChannelIcon icon={Headset} />
-                <p className="mt-6 text-xs font-black uppercase tracking-[0.16em] text-orange-700">Fuera del horario habitual</p>
-                <h3 className="mt-2 text-xl font-bold text-slate-950">Guardia de soporte</h3>
-                {contact.guard_hours && <HoursList value={contact.guard_hours} variant="guard" />}
-                {whatsapp && <a className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 py-2.5 text-center font-bold text-white transition hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600" href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">WhatsApp de guardia</a>}
+              <article className={homeHogar ? scheduleCardClass : "rounded-2xl border border-orange-200 bg-orange-50 p-6 shadow-sm sm:p-7"}>
+                <ChannelIcon dark={homeHogar} icon={Headset} />
+                <p className={`${homeHogar ? "mt-5 text-slate-400" : "mt-6 text-orange-700"} text-xs font-black uppercase tracking-[0.16em]`}>Fuera del horario habitual</p>
+                <h3 className={`mt-2 text-xl font-bold ${cardValueClass}`}>Guardia de soporte</h3>
+                {contact.guard_hours && <HoursList dark={homeHogar} value={contact.guard_hours} variant="guard" />}
+                {whatsapp && <a className={`mt-4 inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-2.5 text-center font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 ${homeHogar ? "bg-emerald-400 text-[#06182c] hover:bg-emerald-300 focus-visible:outline-emerald-300" : "bg-emerald-600 text-white hover:bg-emerald-700 focus-visible:outline-emerald-600"}`} href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">WhatsApp de guardia</a>}
               </article>
             </div>
           </div>

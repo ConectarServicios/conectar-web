@@ -8,6 +8,7 @@ import { ConectarPlayHomeSection } from "@/components/public/conectar-play-home-
 import { PlansSection } from "@/components/public/plans-section";
 import { HomeSecuritySection } from "@/components/public/home-security-section";
 import { HomeServicesSection } from "@/components/public/home-services-section";
+import { HomeSocialProofSection } from "@/components/public/home-social-proof-section";
 import { ContactSection } from "@/components/public/contact-section";
 import { createClient } from "@/lib/supabase/server";
 import { getPlayPlans, getPlaySettings } from "@/lib/supabase/conectar-play";
@@ -92,6 +93,7 @@ export default async function HomePage() {
             <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
             <HomeSecuritySection />
             <HomeServicesSection />
+            <HomeSocialProofSection />
             <EventsHomeSection imageUrls={eventImages} items={events} />
             <InstitutionalSection />
             <NewsHomeSection imageUrls={newsImages} items={news} />

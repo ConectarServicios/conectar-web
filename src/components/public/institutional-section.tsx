@@ -18,7 +18,7 @@ const values = [
 
 export function InstitutionalSection() {
   return (
-    <section className="relative overflow-hidden bg-brand-navy py-20 text-white sm:py-28" aria-labelledby="institutional-title">
+    <section className="relative scroll-mt-20 overflow-hidden bg-brand-navy py-20 text-white sm:py-28" id="quienes-somos" aria-labelledby="institutional-title">
       <div className="absolute right-0 top-0 size-80 translate-x-1/2 -translate-y-1/2 rounded-full border-[4rem] border-orange-400/10" aria-hidden="true" />
       <div className="public-container relative">
         <div className="max-w-3xl">

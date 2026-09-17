@@ -1,11 +1,12 @@
 import Link from "next/link";
 
+import { normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 import { getPublicPromotions } from "@/lib/supabase/promotions";
 
 export async function PromoTopBar() {
   const [item] = await getPublicPromotions("top_bar", 1);
   if (!item) return null;
-  const href = item.button_url || `/promociones/${item.slug}`;
+  const href = normalizePublicNavigationUrl(item.button_url || `/promociones/${item.slug}`);
   const external = /^https?:\/\//.test(href);
 
   return (

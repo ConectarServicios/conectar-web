@@ -4,11 +4,12 @@ import Link from "next/link";
 import { PromotionCard } from "@/components/public/promotion-card";
 import { createClient } from "@/lib/supabase/server";
 import { getPublicPromotions, promotionImageUrl } from "@/lib/supabase/promotions";
+import { normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 import { argentinaDateFormatter } from "@/lib/utils/news-dates";
 import type { Promotion, PromotionPlacement } from "@/types/promotions";
 
 function WideContextualPromotion({ item, imageUrl }: Readonly<{ item: Promotion; imageUrl: string | null }>) {
-  const href = item.button_url || `/promociones/${item.slug}`;
+  const href = normalizePublicNavigationUrl(item.button_url || `/promociones/${item.slug}`);
   const external = /^https?:\/\//.test(href);
 
   return (

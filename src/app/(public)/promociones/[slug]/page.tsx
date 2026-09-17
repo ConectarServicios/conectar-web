@@ -6,6 +6,7 @@ import { cache } from "react";
 
 import { getPublicPromotion, promotionImageUrl } from "@/lib/supabase/promotions";
 import { createClient } from "@/lib/supabase/server";
+import { normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 import { argentinaDateFormatter } from "@/lib/utils/news-dates";
 
 type Props = Readonly<{ params: Promise<{ slug: string }> }>;
@@ -31,7 +32,7 @@ export default async function PromotionDetail({ params }: Props) {
   if (!item) notFound();
   const supabase = await createClient();
   const image = promotionImageUrl(supabase, item.image_path);
-  const href = item.button_url;
+  const href = item.button_url ? normalizePublicNavigationUrl(item.button_url) : null;
 
   return (
     <main><article className="py-12 sm:py-20"><div className="public-container max-w-5xl">

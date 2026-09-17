@@ -1,8 +1,6 @@
-"use client";
-
 import { ArrowRight } from "lucide-react";
 
-import { usePublicSegment, type PublicSegment } from "@/components/public/public-segment-context";
+export type PublicSegment = "hogar" | "corporativo";
 
 const content = {
   hogar: {
@@ -42,8 +40,7 @@ const trustItems = {
   ],
 };
 
-export function HeroSection() {
-  const { segment } = usePublicSegment();
+export function HeroSection({ segment }: Readonly<{ segment: PublicSegment }>) {
   const current = content[segment];
   const isHome = segment === "hogar";
 

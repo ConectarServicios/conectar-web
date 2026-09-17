@@ -1,43 +1,7 @@
-import {
-  Binary,
-  BrickWall,
-  Radar,
-  ShieldCheck,
-  type LucideIcon,
-} from "lucide-react";
-
 import { CorporateServiceCard } from "@/components/public/corporate-service-card";
+import { getCorporateServicesByGroup } from "@/data/services/queries";
 
-const services: ReadonlyArray<{
-  description: string;
-  icon: LucideIcon;
-  title: string;
-}> = [
-  {
-    title: "Monitoreo de seguridad 24/7",
-    description:
-      "Detección de amenazas y respuesta a incidentes con monitoreo continuo de tu infraestructura.",
-    icon: Radar,
-  },
-  {
-    title: "Firewall gestionado",
-    description:
-      "Firewall perimetral administrado: reglas, segmentación, filtrado y reportes de tráfico.",
-    icon: BrickWall,
-  },
-  {
-    title: "VPN corporativa",
-    description:
-      "Acceso remoto seguro a tu red y servidores para equipos y sucursales, cifrado extremo a extremo.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Soluciones a medida",
-    description:
-      "Desarrollo de software e integraciones adaptadas a los procesos de tu organización.",
-    icon: Binary,
-  },
-];
+const services = getCorporateServicesByGroup("seguridad-gestionada");
 
 export function CorporateSecuritySection() {
   return (
@@ -60,7 +24,11 @@ export function CorporateSecuritySection() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:mt-10 lg:grid-cols-4 lg:gap-5">
           {services.map((service) => (
-            <CorporateServiceCard key={service.title} tone="slate" {...service} />
+            <CorporateServiceCard
+              key={service.slug}
+              service={service}
+              tone="slate"
+            />
           ))}
         </div>
       </div>

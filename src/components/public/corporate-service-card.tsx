@@ -1,20 +1,62 @@
-import { ArrowUpRight, type LucideIcon } from "lucide-react";
+import {
+  ArrowLeftRight,
+  ArrowUpRight,
+  Binary,
+  Boxes,
+  BrickWall,
+  Cable,
+  Cloud,
+  DatabaseBackup,
+  EthernetPort,
+  Gauge,
+  GitBranch,
+  MailCheck,
+  Network,
+  Phone,
+  Radar,
+  RadioTower,
+  ServerCog,
+  ShieldCheck,
+  Warehouse,
+  Wifi,
+  type LucideIcon,
+} from "lucide-react";
+
+import type { ServiceDefinition, ServiceIcon } from "@/data/services/types";
+
+const serviceIcons = {
+  "arrow-left-right": ArrowLeftRight,
+  binary: Binary,
+  boxes: Boxes,
+  "brick-wall": BrickWall,
+  cable: Cable,
+  cloud: Cloud,
+  "database-backup": DatabaseBackup,
+  "ethernet-port": EthernetPort,
+  gauge: Gauge,
+  "git-branch": GitBranch,
+  "mail-check": MailCheck,
+  network: Network,
+  phone: Phone,
+  radar: Radar,
+  "radio-tower": RadioTower,
+  "server-cog": ServerCog,
+  "shield-check": ShieldCheck,
+  warehouse: Warehouse,
+  wifi: Wifi,
+} satisfies Record<ServiceIcon, LucideIcon>;
 
 type CorporateServiceCardProps = {
-  ctaLabel?: string;
-  description: string;
-  icon: LucideIcon;
-  title: string;
+  service: ServiceDefinition;
   tone?: "white" | "slate";
 };
 
 export function CorporateServiceCard({
-  ctaLabel = "Conocer más",
-  description,
-  icon: Icon,
-  title,
+  service,
   tone = "white",
 }: CorporateServiceCardProps) {
+  const Icon = serviceIcons[service.icon];
+
   return (
     <article
       className={`group flex h-full flex-col rounded-2xl border border-slate-200 p-5 shadow-sm shadow-slate-950/5 transition duration-200 hover:-translate-y-1 hover:border-[#2f6bff]/30 hover:shadow-lg hover:shadow-slate-950/10 sm:p-6 ${
@@ -28,16 +70,16 @@ export function CorporateServiceCard({
         <Icon size={23} strokeWidth={2} />
       </span>
       <h3 className="font-display mt-4 text-lg font-bold tracking-[-0.025em] text-[#0b2038] sm:text-xl">
-        {title}
+        {service.title}
       </h3>
       <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">
-        {description}
+        {service.shortDescription}
       </p>
       <a
         className="mt-4 inline-flex w-fit items-center gap-2 rounded-sm text-sm font-bold text-[#2456d6] outline-none transition-colors hover:text-[#173b99] focus-visible:ring-2 focus-visible:ring-[#2f6bff] focus-visible:ring-offset-4"
-        href="#contacto"
+        href={service.href ?? "#contacto"}
       >
-        {ctaLabel}
+        {service.cta?.label ?? "Conocer más"}
         <ArrowUpRight aria-hidden="true" size={16} strokeWidth={2.5} />
       </a>
     </article>

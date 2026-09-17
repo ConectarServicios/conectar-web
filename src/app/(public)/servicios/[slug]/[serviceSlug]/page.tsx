@@ -33,10 +33,12 @@ export default async function ServiceDetailPage({ params }: Props) {
   const service = getServiceBySlugs(slug, serviceSlug);
 
   if (!group || !service) notFound();
-  if (!service.hasDetailPage && service.href?.startsWith("/")) {
-    permanentRedirect(service.href);
+  if (!service.hasDetailPage) {
+    permanentRedirect(
+      service.href?.startsWith("/") ? service.href : "/#contacto",
+    );
   }
-  if (!service.hasDetailPage || !service.detail) notFound();
+  if (!service.detail) notFound();
 
   return (
     <main>

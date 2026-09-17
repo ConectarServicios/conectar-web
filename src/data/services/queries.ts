@@ -15,6 +15,14 @@ export function getPublicServiceGroups(): readonly ServiceGroupDefinition[] {
   return getServiceGroups().filter((group) => group.showOnServicesIndex);
 }
 
+export function getPublicServiceGroupsBySegment(
+  segment: ServiceSegment,
+): readonly ServiceGroupDefinition[] {
+  return getPublicServiceGroups().filter((group) =>
+    group.segments.includes(segment),
+  );
+}
+
 export function getServiceGroupBySlug(
   slug: string,
 ): ServiceGroupDefinition | undefined {

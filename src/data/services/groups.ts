@@ -10,7 +10,7 @@ export const serviceGroups = [
     icon: "wifi",
     order: 1,
     showOnServicesIndex: true,
-    hasLandingPage: true,
+    hasLandingPage: false,
   },
   {
     slug: "seguridad-hogar",
@@ -21,7 +21,7 @@ export const serviceGroups = [
     icon: "bell-ring",
     order: 2,
     showOnServicesIndex: true,
-    hasLandingPage: true,
+    hasLandingPage: false,
   },
   {
     slug: "entretenimiento",
@@ -32,7 +32,7 @@ export const serviceGroups = [
     icon: "tv",
     order: 3,
     showOnServicesIndex: true,
-    hasLandingPage: true,
+    hasLandingPage: false,
   },
   {
     slug: "conectividad",
@@ -43,7 +43,7 @@ export const serviceGroups = [
     icon: "network",
     order: 4,
     showOnServicesIndex: true,
-    hasLandingPage: true,
+    hasLandingPage: false,
   },
   {
     slug: "infraestructura",
@@ -54,7 +54,7 @@ export const serviceGroups = [
     icon: "server-cog",
     order: 5,
     showOnServicesIndex: true,
-    hasLandingPage: true,
+    hasLandingPage: false,
   },
   {
     slug: "seguridad-gestionada",
@@ -65,7 +65,7 @@ export const serviceGroups = [
     icon: "shield-check",
     order: 6,
     showOnServicesIndex: true,
-    hasLandingPage: true,
+    hasLandingPage: false,
   },
 ] as const satisfies readonly ServiceGroupDefinition[];
 

@@ -79,7 +79,6 @@ export default async function HomePage() {
     <main>
       <HeroSection />
       <HomeSegmentContent
-        corporativo={<HomeCorporativoContent />}
         hogar={(
           <>
             <PromotionsSection imageUrls={promotionImages} items={promotions} />
@@ -92,16 +91,22 @@ export default async function HomePage() {
             <ContextualPromotions exclude={promotions.map((item) => item.id)} placement="plans" />
             <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
             <HomeSecuritySection />
-            <HomeServicesSection />
-            <HomeSocialProofSection />
             <EventsHomeSection imageUrls={eventImages} items={events} />
             <InstitutionalSection />
             <NewsHomeSection imageUrls={newsImages} items={news} />
+            <HomeServicesSection />
+            <HomeSocialProofSection />
             <FaqHomeSection items={featuredFaqs} />
+            <ContactSection contact={contact.data} homeHogar unavailable={contact.unavailable} />
+          </>
+        )}
+        corporativo={(
+          <>
+            <HomeCorporativoContent />
+            <ContactSection contact={contact.data} homeCorporativo unavailable={contact.unavailable} />
           </>
         )}
       />
-      <ContactSection contact={contact.data} unavailable={contact.unavailable} />
     </main>
   );
 }

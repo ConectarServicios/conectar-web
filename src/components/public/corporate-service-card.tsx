@@ -1,50 +1,7 @@
-import {
-  ArrowLeftRight,
-  ArrowUpRight,
-  Binary,
-  Boxes,
-  BrickWall,
-  Cable,
-  Cloud,
-  DatabaseBackup,
-  EthernetPort,
-  Gauge,
-  GitBranch,
-  MailCheck,
-  Network,
-  Phone,
-  Radar,
-  RadioTower,
-  ServerCog,
-  ShieldCheck,
-  Warehouse,
-  Wifi,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
-import type { ServiceDefinition, ServiceIcon } from "@/data/services/types";
-
-const serviceIcons = {
-  "arrow-left-right": ArrowLeftRight,
-  binary: Binary,
-  boxes: Boxes,
-  "brick-wall": BrickWall,
-  cable: Cable,
-  cloud: Cloud,
-  "database-backup": DatabaseBackup,
-  "ethernet-port": EthernetPort,
-  gauge: Gauge,
-  "git-branch": GitBranch,
-  "mail-check": MailCheck,
-  network: Network,
-  phone: Phone,
-  radar: Radar,
-  "radio-tower": RadioTower,
-  "server-cog": ServerCog,
-  "shield-check": ShieldCheck,
-  warehouse: Warehouse,
-  wifi: Wifi,
-} satisfies Record<ServiceIcon, LucideIcon>;
+import { ServiceCatalogIcon } from "@/components/public/service-catalog-icon";
+import type { ServiceDefinition } from "@/data/services/types";
 
 type CorporateServiceCardProps = {
   service: ServiceDefinition;
@@ -55,8 +12,6 @@ export function CorporateServiceCard({
   service,
   tone = "white",
 }: CorporateServiceCardProps) {
-  const Icon = serviceIcons[service.icon];
-
   return (
     <article
       className={`group flex h-full flex-col rounded-2xl border border-slate-200 p-5 shadow-sm shadow-slate-950/5 transition duration-200 hover:-translate-y-1 hover:border-[#2f6bff]/30 hover:shadow-lg hover:shadow-slate-950/10 sm:p-6 ${
@@ -67,7 +22,7 @@ export function CorporateServiceCard({
         aria-hidden="true"
         className="flex size-11 items-center justify-center rounded-xl bg-[#e9efff] text-[#2456d6] transition-colors group-hover:bg-[#2f6bff] group-hover:text-white"
       >
-        <Icon size={23} strokeWidth={2} />
+        <ServiceCatalogIcon icon={service.icon} />
       </span>
       <h3 className="font-display mt-4 text-lg font-bold tracking-[-0.025em] text-[#0b2038] sm:text-xl">
         {service.title}

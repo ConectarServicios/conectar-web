@@ -6,7 +6,8 @@ import { HomeSegmentContent } from "@/components/public/home-segment-content";
 import { InstitutionalSection } from "@/components/public/institutional-section";
 import { ConectarPlayHomeSection } from "@/components/public/conectar-play-home-section";
 import { PlansSection } from "@/components/public/plans-section";
-import { ServicesSection } from "@/components/public/services-section";
+import { HomeSecuritySection } from "@/components/public/home-security-section";
+import { HomeServicesSection } from "@/components/public/home-services-section";
 import { ContactSection } from "@/components/public/contact-section";
 import { createClient } from "@/lib/supabase/server";
 import { getPlayPlans, getPlaySettings } from "@/lib/supabase/conectar-play";
@@ -20,11 +21,8 @@ import { ContextualPromotions } from "@/components/public/contextual-promotions"
 import { EventsHomeSection } from "@/components/public/events-home-section";
 import { eventImageUrl, getUpcomingPublicEvents } from "@/lib/supabase/events";
 import { getFeaturedFaqs } from "@/lib/supabase/faqs";
-import { getPublicServiceAreas } from "@/lib/supabase/services";
 import { getPublicSiteConfiguration } from "@/lib/supabase/site-settings";
 import { FaqHomeSection } from "@/components/public/faq-home-section";
-import { FeaturedServicesSection } from "@/components/public/featured-services-section";
-import { getFeaturedServices, serviceMediaUrl } from "@/lib/supabase/services";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -60,10 +58,8 @@ async function getPublicPlans(): Promise<PublicData<Plan>> {
 }
 
 export default async function HomePage() {
-  const [plans, serviceAreas, featuredServices, siteConfiguration, playSettings, playPlans, contact, news, promotions, events, featuredFaqs] = await Promise.all([
+  const [plans, siteConfiguration, playSettings, playPlans, contact, news, promotions, events, featuredFaqs] = await Promise.all([
     getPublicPlans(),
-    getPublicServiceAreas(),
-    getFeaturedServices(3),
     getPublicSiteConfiguration(),
     getPlaySettings(),
     getPlayPlans(),
@@ -77,7 +73,6 @@ export default async function HomePage() {
   const newsImages = Object.fromEntries(news.map((item) => [item.id, newsImageUrl(supabase, item.cover_image)]));
   const promotionImages = Object.fromEntries(promotions.map((item) => [item.id, promotionImageUrl(supabase, item.image_path)]));
   const eventImages = Object.fromEntries(events.map((item) => [item.id, eventImageUrl(supabase, item.image_path)]));
-  const serviceImages = Object.fromEntries(featuredServices.data.map((item) => [item.id, serviceMediaUrl(supabase, item.service_media?.[0]?.image_path ?? null)]));
 
   return (
     <main>
@@ -95,11 +90,8 @@ export default async function HomePage() {
             />
             <ContextualPromotions exclude={promotions.map((item) => item.id)} placement="plans" />
             <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
-            <ServicesSection
-              areas={serviceAreas.data}
-              unavailable={serviceAreas.unavailable}
-            />
-            <FeaturedServicesSection imageUrls={serviceImages} services={featuredServices.data} />
+            <HomeSecuritySection />
+            <HomeServicesSection />
             <EventsHomeSection imageUrls={eventImages} items={events} />
             <InstitutionalSection />
             <NewsHomeSection imageUrls={newsImages} items={news} />

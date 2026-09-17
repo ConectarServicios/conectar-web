@@ -11,7 +11,7 @@ import { isAllowedContactNumber } from "@/lib/validations/contact-information";
 import type { SiteConfiguration } from "@/types/site-settings";
 
 const navigation = [
-  { href: "/#servicios", label: "Servicios" },
+  { href: "/servicios", label: "Servicios" },
   { href: "/#contacto", label: "Contacto" },
 ];
 

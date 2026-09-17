@@ -1,4 +1,5 @@
 import { ArrowUpRight, Headset } from "lucide-react";
+import Link from "next/link";
 
 import { HomeServiceCard } from "@/components/public/home-service-card";
 import { getHomeServicesByGroup } from "@/data/services/queries";
@@ -58,6 +59,14 @@ export function HomeServicesSection() {
               />
             </a>
           </article>
+        </div>
+        <div className="mt-8 flex justify-center sm:mt-10">
+          <Link
+            className="inline-flex min-h-11 items-center justify-center rounded-xl border border-emerald-700 px-5 py-2.5 text-sm font-bold text-emerald-800 transition-colors hover:bg-emerald-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-600"
+            href="/servicios"
+          >
+            Ver todos los servicios
+          </Link>
         </div>
       </div>
     </section>

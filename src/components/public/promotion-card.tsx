@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 import { argentinaDateFormatter } from "@/lib/utils/news-dates";
 import type { Promotion } from "@/types/promotions";
 
 export function PromotionCard({ item, imageUrl, compact = false }: Readonly<{
   item: Promotion; imageUrl: string | null; compact?: boolean;
 }>) {
-  const href = item.button_url || `/promociones/${item.slug}`;
+  const href = normalizePublicNavigationUrl(item.button_url || `/promociones/${item.slug}`);
   const external = /^https?:\/\//.test(href);
   return (
     <article className="group overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-lg shadow-slate-950/8">

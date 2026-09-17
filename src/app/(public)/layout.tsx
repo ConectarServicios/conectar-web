@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import { PublicFooter } from "@/components/public/public-footer";
 import { PublicHeader } from "@/components/public/public-header";
 import { PromoTopBar } from "@/components/public/promo-top-bar";
-import { PublicSegmentProvider } from "@/components/public/public-segment-context";
 import { getPublicContactInformation } from "@/lib/supabase/contact-information";
 import { getPublicSiteConfiguration } from "@/lib/supabase/site-settings";
 import { getSiteUrl } from "@/lib/utils/site-url";
@@ -49,13 +48,11 @@ export default async function PublicLayout({ children }: PublicLayoutProps) {
   ]);
 
   return (
-    <PublicSegmentProvider>
-      <div className="flex min-h-screen flex-col bg-white text-slate-950">
+    <div className="flex min-h-screen flex-col bg-white text-slate-950">
         <PromoTopBar />
         <PublicHeader configuration={configuration} whatsapp={contact.data?.whatsapp ?? null} />
         <div className="flex-1">{children}</div>
         <PublicFooter configuration={configuration} />
-      </div>
-    </PublicSegmentProvider>
+    </div>
   );
 }

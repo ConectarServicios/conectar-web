@@ -11,6 +11,7 @@ import {
   eventsOccurOnSameArgentinaDay,
   eventTimeFormatter,
 } from "@/lib/utils/event-dates";
+import { normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 import type { EventItem } from "@/types/events";
 
 const loadEvent = cache(async (slug: string) => {
@@ -62,7 +63,8 @@ export default async function EventDetail({
   const image = eventImageUrl(supabase, item.image_path);
   const start = item.starts_at ? new Date(item.starts_at) : null;
   const end = item.ends_at ? new Date(item.ends_at) : null;
-  const externalCta = /^https?:\/\//.test(item.button_url ?? "");
+  const buttonUrl = item.button_url ? normalizePublicNavigationUrl(item.button_url) : null;
+  const externalCta = /^https?:\/\//.test(buttonUrl ?? "");
   const legacyImage = /^https?:\/\//.test(item.image_path ?? "");
 
   return (
@@ -118,10 +120,10 @@ export default async function EventDetail({
         <div className="mt-10 whitespace-pre-wrap text-lg leading-8 text-slate-700">
           {item.description}
         </div>
-        {item.button_text && item.button_url && (
+        {item.button_text && buttonUrl && (
           <a
             className="public-button-primary mt-10"
-            href={item.button_url}
+            href={buttonUrl}
             rel={externalCta ? "noopener noreferrer" : undefined}
             target={externalCta ? "_blank" : undefined}
           >

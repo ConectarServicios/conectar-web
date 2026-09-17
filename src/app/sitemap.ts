@@ -5,7 +5,8 @@ import { getPublicContentSitemapRecords } from "@/lib/supabase/sitemap";
 import { getSiteUrl } from "@/lib/utils/site-url";
 
 const staticRoutes = [
-  "/",
+  "/hogar",
+  "/corporativo",
   "/servicios",
   "/conectar-play",
   "/promociones",

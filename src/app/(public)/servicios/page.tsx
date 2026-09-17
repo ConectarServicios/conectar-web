@@ -85,7 +85,7 @@ function ServiceGroupDisclosure({
             ? `/servicios/${group.slug}/${service.slug}`
             : hasOwnDestination
               ? service.href!
-              : "/#contacto";
+              : "/hogar#contacto";
 
           return (
             <li

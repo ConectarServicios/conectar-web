@@ -28,6 +28,9 @@ export default async function ConectarPlayPage() {
 
   const settings = settingsResult.data;
   const plans = plansResult.data;
+  const showsCompatibility = Boolean(
+    settings && (settings.compatibility_text || settings.incompatible_tv_text),
+  );
 
   return (
     <main>
@@ -59,12 +62,11 @@ export default async function ConectarPlayPage() {
               Ver planes
             </a>
 
-            <a
-              className="public-button-secondary-dark"
-              href="#compatibilidad"
-            >
-              Compatibilidad
-            </a>
+            {showsCompatibility && (
+              <a className="public-button-secondary-dark" href="#compatibilidad">
+                Compatibilidad
+              </a>
+            )}
           </div>
         </div>
       </section>
@@ -118,32 +120,31 @@ export default async function ConectarPlayPage() {
         </section>
       )}
 
-      {settings &&
-        (settings.compatibility_text || settings.incompatible_tv_text) && (
-          <section className="py-20" id="compatibilidad">
-            <div className="public-container grid gap-8 lg:grid-cols-2">
-              <div>
-                <p className="public-eyebrow">Compatibilidad</p>
+      {showsCompatibility && settings && (
+        <section className="py-20" id="compatibilidad">
+          <div className="public-container grid gap-8 lg:grid-cols-2">
+            <div>
+              <p className="public-eyebrow">Compatibilidad</p>
 
-                <h2 className="public-heading mt-3">
-                  Usalo en dispositivos compatibles
-                </h2>
-              </div>
-
-              <div className="space-y-4 text-lg leading-8 text-slate-600">
-                {settings.compatibility_text && (
-                  <p>{settings.compatibility_text}</p>
-                )}
-
-                {settings.incompatible_tv_text && (
-                  <p className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
-                    {settings.incompatible_tv_text}
-                  </p>
-                )}
-              </div>
+              <h2 className="public-heading mt-3">
+                Usalo en dispositivos compatibles
+              </h2>
             </div>
-          </section>
-        )}
+
+            <div className="space-y-4 text-lg leading-8 text-slate-600">
+              {settings.compatibility_text && (
+                <p>{settings.compatibility_text}</p>
+              )}
+
+              {settings.incompatible_tv_text && (
+                <p className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
+                  {settings.incompatible_tv_text}
+                </p>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       {settings?.web_url && (
         <section className="bg-white py-12">
@@ -307,7 +308,7 @@ export default async function ConectarPlayPage() {
 
             <Link
               className="public-button-primary mt-7"
-              href="/#contacto"
+              href="/hogar#contacto"
             >
               Ir a contacto
             </Link>

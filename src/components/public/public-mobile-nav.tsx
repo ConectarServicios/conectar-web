@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
-import { usePublicSegment } from "@/components/public/public-segment-context";
 import { SegmentSelector } from "@/components/public/segment-selector";
 
 type NavigationItem = {
@@ -19,7 +18,6 @@ type PublicMobileNavProps = Readonly<{
 
 export function PublicMobileNav({ items, selfServiceUrl, whatsappUrl }: PublicMobileNavProps) {
   const [open, setOpen] = useState(false);
-  const { segment } = usePublicSegment();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLElement>(null);
 
@@ -73,7 +71,7 @@ export function PublicMobileNav({ items, selfServiceUrl, whatsappUrl }: PublicMo
       </button>
       {open && (
         <nav
-          className="absolute inset-x-4 top-[4.75rem] rounded-2xl border border-white/10 bg-[#0b2440] p-3 shadow-2xl shadow-black/30"
+          className="absolute inset-x-4 top-[4.75rem] rounded-2xl border border-white/10 bg-brand-navy p-3 shadow-2xl shadow-black/30"
           id="mobile-navigation"
           aria-label="Navegación mobile"
           ref={menuRef}
@@ -101,7 +99,7 @@ export function PublicMobileNav({ items, selfServiceUrl, whatsappUrl }: PublicMo
           </a>
           {whatsappUrl && (
             <a
-              className={`mt-2 flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 py-3 font-extrabold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${segment === "hogar" ? "bg-[#12b886] text-[#03221b] hover:bg-[#18c996]" : "bg-[#2f6bff] text-white hover:bg-[#477dff]"}`}
+              className={`mt-2 flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 py-3 font-extrabold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white bg-whatsapp text-brand-navy-deep hover:bg-whatsapp-strong hover:text-white`}
               href={whatsappUrl}
               onClick={() => setOpen(false)}
               rel="noopener noreferrer"

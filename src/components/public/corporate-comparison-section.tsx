@@ -43,7 +43,7 @@ function ConectarValue({ children }: Readonly<{ children: string }>) {
     <span className="flex items-start gap-3 font-semibold text-[#123b9e]">
       <span
         aria-hidden="true"
-        className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-[#2f6bff] text-white"
+        className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-corporate-accent text-white"
       >
         <Check size={12} strokeWidth={3} />
       </span>
@@ -60,11 +60,11 @@ export function CorporateComparisonSection() {
     >
       <div className="public-container">
         <div className="max-w-3xl">
-          <p className="text-xs font-black tracking-[0.2em] text-[#2456d6] uppercase sm:text-sm">
+          <p className="text-xs font-black tracking-[0.2em] text-corporate-accent-strong uppercase sm:text-sm">
             Por qué elegirnos
           </p>
           <h2
-            className="font-display mt-4 text-3xl leading-[1.12] font-bold tracking-[-0.035em] text-[#0b2038] text-balance sm:text-4xl lg:text-5xl"
+            className="font-display mt-4 text-3xl leading-[1.12] font-bold tracking-[-0.035em] text-brand-navy text-balance sm:text-4xl lg:text-5xl"
             id="corporate-comparison-title"
           >
             Conectar vs. el proveedor tradicional
@@ -76,19 +76,19 @@ export function CorporateComparisonSection() {
             <caption className="sr-only">
               Comparación entre un proveedor tradicional y Conectar Servicios
             </caption>
-            <thead className="bg-[#071a2f] text-white">
+            <thead className="bg-brand-navy-deep text-white">
               <tr>
                 <th className="w-[22%] px-6 py-5 text-sm font-bold" scope="col">Tema</th>
                 <th className="w-[36%] px-6 py-5 text-sm font-bold" scope="col">Proveedor tradicional</th>
-                <th className="bg-[#2456d6] px-6 py-5 text-sm font-bold" scope="col">Conectar Servicios</th>
+                <th className="bg-corporate-accent-strong px-6 py-5 text-sm font-bold" scope="col">Conectar Servicios</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
               {comparisonRows.map((row) => (
                 <tr className="bg-white" key={row.topic}>
-                  <th className="px-6 py-5 text-sm font-bold text-[#0b2038]" scope="row">{row.topic}</th>
+                  <th className="px-6 py-5 text-sm font-bold text-brand-navy" scope="row">{row.topic}</th>
                   <td className="px-6 py-5 text-sm leading-6 text-slate-600">{row.traditional}</td>
-                  <td className="border-l border-[#2f6bff]/15 bg-[#2f6bff]/[0.055] px-6 py-5 text-sm leading-6">
+                  <td className="border-l border-corporate-accent/15 bg-corporate-accent/[0.055] px-6 py-5 text-sm leading-6">
                     <ConectarValue>{row.conectar}</ConectarValue>
                   </td>
                 </tr>
@@ -100,14 +100,14 @@ export function CorporateComparisonSection() {
         <div className="mt-10 grid gap-4 md:hidden">
           {comparisonRows.map((row) => (
             <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" key={row.topic}>
-              <h3 className="bg-[#071a2f] px-5 py-3 text-sm font-bold text-white">{row.topic}</h3>
+              <h3 className="bg-brand-navy-deep px-5 py-3 text-sm font-bold text-white">{row.topic}</h3>
               <dl>
                 <div className="px-5 py-4">
                   <dt className="text-xs font-bold tracking-[0.12em] text-slate-500 uppercase">Proveedor tradicional</dt>
                   <dd className="mt-2 text-sm leading-6 text-slate-600">{row.traditional}</dd>
                 </div>
-                <div className="border-t border-[#2f6bff]/15 bg-[#2f6bff]/[0.06] px-5 py-4">
-                  <dt className="mb-2 text-xs font-bold tracking-[0.12em] text-[#2456d6] uppercase">Conectar Servicios</dt>
+                <div className="border-t border-corporate-accent/15 bg-corporate-accent/[0.06] px-5 py-4">
+                  <dt className="mb-2 text-xs font-bold tracking-[0.12em] text-corporate-accent-strong uppercase">Conectar Servicios</dt>
                   <dd className="text-sm leading-6"><ConectarValue>{row.conectar}</ConectarValue></dd>
                 </div>
               </dl>

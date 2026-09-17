@@ -31,7 +31,7 @@ export default async function ConectarPlayPage() {
 
   return (
     <main>
-      <section className="relative overflow-hidden bg-[#071a2f] py-20 text-white sm:py-28">
+      <section className="relative overflow-hidden bg-brand-navy-deep py-20 text-white sm:py-28">
         <div
           className="public-grid-pattern absolute inset-0"
           aria-hidden="true"
@@ -178,7 +178,7 @@ export default async function ConectarPlayPage() {
 
       {settings?.onn_enabled && (
         <section
-          className="scroll-mt-24 bg-[#0b2440] py-20 text-white"
+          className="scroll-mt-24 bg-brand-navy py-20 text-white"
           id="stick"
         >
           <div className="public-container grid gap-10 lg:grid-cols-[1.3fr_.7fr] lg:items-center">
@@ -250,7 +250,7 @@ export default async function ConectarPlayPage() {
                   )}
 
                   {pack.price !== null && (
-                    <p className="mt-4 font-black text-[#0b2440]">
+                    <p className="mt-4 font-black text-brand-navy">
                       {money(pack.price)} / mes
                     </p>
                   )}
@@ -291,7 +291,7 @@ export default async function ConectarPlayPage() {
       )}
 
       {settings?.support_text && (
-        <section className="bg-[#071a2f] py-16 text-white">
+        <section className="bg-brand-navy-deep py-16 text-white">
           <div className="public-container text-center">
             <p className="text-sm font-black tracking-widest text-orange-400 uppercase">
               Soporte

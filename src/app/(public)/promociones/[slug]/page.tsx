@@ -40,7 +40,7 @@ export default async function PromotionDetail({ params }: Props) {
         <Image alt="" className="object-cover" fill priority sizes="(max-width: 1024px) 100vw, 1024px" src={image} unoptimized />
       </div>}
       <div className="mx-auto mt-10 max-w-3xl">
-        <h1 className="text-4xl font-black tracking-tight text-[#071a2f] sm:text-6xl">{item.title}</h1>
+        <h1 className="text-4xl font-black tracking-tight text-brand-navy-deep sm:text-6xl">{item.title}</h1>
         <p className="mt-6 text-xl leading-8 text-slate-600">{item.summary}</p>
         {(item.starts_at || item.ends_at) && <p className="mt-5 text-sm font-bold text-slate-500">
           {item.starts_at && `Desde el ${argentinaDateFormatter.format(new Date(item.starts_at))}`}

@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --gradient-home: linear-gradient(135deg, #ffad52 0%, #fa644b 100%);
 }
 
 @theme inline {
@@ -11,6 +12,28 @@
   --font-sans: var(--font-manrope), Arial, Helvetica, sans-serif;
   --font-display: var(--font-sora), Arial, Helvetica, sans-serif;
   --font-mono: "Courier New", Courier, monospace;
+  --color-brand-navy: #1e3250;
+  --color-brand-navy-deep: #071a2f;
+  --color-brand-orange: #f28a2e;
+  --color-brand-coral: #e9573f;
+  --color-brand-yellow: #f4c95d;
+  --color-home-accent: #f28a2e;
+  --color-home-accent-strong: #c94f28;
+  --color-home-coral: #e9573f;
+  --color-home-yellow: #f4c95d;
+  --color-home-surface: #fff7ed;
+  --color-home-surface-soft: #fffbf5;
+  --color-home-border: #f3d7bd;
+  --color-corporate-accent: #2f6bff;
+  --color-corporate-accent-strong: #2456d6;
+  --color-corporate-accent-soft: #8eabff;
+  --color-corporate-surface: #f5f8fc;
+  --color-corporate-surface-soft: #eef3fa;
+  --color-corporate-border: #d8e2ef;
+  --color-institutional-surface: #f7f6f2;
+  --color-success: #16835f;
+  --color-whatsapp: #25d366;
+  --color-whatsapp-strong: #128c4a;
 }
 
 body {
@@ -79,12 +102,13 @@ html {
   }
 
   .public-button-primary {
-    background: #f97316;
-    color: white;
+    background: var(--gradient-home);
+    color: #1e3250;
+    box-shadow: 0 10px 24px -16px rgb(233 87 63 / 0.8);
   }
 
   .public-button-primary:hover {
-    background: #ea580c;
+    filter: saturate(1.08) brightness(0.98);
     transform: translateY(-1px);
   }
 
@@ -120,6 +144,10 @@ html {
       linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
     background-size: 44px 44px;
     mask-image: linear-gradient(to bottom, black, transparent 90%);
+  }
+
+  .home-gradient {
+    background-image: var(--gradient-home);
   }
 }
 

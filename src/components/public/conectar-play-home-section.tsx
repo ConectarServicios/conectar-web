@@ -20,7 +20,7 @@ export function ConectarPlayHomeSection({
 
   return (
     <section
-      className="scroll-mt-24 overflow-hidden bg-slate-50 py-20 sm:py-24"
+      className="scroll-mt-24 overflow-hidden bg-white py-20 sm:py-24"
       id="conectar-play"
       aria-labelledby="home-play-title"
     >
@@ -40,7 +40,7 @@ export function ConectarPlayHomeSection({
             )}
 
             <Link
-              className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-[#12b886] px-6 py-3 text-center font-extrabold text-[#03221b] transition hover:-translate-y-0.5 hover:bg-[#18c996] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#087f5b] motion-reduce:transform-none sm:w-fit"
+              className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl home-gradient px-6 py-3 text-center font-extrabold text-[#03221b] transition hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-home-accent motion-reduce:transform-none sm:w-fit"
               href="/conectar-play"
             >
               Conocer Conectar Play
@@ -74,15 +74,15 @@ export function ConectarPlayHomeSection({
 
         {settings?.onn_enabled && (
           <aside
-            className="mt-6 flex flex-col gap-5 rounded-2xl border border-emerald-200 bg-emerald-50/70 px-5 py-5 sm:px-6 md:flex-row md:items-center md:justify-between"
+            className="mt-6 flex flex-col gap-5 rounded-2xl border border-home-border bg-home-surface/70 px-5 py-5 sm:px-6 md:flex-row md:items-center md:justify-between"
             aria-labelledby="home-play-stick-title"
           >
             <div className="max-w-2xl">
-              <p className="text-xs font-black tracking-[.16em] text-emerald-700 uppercase">
+              <p className="text-xs font-black tracking-[.16em] text-home-accent-strong uppercase">
                 Stick Conectar Play
               </p>
               <h3
-                className="mt-1.5 text-xl font-black text-[#0b2440]"
+                className="mt-1.5 text-xl font-black text-brand-navy"
                 id="home-play-stick-title"
               >
                 ¿Tu TV no es compatible?
@@ -93,7 +93,7 @@ export function ConectarPlayHomeSection({
             </div>
 
             <Link
-              className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 self-start rounded-xl border border-emerald-600 bg-white px-5 py-2.5 text-sm font-extrabold text-emerald-800 transition hover:border-emerald-700 hover:bg-emerald-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 md:self-auto"
+              className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 self-start rounded-xl border border-home-accent-strong bg-white px-5 py-2.5 text-sm font-extrabold text-home-accent-strong transition hover:border-home-accent-strong hover:bg-home-surface focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-home-accent md:self-auto"
               href="/conectar-play#stick"
             >
               Ver opciones del Stick
@@ -120,8 +120,8 @@ function Benefit({
   text: string;
 }) {
   return (
-    <li className="flex min-w-0 items-center gap-3 rounded-2xl border border-emerald-100 bg-white px-4 py-4 text-sm font-bold text-[#0b2440] shadow-sm sm:px-5">
-      <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+    <li className="flex min-w-0 items-center gap-3 rounded-2xl border border-home-border bg-white px-4 py-4 text-sm font-bold text-brand-navy shadow-sm sm:px-5">
+      <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-home-surface text-home-accent-strong">
         <Icon aria-hidden="true" size={20} strokeWidth={2.25} />
       </span>
       <span>{text}</span>

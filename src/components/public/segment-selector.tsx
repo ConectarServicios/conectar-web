@@ -23,8 +23,8 @@ export function SegmentSelector({ className = "" }: Readonly<{ className?: strin
             className={`min-h-9 rounded-full px-3.5 text-xs font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
               selected
                 ? item.value === "hogar"
-                  ? "bg-[#12b886] text-[#031d19] shadow-sm"
-                  : "bg-[#2f6bff] text-white shadow-sm"
+                  ? "home-gradient text-[#031d19] shadow-sm"
+                  : "bg-corporate-accent text-white shadow-sm"
                 : "text-slate-300 hover:bg-white/10 hover:text-white"
             }`}
             type="button"

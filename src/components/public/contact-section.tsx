@@ -16,11 +16,11 @@ type ContactVariant = "default" | "hogar" | "corporativo";
 
 function ChannelIcon({ icon: Icon, variant }: Readonly<{ icon: LucideIcon; variant: ContactVariant }>) {
   const darkClass = variant === "corporativo"
-    ? "size-11 bg-blue-400/10 text-blue-300 ring-1 ring-inset ring-blue-300/15"
-    : "size-11 bg-emerald-400/10 text-emerald-300 ring-1 ring-inset ring-emerald-300/15";
+    ? "size-11 bg-corporate-accent/15 text-corporate-accent-soft ring-1 ring-inset ring-corporate-accent/25"
+    : "size-11 bg-home-accent/15 text-home-yellow ring-1 ring-inset ring-home-accent/25";
 
   return (
-    <span className={`flex items-center justify-center rounded-xl ${variant === "default" ? "size-12 bg-[#071a2f] text-white shadow-sm" : darkClass}`}>
+    <span className={`flex items-center justify-center rounded-xl ${variant === "default" ? "size-12 bg-brand-navy-deep text-white shadow-sm" : darkClass}`}>
       <Icon aria-hidden="true" size={23} strokeWidth={2} />
     </span>
   );
@@ -30,12 +30,12 @@ function HoursList({ contactVariant, value, variant }: Readonly<{ contactVariant
   const lines = value.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
   const dark = contactVariant !== "default";
   const valueClass = contactVariant === "corporativo"
-    ? "bg-blue-400/10 text-blue-200 ring-1 ring-inset ring-blue-300/15"
+    ? "bg-corporate-accent/15 text-corporate-accent-soft ring-1 ring-inset ring-corporate-accent/25"
     : dark
-    ? "bg-emerald-400/10 text-emerald-200 ring-1 ring-inset ring-emerald-300/15"
+    ? "bg-home-accent/15 text-home-yellow ring-1 ring-inset ring-home-accent/25"
     : variant === "guard"
     ? "bg-orange-100 text-orange-800"
-    : "bg-slate-100 text-[#071a2f]";
+    : "bg-slate-100 text-brand-navy-deep";
   const rowPaddingClass = variant === "guard" ? "py-2.5" : "py-3";
   const rowClass = dark ? "border-white/10 text-slate-300" : "border-slate-200 text-slate-600";
   const labelClass = dark ? "text-white" : "text-slate-900";
@@ -74,24 +74,23 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
     : null;
   const variant: ContactVariant = homeCorporativo ? "corporativo" : homeHogar ? "hogar" : "default";
   const dark = variant !== "default";
-  const accent = variant === "corporativo" ? "blue" : "emerald";
   const cardClass = dark
-    ? `${darkChannelCardClass} ${accent === "blue" ? "hover:border-blue-400/30" : "hover:border-emerald-400/30"}`
+    ? `${darkChannelCardClass} ${variant === "corporativo" ? "hover:border-corporate-accent/35" : "hover:border-home-accent/35"}`
     : channelCardClass;
   const cardEyebrowClass = dark ? "text-slate-400" : "text-slate-500";
   const cardValueClass = dark ? "text-white" : "text-slate-950";
   const linkClass = variant === "corporativo"
-    ? "text-blue-300 hover:text-blue-200 focus-visible:outline-blue-300"
+    ? "text-corporate-accent-soft hover:text-white focus-visible:outline-corporate-accent-soft"
     : variant === "hogar"
-    ? "text-emerald-300 hover:text-emerald-200 focus-visible:outline-emerald-300"
+    ? "text-home-yellow hover:text-white focus-visible:outline-home-yellow"
     : "text-orange-700 hover:text-orange-800 focus-visible:outline-orange-600";
   const scheduleCardClass = dark
     ? "rounded-2xl border border-white/10 bg-white/[0.055] p-5 sm:p-6"
     : "rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7";
   const eyebrowClass = variant === "corporativo"
-    ? "text-xs font-black uppercase tracking-[0.2em] text-blue-400 sm:text-sm"
+    ? "text-xs font-black uppercase tracking-[0.2em] text-corporate-accent-soft sm:text-sm"
     : variant === "hogar"
-    ? "text-xs font-black uppercase tracking-[0.2em] text-emerald-400 sm:text-sm"
+    ? "text-xs font-black uppercase tracking-[0.2em] text-home-yellow sm:text-sm"
     : "public-eyebrow";
 
   return (
@@ -110,7 +109,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                   <ChannelIcon icon={MessageCircle} variant={variant} />
                   <p className={`${dark ? "mt-5" : "mt-6"} text-xs font-black uppercase tracking-[0.16em] ${cardEyebrowClass}`}>WhatsApp</p>
                   <p className={`mt-2 break-words text-lg font-bold ${cardValueClass}`}>{whatsapp}</p>
-                  <a className={`${channelLinkClass} ${dark ? linkClass : "text-emerald-700 hover:text-emerald-800 focus-visible:outline-emerald-600"}`} href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">Escribir por WhatsApp <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                  <a className={`${channelLinkClass} ${dark ? linkClass : "text-whatsapp-strong hover:text-success focus-visible:outline-whatsapp"}`} href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">Escribir por WhatsApp <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
               {contact.commercial_email && (
@@ -151,7 +150,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                 <p className={`${dark ? "mt-5 text-slate-400" : "mt-6 text-orange-700"} text-xs font-black uppercase tracking-[0.16em]`}>Fuera del horario habitual</p>
                 <h3 className={`mt-2 text-xl font-bold ${cardValueClass}`}>Guardia de soporte</h3>
                 {contact.guard_hours && <HoursList contactVariant={variant} value={contact.guard_hours} variant="guard" />}
-                {whatsapp && <a className={`mt-4 inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-2.5 text-center font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 ${variant === "corporativo" ? "bg-blue-400 text-[#06182c] hover:bg-blue-300 focus-visible:outline-blue-300" : variant === "hogar" ? "bg-emerald-400 text-[#06182c] hover:bg-emerald-300 focus-visible:outline-emerald-300" : "bg-emerald-600 text-white hover:bg-emerald-700 focus-visible:outline-emerald-600"}`} href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">WhatsApp de guardia</a>}
+                {whatsapp && <a className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-whatsapp px-5 py-2.5 text-center font-bold text-brand-navy-deep transition hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-whatsapp" href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">WhatsApp de guardia</a>}
               </article>
             </div>
           </div>

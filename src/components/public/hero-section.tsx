@@ -50,20 +50,20 @@ export function HeroSection() {
   return (
     <>
       <section
-        className="relative isolate scroll-mt-20 overflow-hidden bg-[#071a2f] text-white"
+        className="relative isolate scroll-mt-20 overflow-hidden bg-brand-navy-deep text-white"
         id="inicio"
         aria-labelledby="public-hero-title"
       >
         <div className="absolute inset-0 -z-10" aria-hidden="true">
-          <div className={`absolute inset-0 transition-opacity duration-500 ${isHome ? "bg-[radial-gradient(circle_at_78%_38%,rgba(18,184,134,.24),transparent_32%)]" : "bg-[radial-gradient(circle_at_78%_38%,rgba(47,107,255,.3),transparent_34%)]"}`} />
+          <div className={`absolute inset-0 transition-opacity duration-500 ${isHome ? "bg-[radial-gradient(circle_at_78%_38%,rgba(242,138,46,.22),transparent_32%)]" : "bg-[radial-gradient(circle_at_78%_38%,rgba(47,107,255,.3),transparent_34%)]"}`} />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_85%,rgba(31,112,184,.14),transparent_30%)]" />
           <div className="public-grid-pattern absolute inset-0 opacity-70" />
         </div>
 
         <div className="public-container flex min-h-[520px] items-center py-16 sm:py-20 lg:min-h-[560px] lg:py-24">
           <div className="max-w-[820px]">
-            <p className={`mb-6 inline-flex max-w-full items-center gap-2.5 rounded-full border px-4 py-2 text-xs leading-5 font-bold sm:text-sm ${isHome ? "border-[#12b886]/35 bg-[#12b886]/10 text-[#79e7c5]" : "border-[#2f6bff]/40 bg-[#2f6bff]/12 text-[#9bb7ff]"}`}>
-              <span className={`size-2 shrink-0 rounded-full ${isHome ? "bg-[#12b886] shadow-[0_0_14px_#12b886]" : "bg-[#2f6bff] shadow-[0_0_14px_#2f6bff]"}`} aria-hidden="true" />
+            <p className={`mb-6 inline-flex max-w-full items-center gap-2.5 rounded-full border px-4 py-2 text-xs leading-5 font-bold sm:text-sm ${isHome ? "border-home-accent/40 bg-home-accent/10 text-home-yellow" : "border-corporate-accent/40 bg-corporate-accent/12 text-[#9bb7ff]"}`}>
+              <span className={`size-2 shrink-0 rounded-full ${isHome ? "home-gradient shadow-[0_0_14px_#f28a2e]" : "bg-corporate-accent shadow-[0_0_14px_#2f6bff]"}`} aria-hidden="true" />
               {current.eyebrow}
             </p>
             <h1 className="font-display text-[clamp(2.5rem,5vw,3.7rem)] leading-[1.08] font-bold tracking-[-0.04em] text-balance" id="public-hero-title">
@@ -73,7 +73,7 @@ export function HeroSection() {
               {current.description}
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transform-none ${isHome ? "bg-[#12b886] text-[#03221b] hover:bg-[#18c996]" : "bg-[#2f6bff] text-white hover:bg-[#477dff]"}`} href={current.primary.href}>
+              <a className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transform-none ${isHome ? "home-gradient text-brand-navy hover:brightness-105" : "bg-corporate-accent text-white hover:bg-[#477dff]"}`} href={current.primary.href}>
                 {current.primary.label}<ArrowRight aria-hidden="true" className="size-4" />
               </a>
               <a className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/20 bg-white/[0.04] px-6 font-bold text-white transition hover:border-white/35 hover:bg-white/[0.09] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" href={current.secondary.href}>

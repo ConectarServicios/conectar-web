@@ -13,10 +13,10 @@ type PlansSectionProps = Readonly<{
 export function PlansSection({ installationBenefitsText, installationPrice, plans, unavailable }: PlansSectionProps) {
   const now = new Date();
   return (
-    <section className="scroll-mt-20 bg-slate-50 py-20 sm:py-28" id="planes" aria-labelledby="plans-title">
+    <section className="scroll-mt-20 bg-home-surface-soft py-20 sm:py-28" id="planes" aria-labelledby="plans-title">
       <div className="public-container">
         <div className="max-w-3xl">
-          <p className="text-xs font-black tracking-[0.18em] text-[#087f5b] uppercase">Planes de Internet</p>
+          <p className="text-xs font-black tracking-[0.18em] text-home-accent-strong uppercase">Planes de Internet</p>
           <h2 className="public-heading mt-3" id="plans-title">Una conexión para cada necesidad</h2>
           <p className="mt-5 text-lg leading-8 text-slate-600">Elegí la velocidad que acompaña tus actividades.</p>
           {(installationPrice !== null || installationBenefitsText) && (

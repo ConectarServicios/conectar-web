@@ -36,6 +36,18 @@ export type ServiceDetail = {
   description?: string;
 };
 
+export type ServiceGroupDefinition = {
+  slug: ServiceGroup;
+  title: string;
+  shortDescription: string;
+  segments: readonly ServiceSegment[];
+  icon: ServiceIcon;
+  order: number;
+  href?: string;
+  showOnServicesIndex: boolean;
+  hasLandingPage: boolean;
+};
+
 export type ServiceDefinition = {
   slug: string;
   title: string;

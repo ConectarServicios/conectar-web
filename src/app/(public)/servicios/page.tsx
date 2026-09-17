@@ -46,12 +46,12 @@ function ServiceGroupDisclosure({
 }>) {
   const services = getServicesByGroup(group.slug);
   const accentClasses = segment === "hogar"
-    ? "bg-emerald-50 text-emerald-700"
-    : "bg-blue-50 text-[#2456d6]";
+    ? "bg-home-surface text-home-accent-strong"
+    : "bg-blue-50 text-corporate-accent-strong";
 
   return (
     <details
-      className="group scroll-mt-24 rounded-2xl border border-slate-200 bg-white shadow-sm shadow-slate-950/5 open:shadow-md"
+      className="group scroll-mt-24 rounded-2xl border border-home-border bg-white shadow-sm shadow-slate-950/5 open:shadow-md"
       id={group.slug}
     >
       <summary className="flex cursor-pointer list-none items-center gap-4 rounded-2xl p-5 outline-none marker:hidden focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 sm:p-6 [&::-webkit-details-marker]:hidden">
@@ -62,7 +62,7 @@ function ServiceGroupDisclosure({
           <ServiceCatalogIcon icon={group.icon} />
         </span>
         <span className="min-w-0 flex-1">
-          <span className="font-display block text-lg font-bold tracking-[-0.025em] text-[#0b2038] sm:text-xl">
+          <span className="font-display block text-lg font-bold tracking-[-0.025em] text-brand-navy sm:text-xl">
             {group.title}
           </span>
           <span className="mt-1 block text-sm leading-6 text-slate-600">
@@ -76,7 +76,7 @@ function ServiceGroupDisclosure({
         />
       </summary>
 
-      <ul className="border-t border-slate-100 px-5 py-2 sm:px-6">
+      <ul className="border-t border-home-border/60 px-5 py-2 sm:px-6">
         {services.map((service) => {
           const hasOwnDestination = Boolean(
             service.href && service.href !== "#contacto",
@@ -89,7 +89,7 @@ function ServiceGroupDisclosure({
 
           return (
             <li
-              className="flex flex-col gap-3 border-b border-slate-100 py-5 last:border-b-0 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-3 border-b border-home-border/60 py-5 last:border-b-0 sm:flex-row sm:items-center sm:justify-between"
               key={service.slug}
             >
               <span className="min-w-0 sm:pr-6">
@@ -116,8 +116,8 @@ function ServiceGroupDisclosure({
 
 export default function ServicesCatalogPage() {
   return (
-    <main className="bg-slate-50">
-      <section className="bg-[#0b2440] py-20 text-white sm:py-28">
+    <main className="bg-home-surface-soft">
+      <section className="bg-brand-navy py-20 text-white sm:py-28">
         <div className="public-container">
           <p className="text-sm font-bold tracking-[.22em] text-orange-400 uppercase">
             Servicios
@@ -140,7 +140,7 @@ export default function ServicesCatalogPage() {
             <section aria-labelledby={`${segment.slug}-title`} key={segment.slug}>
               <div className="max-w-3xl">
                 <h2
-                  className="font-display text-3xl font-bold tracking-[-0.035em] text-[#0b2038] sm:text-4xl"
+                  className="font-display text-3xl font-bold tracking-[-0.035em] text-brand-navy sm:text-4xl"
                   id={`${segment.slug}-title`}
                 >
                   {segment.title}

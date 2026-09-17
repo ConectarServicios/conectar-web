@@ -38,17 +38,17 @@ export function CorporateTrustSection() {
     >
       <div
         aria-hidden="true"
-        className="absolute top-0 right-0 -z-10 h-80 w-80 rounded-full bg-[#2f6bff]/5 blur-3xl"
+        className="absolute top-0 right-0 -z-10 h-80 w-80 rounded-full bg-corporate-accent/5 blur-3xl"
       />
 
       <div className="public-container">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] lg:items-end lg:gap-16">
           <div>
-            <p className="text-xs font-black tracking-[0.2em] text-[#2456d6] uppercase sm:text-sm">
+            <p className="text-xs font-black tracking-[0.2em] text-corporate-accent-strong uppercase sm:text-sm">
               Nos elige la región
             </p>
             <h2
-              className="font-display mt-4 max-w-3xl text-3xl leading-[1.12] font-bold tracking-[-0.035em] text-[#0b2038] text-balance sm:text-4xl lg:text-5xl"
+              className="font-display mt-4 max-w-3xl text-3xl leading-[1.12] font-bold tracking-[-0.035em] text-brand-navy text-balance sm:text-4xl lg:text-5xl"
               id="corporate-trust-title"
             >
               Empresas que confían su IT a Conectar
@@ -62,7 +62,7 @@ export function CorporateTrustSection() {
 
         <div className="mt-10 border-t border-slate-200 pt-10 sm:mt-12 sm:pt-12 lg:grid lg:grid-cols-[minmax(260px,.7fr)_minmax(0,1.3fr)] lg:gap-16">
           <div>
-            <h3 className="font-display text-2xl font-bold tracking-[-0.03em] text-[#0b2038] sm:text-3xl">
+            <h3 className="font-display text-2xl font-bold tracking-[-0.03em] text-brand-navy sm:text-3xl">
               Una relación técnica cercana
             </h3>
             <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
@@ -82,11 +82,11 @@ export function CorporateTrustSection() {
               >
                 <span
                   aria-hidden="true"
-                  className="flex size-11 items-center justify-center rounded-full bg-[#e8efff] text-[#2456d6]"
+                  className="flex size-11 items-center justify-center rounded-full bg-corporate-surface-soft text-corporate-accent-strong"
                 >
                   <Icon size={21} strokeWidth={1.9} />
                 </span>
-                <h4 className="font-display mt-5 text-lg font-bold tracking-[-0.02em] text-[#0b2038]">
+                <h4 className="font-display mt-5 text-lg font-bold tracking-[-0.02em] text-brand-navy">
                   {title}
                 </h4>
                 <p className="mt-2 text-sm leading-6 text-slate-600">

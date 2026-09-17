@@ -31,31 +31,31 @@ const testimonials = [
 
 const metricBorders = [
   "",
-  "border-l border-slate-200",
-  "border-t border-slate-200 lg:border-t-0 lg:border-l",
-  "border-t border-l border-slate-200 lg:border-t-0",
+  "border-l border-home-border",
+  "border-t border-home-border lg:border-t-0 lg:border-l",
+  "border-t border-l border-home-border lg:border-t-0",
 ] as const;
 
 export function HomeSocialProofSection() {
   return (
     <section
       aria-labelledby="home-social-proof-title"
-      className="bg-slate-50 py-16 sm:py-20 lg:py-24"
+      className="bg-home-surface-soft py-16 sm:py-20 lg:py-24"
     >
       <div className="public-container">
         <div className="max-w-3xl">
-          <p className="text-xs font-black tracking-[0.2em] text-emerald-700 uppercase sm:text-sm">
+          <p className="text-xs font-black tracking-[0.2em] text-home-accent-strong uppercase sm:text-sm">
             Nos elige la región
           </p>
           <h2
-            className="font-display mt-4 text-3xl leading-[1.12] font-bold tracking-[-0.035em] text-[#0b2038] text-balance sm:text-4xl lg:text-5xl"
+            className="font-display mt-4 text-3xl leading-[1.12] font-bold tracking-[-0.035em] text-brand-navy text-balance sm:text-4xl lg:text-5xl"
             id="home-social-proof-title"
           >
             Miles de hogares ya están conectados
           </h2>
         </div>
 
-        <dl className="mt-9 grid grid-cols-2 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-slate-950/5 sm:mt-10 lg:grid-cols-4">
+        <dl className="mt-9 grid grid-cols-2 overflow-hidden rounded-2xl border border-home-border bg-white shadow-sm shadow-slate-950/5 sm:mt-10 lg:grid-cols-4">
           {metrics.map((metric, index) => (
             <div
               className={`flex min-h-32 flex-col items-center justify-center px-3 py-6 text-center sm:min-h-36 sm:px-6 ${metricBorders[index]}`}
@@ -64,7 +64,7 @@ export function HomeSocialProofSection() {
               <dt className="order-2 mt-2 text-xs leading-5 font-semibold text-slate-600 sm:text-sm">
                 {metric.label}
               </dt>
-              <dd className="font-display order-1 text-2xl font-bold tracking-[-0.03em] text-[#0b2038] sm:text-3xl">
+              <dd className="font-display order-1 text-2xl font-bold tracking-[-0.03em] text-brand-navy sm:text-3xl">
                 {metric.value}
               </dd>
             </div>
@@ -74,12 +74,12 @@ export function HomeSocialProofSection() {
         <div className="mt-6 grid gap-4 md:grid-cols-2 lg:mt-8 lg:grid-cols-3 lg:gap-5">
           {testimonials.map((testimonial) => (
             <figure
-              className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-950/5 sm:p-7 md:last:col-span-2 lg:last:col-span-1"
+              className="flex h-full flex-col rounded-2xl border border-home-border bg-white p-6 shadow-sm shadow-slate-950/5 sm:p-7 md:last:col-span-2 lg:last:col-span-1"
               key={testimonial.name}
             >
               <div
                 aria-label="5 de 5 estrellas"
-                className="flex gap-1 text-emerald-600"
+                className="flex gap-1 text-home-accent"
                 role="img"
               >
                 {Array.from({ length: 5 }, (_, index) => (
@@ -91,15 +91,15 @@ export function HomeSocialProofSection() {
               <blockquote className="mt-4 flex-1 text-sm leading-7 text-slate-700 sm:text-base">
                 <p>“{testimonial.quote}”</p>
               </blockquote>
-              <figcaption className="mt-6 flex items-center gap-3 border-t border-slate-100 pt-5">
+              <figcaption className="mt-6 flex items-center gap-3 border-t border-home-border/60 pt-5">
                 <span
                   aria-hidden="true"
-                  className="font-display flex size-11 shrink-0 items-center justify-center rounded-full bg-emerald-100 font-bold text-emerald-800"
+                  className="font-display flex size-11 shrink-0 items-center justify-center rounded-full bg-home-surface font-bold text-home-accent-strong"
                 >
                   {testimonial.initial}
                 </span>
                 <span>
-                  <span className="block text-sm font-bold text-[#0b2038]">
+                  <span className="block text-sm font-bold text-brand-navy">
                     {testimonial.name}
                   </span>
                   <span className="mt-0.5 block text-xs text-slate-500">

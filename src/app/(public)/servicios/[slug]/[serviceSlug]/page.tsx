@@ -42,7 +42,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   return (
     <main>
-      <section className="bg-[#0b2440] py-16 text-white sm:py-24">
+      <section className="bg-brand-navy py-16 text-white sm:py-24">
         <div className="public-container">
           <Link
             className="font-bold text-blue-100 underline underline-offset-4 hover:text-white"

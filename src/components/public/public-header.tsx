@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { PublicMobileNav } from "@/components/public/public-mobile-nav";
-import { usePublicSegment } from "@/components/public/public-segment-context";
 import { SegmentSelector } from "@/components/public/segment-selector";
 import { isAllowedContactNumber } from "@/lib/validations/contact-information";
 import type { SiteConfiguration } from "@/types/site-settings";
@@ -21,16 +20,13 @@ type PublicHeaderProps = Readonly<{
 }>;
 
 export function PublicHeader({ configuration, whatsapp }: PublicHeaderProps) {
-  const { segment } = usePublicSegment();
   const whatsappDigits = whatsapp && isAllowedContactNumber(whatsapp)
     ? whatsapp.replace(/\D/g, "")
     : "";
-  const whatsappAccentClass = segment === "hogar"
-    ? "bg-[#12b886] text-[#03221b] hover:bg-[#18c996] focus-visible:outline-[#55e0b8]"
-    : "bg-[#2f6bff] text-white hover:bg-[#477dff] focus-visible:outline-[#7da1ff]";
+  const whatsappAccentClass = "bg-whatsapp text-brand-navy-deep hover:bg-whatsapp-strong hover:text-white focus-visible:outline-whatsapp";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#071a2f]/95 text-white shadow-lg shadow-slate-950/20 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-brand-navy-deep/95 text-white shadow-lg shadow-slate-950/20 backdrop-blur-xl">
       <div className="public-container flex h-[72px] items-center justify-between gap-4">
         <Link
           className="group flex shrink-0 items-center gap-2.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"

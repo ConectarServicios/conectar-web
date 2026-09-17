@@ -14,7 +14,7 @@ export default async function PromotionsPage() {
   const supabase = await createClient();
   return (
     <main>
-      <section className="bg-[#071a2f] py-16 text-white sm:py-24">
+      <section className="bg-brand-navy-deep py-16 text-white sm:py-24">
         <div className="public-container">
           <p className="text-sm font-black uppercase tracking-[.2em] text-orange-400">Promociones</p>
           <h1 className="mt-4 text-4xl font-black sm:text-6xl">Beneficios pensados para vos</h1>

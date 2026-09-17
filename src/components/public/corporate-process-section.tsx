@@ -20,9 +20,9 @@ export function CorporateProcessSection() {
     >
       <div className="public-container">
         <div className="max-w-3xl">
-          <p className="text-xs font-black tracking-[0.2em] text-[#2456d6] uppercase sm:text-sm">Cómo trabajamos</p>
+          <p className="text-xs font-black tracking-[0.2em] text-corporate-accent-strong uppercase sm:text-sm">Cómo trabajamos</p>
           <h2
-            className="font-display mt-4 text-3xl leading-[1.12] font-bold tracking-[-0.035em] text-[#0b2038] text-balance sm:text-4xl lg:text-5xl"
+            className="font-display mt-4 text-3xl leading-[1.12] font-bold tracking-[-0.035em] text-brand-navy text-balance sm:text-4xl lg:text-5xl"
             id="corporate-process-title"
           >
             De la consulta a la operación
@@ -32,25 +32,25 @@ export function CorporateProcessSection() {
         <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-5">
           {steps.map((step, index) => (
             <li className="relative rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6" key={step.title}>
-              <span className="font-display flex size-11 items-center justify-center rounded-xl bg-[#2f6bff] text-lg font-bold text-white" aria-hidden="true">
+              <span className="font-display flex size-11 items-center justify-center rounded-xl bg-corporate-accent text-lg font-bold text-white" aria-hidden="true">
                 {index + 1}
               </span>
-              <h3 className="font-display mt-5 text-xl font-bold tracking-[-0.02em] text-[#0b2038]">{step.title}</h3>
+              <h3 className="font-display mt-5 text-xl font-bold tracking-[-0.02em] text-brand-navy">{step.title}</h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">{step.description}</p>
               {index < steps.length - 1 && (
-                <span className="absolute top-12 -right-3 hidden h-px w-6 bg-[#2f6bff]/40 lg:block" aria-hidden="true" />
+                <span className="absolute top-12 -right-3 hidden h-px w-6 bg-corporate-accent/40 lg:block" aria-hidden="true" />
               )}
             </li>
           ))}
         </ol>
 
-        <dl className="mt-8 grid overflow-hidden rounded-2xl bg-[#071a2f] text-white sm:grid-cols-2 lg:mt-10 lg:grid-cols-4">
+        <dl className="mt-8 grid overflow-hidden rounded-2xl bg-brand-navy-deep text-white sm:grid-cols-2 lg:mt-10 lg:grid-cols-4">
           {commitments.map((commitment) => (
             <div
               className="border-white/10 px-5 py-5 not-last:border-b sm:px-6 sm:odd:border-r sm:nth-[2]:border-r-0 sm:nth-[3]:border-b-0 lg:not-last:border-r lg:not-last:border-b-0"
               key={commitment.value}
             >
-              <dt className="font-display text-2xl font-bold tracking-[-0.04em] text-[#8eabff] sm:text-3xl">
+              <dt className="font-display text-2xl font-bold tracking-[-0.04em] text-corporate-accent-soft sm:text-3xl">
                 {commitment.value}
               </dt>
               <dd className="mt-2 text-sm leading-6 text-[#b8c9d9]">{commitment.label}</dd>

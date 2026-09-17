@@ -13,7 +13,7 @@ function WideContextualPromotion({ item, imageUrl }: Readonly<{ item: Promotion;
 
   return (
     <article className="group overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-lg shadow-slate-950/15 md:grid md:grid-cols-[minmax(18rem,2fr)_3fr]">
-      <div className="relative min-h-56 bg-gradient-to-br from-[#0b2440] to-[#164b75] md:min-h-72">
+      <div className="relative min-h-56 bg-gradient-to-br from-brand-navy to-[#164b75] md:min-h-72">
         {imageUrl ? (
           <Image
             alt=""
@@ -33,7 +33,7 @@ function WideContextualPromotion({ item, imageUrl }: Readonly<{ item: Promotion;
         )}
       </div>
       <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
-        <h3 className="text-2xl font-black tracking-tight text-[#071a2f] sm:text-3xl">
+        <h3 className="text-2xl font-black tracking-tight text-brand-navy-deep sm:text-3xl">
           <Link href={`/promociones/${item.slug}`}>{item.title}</Link>
         </h3>
         <p className="mt-4 max-w-2xl leading-7 text-slate-600">{item.summary}</p>
@@ -60,7 +60,7 @@ export async function ContextualPromotions({ placement, exclude = [] }: Readonly
   if (!items.length) return null;
   const supabase = await createClient();
   return (
-    <section className="bg-[#0b2440] py-16 text-white">
+    <section className="bg-brand-navy py-16 text-white">
       <div className="public-container">
         <p className="text-xs font-black uppercase tracking-[.2em] text-orange-400">Beneficios exclusivos</p>
         <h2 className="mt-3 text-3xl font-black">Promociones para aprovechar</h2>

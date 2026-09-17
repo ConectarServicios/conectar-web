@@ -37,11 +37,11 @@ export function HomeCorporativoContent() {
     <>
       <section
         aria-labelledby="corporate-integrated-it-title"
-        className="relative isolate scroll-mt-20 overflow-hidden bg-[#071a2f] py-20 text-white sm:py-24 lg:py-28"
+        className="relative isolate scroll-mt-20 overflow-hidden bg-brand-navy-deep py-20 text-white sm:py-24 lg:py-28"
         id="servicios"
       >
         <div className="absolute inset-0 -z-10" aria-hidden="true">
-          <div className="absolute -top-32 right-0 size-[30rem] rounded-full bg-[#2f6bff]/10 blur-3xl" />
+          <div className="absolute -top-32 right-0 size-[30rem] rounded-full bg-corporate-accent/10 blur-3xl" />
           <div className="public-grid-pattern absolute inset-0 opacity-40" />
         </div>
 
@@ -63,7 +63,7 @@ export function HomeCorporativoContent() {
             <ul className="mt-8 grid list-none gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
               {benefits.map((benefit) => (
                 <li className="flex items-center gap-3 text-sm font-bold text-slate-100" key={benefit}>
-                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[#2f6bff]/20 text-[#8eabff]" aria-hidden="true">
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-corporate-accent/20 text-corporate-accent-soft" aria-hidden="true">
                     <Check size={15} strokeWidth={3} />
                   </span>
                   {benefit}
@@ -78,8 +78,8 @@ export function HomeCorporativoContent() {
             </h3>
             <ol className="mt-6 space-y-3">
               {layers.map(({ title, description, icon: Icon }, index) => (
-                <li className="group grid grid-cols-[auto_1fr] gap-x-4 rounded-2xl border border-white/10 bg-[#0d2740]/80 p-4 transition-colors hover:border-[#2f6bff]/45 sm:p-5" key={title}>
-                  <span className="row-span-2 flex size-11 items-center justify-center rounded-xl border border-[#2f6bff]/30 bg-[#2f6bff]/15 text-[#8eabff]" aria-hidden="true">
+                <li className="group grid grid-cols-[auto_1fr] gap-x-4 rounded-2xl border border-white/10 bg-[#0d2740]/80 p-4 transition-colors hover:border-corporate-accent/45 sm:p-5" key={title}>
+                  <span className="row-span-2 flex size-11 items-center justify-center rounded-xl border border-corporate-accent/30 bg-corporate-accent/15 text-corporate-accent-soft" aria-hidden="true">
                     <Icon size={21} strokeWidth={2} />
                   </span>
                   <div className="flex items-baseline justify-between gap-4">

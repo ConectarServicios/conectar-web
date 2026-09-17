@@ -13,13 +13,9 @@ drop policy if exists "Editors can upload service media objects" on storage.obje
 drop policy if exists "Editors can update service media objects" on storage.objects;
 drop policy if exists "Editors can delete service media objects" on storage.objects;
 
--- Buckets may contain files. Delete their object metadata before deleting the
--- bucket records so no storage metadata is left orphaned.
-delete from storage.objects
-where bucket_id in ('service-project-images', 'service-media');
-
-delete from storage.buckets
-where id in ('service-project-images', 'service-media');
+-- Do not delete the service-project-images or service-media buckets through
+-- SQL. Remove them later through the Supabase Storage API or Dashboard so the
+-- physical files are deleted together with their Storage metadata.
 
 -- This RPC is exclusive to service_media. Shared helpers such as
 -- set_updated_at(), current_admin_role(), and URL validators remain in place.

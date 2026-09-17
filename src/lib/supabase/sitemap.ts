@@ -5,15 +5,11 @@ type SitemapRecord = {
   updated_at: string | null;
 };
 
-export async function getPublicSitemapRecords() {
+export async function getPublicContentSitemapRecords() {
   const supabase = await createClient();
   const now = new Date().toISOString();
 
-  const [areas, news, events, promotions] = await Promise.all([
-    supabase
-      .from("service_areas")
-      .select("slug,updated_at")
-      .eq("active", true),
+  const [news, events, promotions] = await Promise.all([
     supabase
       .from("news")
       .select("slug,updated_at")
@@ -31,9 +27,13 @@ export async function getPublicSitemapRecords() {
       .or(`ends_at.is.null,ends_at.gte.${now}`),
   ]);
 
-  const result = { areas: [] as SitemapRecord[], news: [] as SitemapRecord[], events: [] as SitemapRecord[], promotions: [] as SitemapRecord[] };
-  const entries = [areas, news, events, promotions] as const;
-  const keys = ["areas", "news", "events", "promotions"] as const;
+  const result = {
+    news: [] as SitemapRecord[],
+    events: [] as SitemapRecord[],
+    promotions: [] as SitemapRecord[],
+  };
+  const entries = [news, events, promotions] as const;
+  const keys = ["news", "events", "promotions"] as const;
 
   entries.forEach((entry, index) => {
     if (entry.error) {

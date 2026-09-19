@@ -34,7 +34,7 @@ export function CorporateServiceCard({
         className="mt-4 inline-flex w-fit items-center gap-2 rounded-sm text-sm font-bold text-corporate-accent-strong outline-none transition-colors hover:text-[#173b99] focus-visible:ring-2 focus-visible:ring-corporate-accent focus-visible:ring-offset-4"
         href={service.href ?? "#contacto"}
       >
-        {service.cta?.label ?? "Conocer más"}
+        {service.hasDetailPage ? "Conocer más" : "Consultar"}
         <ArrowUpRight aria-hidden="true" size={16} strokeWidth={2.5} />
       </a>
     </article>

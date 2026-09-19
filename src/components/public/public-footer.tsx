@@ -4,6 +4,7 @@ import { unstable_rethrow } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isSocialPlatform, type SocialLink, type SocialPlatform } from "@/types/social-links";
 import type { SiteConfiguration } from "@/types/site-settings";
+import { isExternalPublicUrl, normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 
 const footerGroups = [
   {
@@ -49,7 +50,9 @@ async function getSocialLinks(): Promise<SocialLink[]> {
       console.error("Unable to load public social links", error);
       return [];
     }
-    return (data ?? []).filter((link): link is SocialLink => isSocialPlatform(link.platform));
+    return (data ?? []).filter((link): link is SocialLink =>
+      isSocialPlatform(link.platform) && isExternalPublicUrl(normalizePublicNavigationUrl(link.url)),
+    );
   } catch (error) {
     unstable_rethrow(error);
     console.error("Unable to initialize social links query", error);
@@ -64,7 +67,7 @@ type PublicFooterProps = Readonly<{
 export async function PublicFooter({ configuration }: PublicFooterProps) {
   const socialLinks = await getSocialLinks();
   return (
-    <footer className="bg-[#061526] py-12 text-slate-300">
+    <footer className="bg-brand-navy-deep py-12 text-slate-300">
       <div className="public-container grid gap-10 lg:grid-cols-[1.1fr_2fr]">
         <div>
           <p className="text-lg font-bold text-white">{configuration.siteName}</p>

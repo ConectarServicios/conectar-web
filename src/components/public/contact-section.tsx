@@ -109,7 +109,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                   <ChannelIcon icon={MessageCircle} variant={variant} />
                   <p className={`${dark ? "mt-5" : "mt-6"} text-xs font-black uppercase tracking-[0.16em] ${cardEyebrowClass}`}>WhatsApp</p>
                   <p className={`mt-2 break-words text-lg font-bold ${cardValueClass}`}>{whatsapp}</p>
-                  <a className={`${channelLinkClass} ${dark ? linkClass : "text-whatsapp-strong hover:text-success focus-visible:outline-whatsapp"}`} href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">Escribir por WhatsApp <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                  <a className={`${channelLinkClass} ${dark ? linkClass : "text-whatsapp-strong hover:text-success focus-visible:outline-whatsapp"}`} href={`https://wa.me/${whatsappDigits}`} rel="noopener noreferrer" target="_blank">Escribir por WhatsApp <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
               {contact.commercial_email && (
@@ -125,7 +125,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                   <ChannelIcon icon={MapPin} variant={variant} />
                   <p className={`${dark ? "mt-5" : "mt-6"} text-xs font-black uppercase tracking-[0.16em] ${cardEyebrowClass}`}>Dónde estamos</p>
                   <p className={`mt-2 break-words text-lg font-bold ${cardValueClass}`}>{contact.address}</p>
-                  <a className={`${channelLinkClass} ${linkClass}`} href={mapUrl} rel="noreferrer" target="_blank">Cómo llegar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
+                  <a className={`${channelLinkClass} ${linkClass}`} href={mapUrl} rel="noopener noreferrer" target="_blank">Cómo llegar <ArrowRight aria-hidden="true" className="ml-1 size-4" /></a>
                 </li>
               )}
               {phone && (
@@ -150,7 +150,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                 <p className={`${dark ? "mt-5 text-slate-400" : "mt-6 text-orange-700"} text-xs font-black uppercase tracking-[0.16em]`}>Fuera del horario habitual</p>
                 <h3 className={`mt-2 text-xl font-bold ${cardValueClass}`}>Guardia de soporte</h3>
                 {contact.guard_hours && <HoursList contactVariant={variant} value={contact.guard_hours} variant="guard" />}
-                {whatsapp && <a className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-whatsapp px-5 py-2.5 text-center font-bold text-brand-navy-deep transition hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-whatsapp" href={`https://wa.me/${whatsappDigits}`} rel="noreferrer" target="_blank">WhatsApp de guardia</a>}
+                {whatsapp && <a className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-whatsapp px-5 py-2.5 text-center font-bold text-brand-navy-deep transition hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-whatsapp" href={`https://wa.me/${whatsappDigits}`} rel="noopener noreferrer" target="_blank">WhatsApp de guardia</a>}
               </article>
             </div>
           </div>

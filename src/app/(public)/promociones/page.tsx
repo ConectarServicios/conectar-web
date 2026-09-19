@@ -7,10 +7,12 @@ import { createClient } from "@/lib/supabase/server";
 export const metadata: Metadata = {
   title: "Promociones | Conectar Servicios",
   description: "Conocé los beneficios y promociones vigentes de Conectar Servicios.",
+  alternates: { canonical: "/promociones" },
 };
 
 export default async function PromotionsPage() {
-  const items = await getPublicPromotions();
+  const result = await getPublicPromotions();
+  const items = result.data;
   const supabase = await createClient();
   return (
     <main>
@@ -22,7 +24,10 @@ export default async function PromotionsPage() {
         </div>
       </section>
       <section className="py-16 sm:py-24"><div className="public-container">
-        {items.length ? <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+        {result.unavailable ? <div className="public-empty-state" role="status">
+          <h2 className="text-2xl font-black">Las promociones no están disponibles temporalmente.</h2>
+          <p className="mt-3 text-slate-600">Intentá nuevamente más tarde.</p>
+        </div> : items.length ? <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => <PromotionCard imageUrl={promotionImageUrl(supabase, item.image_path)} item={item} key={item.id} />)}
         </div> : <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-12 text-center">
           <h2 className="text-2xl font-black">No hay promociones vigentes por el momento</h2>

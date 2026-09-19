@@ -4,20 +4,20 @@ import Link from "next/link";
 import { PromotionCard } from "@/components/public/promotion-card";
 import { createClient } from "@/lib/supabase/server";
 import { getPublicPromotions, promotionImageUrl } from "@/lib/supabase/promotions";
-import { normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
+import { isExternalPublicUrl, normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 import { argentinaDateFormatter } from "@/lib/utils/news-dates";
 import type { Promotion, PromotionPlacement } from "@/types/promotions";
 
 function WideContextualPromotion({ item, imageUrl }: Readonly<{ item: Promotion; imageUrl: string | null }>) {
   const href = normalizePublicNavigationUrl(item.button_url || `/promociones/${item.slug}`);
-  const external = /^https?:\/\//.test(href);
+  const external = isExternalPublicUrl(href);
 
   return (
     <article className="group overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-lg shadow-slate-950/15 md:grid md:grid-cols-[minmax(18rem,2fr)_3fr]">
       <div className="relative min-h-56 bg-gradient-to-br from-brand-navy to-[#164b75] md:min-h-72">
         {imageUrl ? (
           <Image
-            alt=""
+            alt={`Imagen de la promoción ${item.title}`}
             className="object-contain transition duration-300 group-hover:scale-[1.02]"
             fill
             sizes="(max-width: 768px) 100vw, 40vw"
@@ -56,8 +56,9 @@ function WideContextualPromotion({ item, imageUrl }: Readonly<{ item: Promotion;
 }
 
 export async function ContextualPromotions({ placement, exclude = [] }: Readonly<{ placement: PromotionPlacement; exclude?: string[] }>) {
-  const all = await getPublicPromotions(placement);
-  const items = all.filter((item) => !exclude.includes(item.id)).slice(0, 2);
+  const result = await getPublicPromotions(placement);
+  if (result.unavailable) return <section className="bg-brand-navy py-10 text-white"><div className="public-container"><p className="rounded-2xl border border-white/15 p-5 text-center" role="status">Las promociones no están disponibles temporalmente.</p></div></section>;
+  const items = result.data.filter((item) => !exclude.includes(item.id)).slice(0, 2);
   if (!items.length) return null;
   const supabase = await createClient();
   return (

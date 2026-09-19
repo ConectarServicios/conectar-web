@@ -30,6 +30,9 @@ export function PlansSection({ installationBenefitsText, installationPrice, plan
               {installationBenefitsText}
             </p>
           )}
+          {installationPrice === null && (
+            <p className="mt-3 text-sm font-extrabold text-slate-700">Consultá el costo de instalación.</p>
+          )}
         </div>
         {unavailable ? (
           <p className="public-empty-state" role="status">Los planes no están disponibles temporalmente.</p>

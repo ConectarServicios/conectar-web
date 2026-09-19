@@ -20,7 +20,7 @@ import { ContextualPromotions } from "@/components/public/contextual-promotions"
 import { EventsHomeSection } from "@/components/public/events-home-section";
 import { eventImageUrl, getUpcomingPublicEvents } from "@/lib/supabase/events";
 import { getFeaturedFaqs } from "@/lib/supabase/faqs";
-import { getPublicSiteConfiguration } from "@/lib/supabase/site-settings";
+import { getPublicInstallationConfiguration } from "@/lib/supabase/site-settings";
 import { FaqHomeSection } from "@/components/public/faq-home-section";
 
 export const metadata: Metadata = {
@@ -59,9 +59,9 @@ async function getPublicPlans(): Promise<PublicData<Plan>> {
 }
 
 export default async function HogarPage() {
-  const [plans, siteConfiguration, playSettings, playPlans, contact, news, promotions, events, featuredFaqs] = await Promise.all([
+  const [plans, installation, playSettings, playPlans, contact, news, promotions, events, featuredFaqs] = await Promise.all([
     getPublicPlans(),
-    getPublicSiteConfiguration(),
+    getPublicInstallationConfiguration(),
     getPlaySettings(),
     getPlayPlans(),
     getPublicContactInformation(),
@@ -71,30 +71,34 @@ export default async function HogarPage() {
     getFeaturedFaqs(6),
   ]);
   const supabase = await createClient();
-  const newsImages = Object.fromEntries(news.map((item) => [item.id, newsImageUrl(supabase, item.cover_image)]));
-  const promotionImages = Object.fromEntries(promotions.map((item) => [item.id, promotionImageUrl(supabase, item.image_path)]));
-  const eventImages = Object.fromEntries(events.map((item) => [item.id, eventImageUrl(supabase, item.image_path)]));
+  const newsImages = Object.fromEntries(news.data.map((item) => [item.id, newsImageUrl(supabase, item.cover_image)]));
+  const promotionImages = Object.fromEntries(promotions.data.map((item) => [item.id, promotionImageUrl(supabase, item.image_path)]));
+  const eventImages = Object.fromEntries(events.data.map((item) => [item.id, eventImageUrl(supabase, item.image_path)]));
 
   return (
     <main>
       <HeroSection segment="hogar" />
-      <PromotionsSection imageUrls={promotionImages} items={promotions} />
+      {promotions.unavailable ? <UnavailableSection>Las promociones no están disponibles temporalmente.</UnavailableSection> : <PromotionsSection imageUrls={promotionImages} items={promotions.data} />}
       <PlansSection
-        installationBenefitsText={siteConfiguration.internetInstallationBenefitsText}
-        installationPrice={siteConfiguration.internetInstallationPrice}
+        installationBenefitsText={installation.benefitsText}
+        installationPrice={installation.price}
         plans={plans.data}
         unavailable={plans.unavailable}
       />
-      <ContextualPromotions exclude={promotions.map((item) => item.id)} placement="plans" />
+      <ContextualPromotions exclude={promotions.data.map((item) => item.id)} placement="plans" />
       <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
       <HomeSecuritySection />
-      <EventsHomeSection imageUrls={eventImages} items={events} />
+      {events.unavailable ? <UnavailableSection>Los eventos no están disponibles temporalmente.</UnavailableSection> : <EventsHomeSection imageUrls={eventImages} items={events.data} />}
       <InstitutionalSection />
-      <NewsHomeSection imageUrls={newsImages} items={news} />
+      {news.unavailable ? <UnavailableSection>Las noticias no están disponibles temporalmente.</UnavailableSection> : <NewsHomeSection imageUrls={newsImages} items={news.data} />}
       <HomeServicesSection />
       <HomeSocialProofSection />
-      <FaqHomeSection items={featuredFaqs} />
+      {featuredFaqs.unavailable ? <UnavailableSection>Las preguntas frecuentes no están disponibles temporalmente.</UnavailableSection> : <FaqHomeSection items={featuredFaqs.data} />}
       <ContactSection contact={contact.data} homeHogar unavailable={contact.unavailable} />
     </main>
   );
+}
+
+function UnavailableSection({ children }: Readonly<{ children: string }>) {
+  return <section className="bg-slate-50 py-8"><div className="public-container"><p className="public-empty-state" role="status">{children}</p></div></section>;
 }

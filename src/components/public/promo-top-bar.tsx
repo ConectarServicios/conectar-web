@@ -1,13 +1,13 @@
 import Link from "next/link";
 
-import { normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
+import { isExternalPublicUrl, normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 import { getPublicPromotions } from "@/lib/supabase/promotions";
 
 export async function PromoTopBar() {
-  const [item] = await getPublicPromotions("top_bar", 1);
+  const { data: [item] } = await getPublicPromotions("top_bar", 1);
   if (!item) return null;
   const href = normalizePublicNavigationUrl(item.button_url || `/promociones/${item.slug}`);
-  const external = /^https?:\/\//.test(href);
+  const external = isExternalPublicUrl(href);
 
   return (
     <aside className="bg-slate-50 py-2 text-slate-900" aria-label="Promoción vigente">

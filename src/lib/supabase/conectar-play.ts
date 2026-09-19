@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import type { ConectarPlayFaq, ConectarPlayPack, ConectarPlayPlan, ConectarPlaySettings } from "@/types/conectar-play";
+import type { PublicResult } from "@/lib/supabase/public-result";
 
-export type PublicResult<T> = { data: T; unavailable: boolean };
 export async function getPlaySettings(): Promise<PublicResult<ConectarPlaySettings | null>> { const supabase = await createClient(); const { data, error } = await supabase.from("conectar_play_settings").select("*").eq("active", true).maybeSingle(); if (error) console.error("Unable to load public Conectar Play settings", error); return { data: error ? null : data as ConectarPlaySettings | null, unavailable: Boolean(error) }; }
 export async function getPlayPlans(): Promise<PublicResult<ConectarPlayPlan[]>> { const supabase = await createClient(); const { data, error } = await supabase.from("conectar_play_plans").select("*").eq("active", true).order("display_order").order("name"); if (error) console.error("Unable to load public Conectar Play plans", error); return { data: error ? [] : data as ConectarPlayPlan[], unavailable: Boolean(error) }; }
 export async function getPlayPacks(): Promise<PublicResult<ConectarPlayPack[]>> { const supabase = await createClient(); const { data, error } = await supabase.from("conectar_play_packs").select("*").eq("active", true).order("display_order").order("name"); if (error) console.error("Unable to load public Conectar Play packs", error); return { data: error ? [] : data as ConectarPlayPack[], unavailable: Boolean(error) }; }

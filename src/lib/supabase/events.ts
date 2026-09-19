@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { sortEvents } from "@/lib/utils/event-dates";
 import { ARGENTINA_TIME_ZONE } from "@/lib/utils/news-dates";
 import type { EventItem } from "@/types/events";
+import type { PublicResult } from "@/lib/supabase/public-result";
+import { isExternalPublicUrl } from "@/lib/utils/public-navigation-url";
 
 export const EVENTS_BUCKET = "event-images";
 export const EVENT_SELECT =
@@ -12,11 +14,11 @@ export function eventImageUrl(
   path: string | null,
 ) {
   if (!path) return null;
-  if (/^https?:\/\//.test(path)) return path;
+  if (isExternalPublicUrl(path)) return path;
   return supabase.storage.from(EVENTS_BUCKET).getPublicUrl(path).data.publicUrl;
 }
 
-export async function getPublicEvents() {
+export async function getPublicEvents(): Promise<PublicResult<EventItem[]>> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("events")
@@ -25,13 +27,13 @@ export async function getPublicEvents() {
 
   if (error) {
     console.error("Unable to load public events", error);
-    return [];
+    return { data: [], unavailable: true };
   }
 
-  return sortEvents((data ?? []) as EventItem[]);
+  return { data: sortEvents((data ?? []) as EventItem[]), unavailable: false };
 }
 
-export async function getUpcomingPublicEvents(limit?: number) {
+export async function getUpcomingPublicEvents(limit?: number): Promise<PublicResult<EventItem[]>> {
   const supabase = await createClient();
   const now = new Date();
   const nowIso = now.toISOString();
@@ -56,8 +58,8 @@ export async function getUpcomingPublicEvents(limit?: number) {
   const { data, error } = await query;
   if (error) {
     console.error("Unable to load upcoming public events", error);
-    return [];
+    return { data: [], unavailable: true };
   }
 
-  return (data ?? []) as EventItem[];
+  return { data: (data ?? []) as EventItem[], unavailable: false };
 }

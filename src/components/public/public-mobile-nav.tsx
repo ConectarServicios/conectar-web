@@ -35,6 +35,17 @@ export function PublicMobileNav({ selfServiceUrl, whatsappUrl }: PublicMobileNav
       if (event.key === "Escape") {
         event.preventDefault();
         setOpen(false);
+      } else if (event.key === "Tab" && menu) {
+        const focusable = Array.from(menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+        const first = focusable[0];
+        const last = focusable.at(-1);
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
       }
     };
     const handlePointerDown = (event: PointerEvent) => {
@@ -56,7 +67,7 @@ export function PublicMobileNav({ selfServiceUrl, whatsappUrl }: PublicMobileNav
   const closeMenu = () => setOpen(false);
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <button className="grid size-11 place-items-center rounded-xl border border-white/20 text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" type="button" aria-controls="mobile-navigation" aria-expanded={open} aria-label={open ? "Cerrar menú" : "Abrir menú"} onClick={() => setOpen((current) => !current)} ref={triggerRef}>
         <span className="sr-only">{open ? "Cerrar menú" : "Abrir menú"}</span>
         <span className="flex w-5 flex-col gap-1.5" aria-hidden="true">
@@ -66,7 +77,7 @@ export function PublicMobileNav({ selfServiceUrl, whatsappUrl }: PublicMobileNav
         </span>
       </button>
       {open && (
-        <nav className="absolute inset-x-4 top-[4.75rem] max-h-[calc(100vh-6rem)] overflow-y-auto rounded-2xl border border-white/10 bg-brand-navy p-3 shadow-2xl shadow-black/30" id="mobile-navigation" aria-label="Navegación mobile" ref={menuRef}>
+        <nav className="absolute inset-x-4 top-[4.75rem] max-h-[calc(100vh-6rem)] max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-2xl border border-white/10 bg-brand-navy p-3 shadow-2xl shadow-black/30" id="mobile-navigation" aria-label="Navegación mobile" ref={menuRef}>
           <div className="mb-2 border-b border-white/10 px-2 pb-3">
             <p className="mb-2 text-xs font-bold tracking-[0.12em] text-slate-400 uppercase">Audiencia</p>
             <SegmentSelector onNavigate={closeMenu} />

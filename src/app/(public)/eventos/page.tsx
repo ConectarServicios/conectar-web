@@ -4,14 +4,17 @@ import { EventCard } from "@/components/public/event-card";
 import { eventImageUrl, getPublicEvents } from "@/lib/supabase/events";
 import { createClient } from "@/lib/supabase/server";
 import { eventTemporalStatus } from "@/lib/utils/event-dates";
+import type { EventItem } from "@/types/events";
 
 export const metadata: Metadata = {
   title: "Eventos | Conectar Servicios",
   description: "Agenda de encuentros, actividades y eventos de Conectar Servicios.",
+  alternates: { canonical: "/eventos" },
 };
 
 export default async function EventsPage() {
-  const events = await getPublicEvents();
+  const result = await getPublicEvents();
+  const events = result.data;
   const upcoming = events.filter((event) =>
     ["upcoming", "ongoing"].includes(eventTemporalStatus(event)),
   );
@@ -37,7 +40,12 @@ export default async function EventsPage() {
           </p>
         </header>
 
-        {!events.length ? (
+        {result.unavailable ? (
+          <section className="public-empty-state mt-12" role="status">
+            <h2 className="text-2xl font-black">Los eventos no están disponibles temporalmente.</h2>
+            <p className="mt-3 text-slate-600">Intentá nuevamente más tarde.</p>
+          </section>
+        ) : !events.length ? (
           <section className="mt-12 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center">
             <h2 className="text-2xl font-black">Próximamente habrá novedades</h2>
             <p className="mt-3 text-slate-600">
@@ -89,7 +97,7 @@ function EventSection({
 }: Readonly<{
   className?: string;
   images: Record<string, string | null>;
-  items: Awaited<ReturnType<typeof getPublicEvents>>;
+  items: EventItem[];
   spacious?: boolean;
   subtle?: boolean;
   title: string;

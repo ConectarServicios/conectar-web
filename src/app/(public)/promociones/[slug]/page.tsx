@@ -6,7 +6,7 @@ import { cache } from "react";
 
 import { getPublicPromotion, promotionImageUrl } from "@/lib/supabase/promotions";
 import { createClient } from "@/lib/supabase/server";
-import { normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
+import { isExternalPublicUrl, normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 import { argentinaDateFormatter } from "@/lib/utils/news-dates";
 
 type Props = Readonly<{ params: Promise<{ slug: string }> }>;
@@ -14,7 +14,9 @@ const loadPromotion = cache(getPublicPromotion);
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const item = await loadPromotion(slug);
+  const result = await loadPromotion(slug);
+  if (result.unavailable) throw new Error("Public promotion detail is temporarily unavailable");
+  const item = result.data;
   if (!item) return {};
   const supabase = await createClient();
   const image = promotionImageUrl(supabase, item.image_path);
@@ -28,7 +30,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PromotionDetail({ params }: Props) {
   const { slug } = await params;
-  const item = await loadPromotion(slug);
+  const result = await loadPromotion(slug);
+  if (result.unavailable) throw new Error("Public promotion detail is temporarily unavailable");
+  const item = result.data;
   if (!item) notFound();
   const supabase = await createClient();
   const image = promotionImageUrl(supabase, item.image_path);
@@ -38,7 +42,7 @@ export default async function PromotionDetail({ params }: Props) {
     <main><article className="py-12 sm:py-20"><div className="public-container max-w-5xl">
       <Link className="font-bold text-orange-700" href="/promociones">← Volver a Promociones</Link>
       {image && <div className="relative mt-8 aspect-[16/7] overflow-hidden rounded-3xl bg-slate-100">
-        <Image alt="" className="object-cover" fill priority sizes="(max-width: 1024px) 100vw, 1024px" src={image} unoptimized />
+        <Image alt={`Imagen de la promoción ${item.title}`} className="object-cover" fill priority sizes="(max-width: 1024px) 100vw, 1024px" src={image} unoptimized />
       </div>}
       <div className="mx-auto mt-10 max-w-3xl">
         <h1 className="text-4xl font-black tracking-tight text-brand-navy-deep sm:text-6xl">{item.title}</h1>
@@ -50,7 +54,7 @@ export default async function PromotionDetail({ params }: Props) {
         </p>}
         <div className="mt-10 whitespace-pre-line text-lg leading-8 text-slate-700">{item.description}</div>
         {href && <Link className="public-button-primary mt-10" href={href}
-          {...(/^https?:\/\//.test(href) ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+          {...(isExternalPublicUrl(href) ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
           {item.button_text || "Más información"}
         </Link>}
       </div>

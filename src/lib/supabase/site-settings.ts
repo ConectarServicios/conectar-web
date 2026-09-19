@@ -15,7 +15,7 @@ export const SITE_SETTING_KEYS = {
 } as const;
 
 export const SITE_CONFIGURATION_DEFAULTS: SiteConfiguration = {
-  internetInstallationPrice: 24300,
+  internetInstallationPrice: 0,
   internetInstallationBenefitsText:
     "Consultá por descuentos y bonificaciones disponibles según beneficios y convenios vigentes.",
   siteName: "Conectar Servicios",
@@ -63,7 +63,10 @@ function applyRows(rows: SettingRow[]): SiteConfiguration {
   };
 }
 
-export const getPublicSiteConfiguration = cache(async (): Promise<SiteConfiguration> => {
+const loadPublicSiteConfiguration = cache(async (): Promise<{
+  configuration: SiteConfiguration;
+  installationPriceAvailable: boolean;
+}> => {
   try {
     const supabase = await createClient();
     const { data, error } = await supabase
@@ -74,13 +77,30 @@ export const getPublicSiteConfiguration = cache(async (): Promise<SiteConfigurat
 
     if (error) {
       console.error("Unable to load public site configuration", error);
-      return SITE_CONFIGURATION_DEFAULTS;
+      return { configuration: SITE_CONFIGURATION_DEFAULTS, installationPriceAvailable: false };
     }
 
-    return applyRows(data ?? []);
+    const rows = data ?? [];
+    const priceRow = rows.find((row) => row.key === SITE_SETTING_KEYS.internetInstallationPrice);
+    const installationPriceAvailable = typeof priceRow?.value === "number" && Number.isFinite(priceRow.value) && priceRow.value >= 0;
+    return { configuration: applyRows(rows), installationPriceAvailable };
   } catch (error) {
     unstable_rethrow(error);
     console.error("Unable to initialize public site configuration query", error);
-    return SITE_CONFIGURATION_DEFAULTS;
+    return { configuration: SITE_CONFIGURATION_DEFAULTS, installationPriceAvailable: false };
   }
 });
+
+export async function getPublicSiteConfiguration(): Promise<SiteConfiguration> {
+  return (await loadPublicSiteConfiguration()).configuration;
+}
+
+export async function getPublicInstallationConfiguration() {
+  const result = await loadPublicSiteConfiguration();
+  return {
+    benefitsText: result.configuration.internetInstallationBenefitsText,
+    price: result.installationPriceAvailable
+      ? result.configuration.internetInstallationPrice
+      : null,
+  };
+}

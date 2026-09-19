@@ -1,10 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import type { FaqItem } from "@/types/faqs";
+import type { PublicResult } from "@/lib/supabase/public-result";
 
 export const FAQ_SELECT =
   "id,question,answer,category,active,featured,display_order,created_at,updated_at";
 
-export async function getPublicFaqs(): Promise<FaqItem[]> {
+export async function getPublicFaqs(): Promise<PublicResult<FaqItem[]>> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("faqs")
@@ -15,12 +16,12 @@ export async function getPublicFaqs(): Promise<FaqItem[]> {
     .order("question");
   if (error) {
     console.error("Unable to load public FAQs", error);
-    return [];
+    return { data: [], unavailable: true };
   }
-  return (data ?? []) as FaqItem[];
+  return { data: (data ?? []) as FaqItem[], unavailable: false };
 }
 
-export async function getFeaturedFaqs(limit = 6): Promise<FaqItem[]> {
+export async function getFeaturedFaqs(limit = 6): Promise<PublicResult<FaqItem[]>> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("faqs")
@@ -32,7 +33,7 @@ export async function getFeaturedFaqs(limit = 6): Promise<FaqItem[]> {
     .limit(limit);
   if (error) {
     console.error("Unable to load featured FAQs", error);
-    return [];
+    return { data: [], unavailable: true };
   }
-  return (data ?? []) as FaqItem[];
+  return { data: (data ?? []) as FaqItem[], unavailable: false };
 }

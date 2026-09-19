@@ -15,7 +15,9 @@ function containsProhibitedNumber(value: string) {
 }
 
 export function isAllowedContactNumber(value: string | null) {
-  return !value || !containsProhibitedNumber(value);
+  if (!value) return false;
+  const digits = value.replace(/\D/g, "");
+  return digits.length >= 8 && digits.length <= 15 && !containsProhibitedNumber(value);
 }
 
 export function parseContactInformation(formData: FormData) {
@@ -29,9 +31,9 @@ export function parseContactInformation(formData: FormData) {
   };
   const fieldErrors: Partial<Record<ContactField, string>> = {};
 
-  if (containsProhibitedNumber(values.phone)) fieldErrors.phone = "Ese número de teléfono no está permitido.";
+  if (values.phone && !isAllowedContactNumber(values.phone)) fieldErrors.phone = "Ingresá un número de teléfono válido.";
   if (!values.whatsapp) fieldErrors.whatsapp = "Ingresá el WhatsApp institucional.";
-  else if (containsProhibitedNumber(values.whatsapp)) fieldErrors.whatsapp = "Ese número de WhatsApp no está permitido.";
+  else if (!isAllowedContactNumber(values.whatsapp)) fieldErrors.whatsapp = "Ingresá un número de WhatsApp válido.";
   if (!values.commercial_email) fieldErrors.commercial_email = "Ingresá el email comercial.";
   else if (!EMAIL_PATTERN.test(values.commercial_email)) fieldErrors.commercial_email = "Ingresá un email comercial válido.";
   if (!values.address) fieldErrors.address = "Ingresá la dirección.";

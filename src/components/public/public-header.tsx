@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,6 +12,7 @@ import {
   publicNavigation,
 } from "@/components/public/public-navigation";
 import { SegmentSelector } from "@/components/public/segment-selector";
+import { DesktopNewsMenu } from "@/components/public/desktop-news-menu";
 import { isAllowedContactNumber } from "@/lib/validations/contact-information";
 import type { SiteConfiguration } from "@/types/site-settings";
 
@@ -45,32 +46,14 @@ export function PublicHeader({ configuration, whatsapp }: PublicHeaderProps) {
               {configuration.siteName}
             </span>
           </Link>
-          <SegmentSelector className="hidden lg:inline-flex" />
+          <SegmentSelector className="hidden xl:inline-flex" />
         </div>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegación principal">
+        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Navegación principal">
           {publicNavigation.map((item) => {
             const active = isNavigationItemActive(pathname, item);
             if (item.children) {
-              return (
-                <details className="group relative" key={item.label}>
-                  <summary
-                    className={`${linkClass} flex cursor-pointer list-none items-center gap-1 marker:hidden [&::-webkit-details-marker]:hidden ${active ? "bg-white/10 text-white" : "text-slate-300"}`}
-                    aria-current={active ? "page" : undefined}
-                  >
-                    {item.label}<ChevronDown className="size-4 transition group-open:rotate-180" aria-hidden="true" />
-                  </summary>
-                  <div className="absolute left-0 top-full min-w-44 pt-2">
-                    <div className="rounded-xl border border-white/10 bg-brand-navy p-2 shadow-xl">
-                      {item.children.map((child) => (
-                        <Link className="block rounded-lg px-4 py-2.5 text-sm font-semibold text-slate-100 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-white" href={child.href} key={child.href}>
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </details>
-              );
+              return <DesktopNewsMenu item={item} key={`${item.label}-${pathname}`} linkClass={linkClass} />;
             }
             return (
               <Link className={`${linkClass} ${active ? "bg-white/10 text-white" : "text-slate-300"}`} href={item.href} key={item.href} aria-current={active ? "page" : undefined}>
@@ -88,7 +71,7 @@ export function PublicHeader({ configuration, whatsapp }: PublicHeaderProps) {
             </a>
           )}
         </nav>
-        <PublicMobileNav selfServiceUrl={configuration.selfServiceUrl} whatsappUrl={whatsappDigits ? `https://wa.me/${whatsappDigits}` : null} />
+        <PublicMobileNav key={pathname} selfServiceUrl={configuration.selfServiceUrl} whatsappUrl={whatsappDigits ? `https://wa.me/${whatsappDigits}` : null} />
       </div>
     </header>
   );

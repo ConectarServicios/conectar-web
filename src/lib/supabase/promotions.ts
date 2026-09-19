@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Promotion, PromotionPlacement, PromotionStatus } from "@/types/promotions";
+import type { PublicResult } from "@/lib/supabase/public-result";
+import { isExternalPublicUrl } from "@/lib/utils/public-navigation-url";
 
 export const PROMOTIONS_BUCKET = "promotion-images";
 const fields = "id,title,slug,summary,description,image_path,button_text,button_url,starts_at,ends_at,active,featured,placements,display_order,created_at,updated_at";
@@ -19,7 +21,7 @@ type PublicPromotionDetail = Pick<
 
 export function promotionImageUrl(supabase: Awaited<ReturnType<typeof createClient>>, path: string | null) {
   if (!path) return null;
-  if (/^https?:\/\//.test(path)) return path;
+  if (isExternalPublicUrl(path)) return path;
   return supabase.storage.from(PROMOTIONS_BUCKET).getPublicUrl(path).data.publicUrl;
 }
 
@@ -33,7 +35,7 @@ export function promotionStatus(
   return "current";
 }
 
-export async function getPublicPromotions(placement?: PromotionPlacement, limit?: number) {
+export async function getPublicPromotions(placement?: PromotionPlacement, limit?: number): Promise<PublicResult<Promotion[]>> {
   const supabase = await createClient();
   const now = new Date().toISOString();
   let query = supabase.from("promotions").select(fields)
@@ -49,12 +51,12 @@ export async function getPublicPromotions(placement?: PromotionPlacement, limit?
   const { data, error } = await query;
   if (error) {
     console.error("Unable to load public promotions", error);
-    return [];
+    return { data: [], unavailable: true };
   }
-  return (data ?? []) as Promotion[];
+  return { data: (data ?? []) as Promotion[], unavailable: false };
 }
 
-export async function getPublicPromotion(slug: string) {
+export async function getPublicPromotion(slug: string): Promise<PublicResult<PublicPromotionDetail | null>> {
   const supabase = await createClient();
   const now = new Date().toISOString();
   const { data, error } = await supabase
@@ -68,8 +70,8 @@ export async function getPublicPromotion(slug: string) {
 
   if (error) {
     console.error("Unable to load public promotion detail", error);
-    return null;
+    return { data: null, unavailable: true };
   }
 
-  return data as PublicPromotionDetail | null;
+  return { data: data as PublicPromotionDetail | null, unavailable: false };
 }

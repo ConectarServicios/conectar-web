@@ -5,6 +5,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { ServiceCatalogIcon } from "@/components/public/service-catalog-icon";
 import {
   getServiceBySlugs,
+  getServiceDefinitionContactHref,
   getServiceGroupBySlug,
 } from "@/data/services/queries";
 
@@ -35,7 +36,7 @@ export default async function ServiceDetailPage({ params }: Props) {
   if (!group || !service) notFound();
   if (!service.hasDetailPage) {
     permanentRedirect(
-      service.href?.startsWith("/") ? service.href : "/hogar#contacto",
+      service.href?.startsWith("/") ? service.href : getServiceDefinitionContactHref(service),
     );
   }
   if (!service.detail) notFound();
@@ -77,7 +78,7 @@ export default async function ServiceDetailPage({ params }: Props) {
         </p>
         <Link
           className="mt-8 inline-flex rounded-xl bg-orange-600 px-6 py-3 font-bold text-white hover:bg-orange-700"
-          href="/hogar#contacto"
+          href={getServiceDefinitionContactHref(service)}
         >
           Contactanos
         </Link>

@@ -11,7 +11,7 @@ import {
   eventsOccurOnSameArgentinaDay,
   eventTimeFormatter,
 } from "@/lib/utils/event-dates";
-import { normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
+import { isExternalPublicUrl, normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 import type { EventItem } from "@/types/events";
 
 const loadEvent = cache(async (slug: string) => {
@@ -25,7 +25,7 @@ const loadEvent = cache(async (slug: string) => {
 
   if (error) {
     console.error("Unable to load event detail", error);
-    return null;
+    throw new Error("Public event detail is temporarily unavailable");
   }
   return data as EventItem | null;
 });
@@ -64,8 +64,8 @@ export default async function EventDetail({
   const start = item.starts_at ? new Date(item.starts_at) : null;
   const end = item.ends_at ? new Date(item.ends_at) : null;
   const buttonUrl = item.button_url ? normalizePublicNavigationUrl(item.button_url) : null;
-  const externalCta = /^https?:\/\//.test(buttonUrl ?? "");
-  const legacyImage = /^https?:\/\//.test(item.image_path ?? "");
+  const externalCta = isExternalPublicUrl(buttonUrl ?? "");
+  const legacyImage = isExternalPublicUrl(item.image_path ?? "");
 
   return (
     <main className="bg-slate-50 py-12 sm:py-20">
@@ -95,7 +95,7 @@ export default async function EventDetail({
           </div>
         )}
 
-        <dl className="mt-10 grid gap-5 rounded-2xl border bg-white p-6 sm:grid-cols-2">
+        {(start || item.location) && <dl className="mt-10 grid gap-5 rounded-2xl border bg-white p-6 sm:grid-cols-2">
           {start && (
             <div>
               <dt className="text-xs font-black uppercase tracking-wider text-orange-700">
@@ -115,7 +115,7 @@ export default async function EventDetail({
               {item.address && <dd className="text-slate-600">{item.address}</dd>}
             </div>
           )}
-        </dl>
+        </dl>}
 
         <div className="mt-10 whitespace-pre-wrap text-lg leading-8 text-slate-700">
           {item.description}

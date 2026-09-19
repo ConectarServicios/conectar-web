@@ -11,11 +11,13 @@ import type {
   ServiceGroupDefinition,
   ServiceSegment,
 } from "@/data/services/types";
+import { getServiceContactHref } from "@/data/services/queries";
 
 export const metadata: Metadata = {
   title: "Servicios | Conectar Servicios",
   description:
     "Soluciones de conectividad, seguridad, infraestructura y tecnología para hogares, empresas y organizaciones.",
+  alternates: { canonical: "/servicios" },
 };
 
 const segments: readonly {
@@ -85,7 +87,7 @@ function ServiceGroupDisclosure({
             ? `/servicios/${group.slug}/${service.slug}`
             : hasOwnDestination
               ? service.href!
-              : "/hogar#contacto";
+              : getServiceContactHref(segment);
 
           return (
             <li

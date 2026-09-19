@@ -67,6 +67,20 @@ export function getIndexableServicePaths(): readonly string[] {
     .map((service) => `/servicios/${service.group}/${service.slug}`);
 }
 
+export function getServiceContactHref(
+  segment: ServiceSegment,
+): "/hogar#contacto" | "/corporativo#contacto" {
+  return segment === "corporativo" ? "/corporativo#contacto" : "/hogar#contacto";
+}
+
+export function getServiceDefinitionContactHref(
+  service: Pick<ServiceDefinition, "segments">,
+): "/hogar#contacto" | "/corporativo#contacto" {
+  return getServiceContactHref(
+    service.segments.includes("hogar") ? "hogar" : "corporativo",
+  );
+}
+
 export function getHomeServicesByGroup(
   group: ServiceGroup,
 ): readonly ServiceDefinition[] {

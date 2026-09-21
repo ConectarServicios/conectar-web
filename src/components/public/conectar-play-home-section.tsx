@@ -121,7 +121,7 @@ function Benefit({
   return (
     <li className="flex min-w-0 items-center gap-3 rounded-2xl border border-home-border bg-white px-4 py-4 text-sm font-bold text-brand-navy shadow-sm sm:px-5">
       <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-home-surface text-home-accent-strong">
-        <Icon aria-hidden="true" size={20} strokeWidth={2.25} />
+        <Icon aria-hidden="true" size={20} strokeWidth={2} />
       </span>
       <span>{text}</span>
     </li>

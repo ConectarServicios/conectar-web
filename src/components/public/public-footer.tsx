@@ -85,7 +85,7 @@ export async function PublicFooter({ configuration }: PublicFooterProps) {
           ))}
           <div>
             <p className="text-sm font-bold text-white">Institucional</p>
-            <Link className="mt-4 inline-block rounded-sm text-sm hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" href="/hogar#quienes-somos">Quiénes somos</Link>
+            <Link className="mt-4 inline-block rounded-sm text-sm hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" href="/quienes-somos">Quiénes somos</Link>
             {socialLinks.length > 0 && <nav className="mt-4 flex flex-wrap gap-2" aria-label="Redes sociales">
               {socialLinks.map((socialLink) => <a className="flex items-center gap-2 rounded-lg border border-slate-700 p-2 text-sm font-semibold transition hover:border-slate-500 hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" href={socialLink.url} key={socialLink.id} target="_blank" rel="noopener noreferrer" aria-label={`Visitar ${socialLink.platform} de ${configuration.siteName} (abre en una pestaña nueva)`}><SocialIcon platform={socialLink.platform} /><span className="sr-only">{socialLink.platform}</span></a>)}
             </nav>}

@@ -16,7 +16,11 @@ export const publicNavigation: readonly PublicNavigationItem[] = [
       { href: "/eventos", label: "Eventos" },
     ],
   },
-  { href: "/hogar#quienes-somos", label: "Quiénes somos" },
+  {
+    href: "/quienes-somos",
+    label: "Quiénes somos",
+    activePrefixes: ["/quienes-somos"],
+  },
 ] as const;
 
 export function isNavigationItemActive(

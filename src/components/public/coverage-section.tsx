@@ -3,7 +3,7 @@
 import { ArrowRight, CheckCircle2, CircleAlert, MapPin, MessageCircle, Search } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
-import { buildCoverageWhatsAppUrl, checkCoverage } from "@/lib/coverage/service";
+import { buildCoverageWhatsAppUrl } from "@/lib/coverage/service";
 import { COVERAGE_ADDRESS_MAX_LENGTH, COVERAGE_ADDRESS_MIN_LENGTH, validateCoverageAddress } from "@/lib/coverage/validation";
 import type { CoverageResult, CoverageStatus } from "@/types/coverage";
 
@@ -26,9 +26,15 @@ const statusContent: Record<CoverageStatus, { title: string; description: string
   },
 };
 
+const upcomingContent = {
+  title: "Próximamente tendremos cobertura en tu zona.",
+  description: "Podés consultarnos para conocer el estado de expansión.",
+};
+
 export function CoverageSection({ whatsapp }: Readonly<{ whatsapp: string | null }>) {
   const [result, setResult] = useState<CoverageResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,11 +48,31 @@ export function CoverageSection({ whatsapp }: Readonly<{ whatsapp: string | null
       return;
     }
 
+    if (isLoading) return;
     setError(null);
-    setResult(await checkCoverage(validation.address));
+    setResult(null);
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/coverage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address: validation.address }),
+      });
+      const payload: unknown = await response.json();
+      if (!response.ok || !payload || typeof payload !== "object" ||
+          !("status" in payload) || !("address" in payload)) throw new Error("Invalid response");
+      setResult(payload as CoverageResult);
+    } catch {
+      setError("No pudimos verificar la cobertura en este momento. Podés consultarnos por WhatsApp.");
+      setResult({ address: validation.address, status: "review", reason: "geocoding-error" });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
-  const content = result ? statusContent[result.status] : null;
+  const content = result
+    ? result.reason === "upcoming" ? upcomingContent : statusContent[result.status]
+    : null;
   const whatsappUrl = result ? buildCoverageWhatsAppUrl(whatsapp, result.address) : null;
   const ResultIcon = result?.status === "available" ? CheckCircle2 : CircleAlert;
 
@@ -80,8 +106,8 @@ export function CoverageSection({ whatsapp }: Readonly<{ whatsapp: string | null
                     type="text"
                   />
                 </div>
-                <button className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-home-accent px-5 font-extrabold text-brand-navy-deep transition hover:bg-home-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-home-accent" type="submit">
-                  <Search className="size-4" aria-hidden="true" /> Consultar cobertura
+                <button className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-home-accent px-5 font-extrabold text-brand-navy-deep transition hover:bg-home-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-home-accent disabled:cursor-wait disabled:opacity-70" disabled={isLoading} type="submit">
+                  <Search className="size-4" aria-hidden="true" /> {isLoading ? "Consultando..." : "Consultar cobertura"}
                 </button>
               </div>
               <p className="sr-only" id="coverage-help">Ingresá una dirección de entre {COVERAGE_ADDRESS_MIN_LENGTH} y {COVERAGE_ADDRESS_MAX_LENGTH} caracteres.</p>

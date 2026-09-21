@@ -29,7 +29,9 @@ futuro dominio.
 
    Las variables `NEXT_PUBLIC_*` se incorporan al cliente durante la
    construcción. `SUPABASE_SERVICE_ROLE_KEY` se entrega únicamente al
-   contenedor en tiempo de ejecución. **Nunca suba `.env` a Git.**
+   contenedor en tiempo de ejecución. `GOOGLE_GEOCODING_API_KEY` también es
+   obligatoria en producción y se usa exclusivamente en el servidor para la
+   consulta de cobertura. **Nunca suba `.env` a Git.**
 
 3. Construya y levante el servicio:
 

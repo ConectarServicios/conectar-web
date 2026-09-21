@@ -126,3 +126,16 @@ test("client coverage component never references the server geocoding key", asyn
   const source = await import("node:fs/promises").then(({ readFile }) => readFile("src/components/public/coverage-section.tsx", "utf8"));
   assert.doesNotMatch(source, /GOOGLE_GEOCODING_API_KEY|google-geocoder|geo-provider/);
 });
+
+test("home self-service CTA reuses the public site configuration URL", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const pageSource = await readFile("src/app/(public)/hogar/page.tsx", "utf8");
+  const sectionSource = await readFile(
+    "src/components/public/self-service-section.tsx",
+    "utf8",
+  );
+
+  assert.match(pageSource, /<SelfServiceSection href=\{configuration\.selfServiceUrl\} \/>/);
+  assert.match(sectionSource, /href=\{href\}/);
+  assert.doesNotMatch(sectionSource, /https?:\/\//);
+});

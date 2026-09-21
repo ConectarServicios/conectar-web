@@ -1,5 +1,6 @@
-import { ArrowRight, Clock3, Headset, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Clock3, Headset, Mail, MapPin, Phone } from "lucide-react";
 
+import { WhatsAppIcon } from "@/components/public/whatsapp-icon";
 import { isAllowedContactNumber } from "@/lib/validations/contact-information";
 import type { ContactInformation } from "@/types/contact-information";
 
@@ -29,6 +30,11 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
   const surface = dark ? "border-white/10 bg-white/[0.055]" : "border-slate-200 bg-white shadow-sm";
   const muted = dark ? "text-slate-300" : "text-slate-600";
   const heading = dark ? "text-white" : "text-slate-950";
+  const guardNote = variant === "corporativo"
+    ? "border-corporate-accent/40 bg-corporate-accent/12 text-[#9bb7ff]"
+    : variant === "hogar"
+      ? "border-home-accent/40 bg-home-accent/10 text-home-yellow"
+      : "border-orange-200 bg-orange-50 text-orange-800";
 
   return (
     <section className={`scroll-mt-24 ${dark ? "bg-[#06182c] py-14 text-white sm:py-18" : "border-t border-slate-200 bg-slate-50 py-16 sm:py-20"}`} id="contacto" aria-labelledby="contact-title">
@@ -46,7 +52,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   {whatsapp && (
                     <a className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-whatsapp px-5 py-3 font-extrabold text-brand-navy-deep transition hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-whatsapp" href={`https://wa.me/${whatsappDigits}`} rel="noopener noreferrer" target="_blank">
-                      <MessageCircle className="size-5" aria-hidden="true" /> Hablar por WhatsApp <ArrowRight className="size-4" aria-hidden="true" />
+                      <WhatsAppIcon /> Hablar por WhatsApp
                     </a>
                   )}
                   {phone && (
@@ -56,7 +62,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                   )}
                 </div>
 
-                <dl className={`mt-7 grid gap-5 border-t pt-6 sm:grid-cols-2 ${dark ? "border-white/10" : "border-slate-200"}`}>
+                <dl className={`mt-7 flex flex-col gap-5 border-t pt-6 ${dark ? "border-white/10" : "border-slate-200"}`}>
                   {contact.commercial_email && (
                     <div className="min-w-0">
                       <dt className={`flex items-center gap-2 text-xs font-black tracking-[0.14em] uppercase ${dark ? "text-slate-400" : "text-slate-500"}`}><Mail className="size-4" aria-hidden="true" /> Email comercial</dt>
@@ -84,7 +90,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                     <div className="p-5 sm:p-6">
                       <h3 className={`flex items-center gap-2 font-bold ${heading}`}><Headset className={`size-5 ${accent}`} aria-hidden="true" /> Guardia de soporte</h3>
                       <HoursList dark={dark} value={contact.guard_hours} />
-                      {whatsapp && <a className={`mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 ${variant === "corporativo" ? "text-corporate-accent-soft" : dark ? "text-home-yellow" : "text-orange-700"} ${focusAccent}`} href={`https://wa.me/${whatsappDigits}`} rel="noopener noreferrer" target="_blank">WhatsApp de guardia <ArrowRight className="size-4" aria-hidden="true" /></a>}
+                      <p className={`mt-3 inline-flex max-w-full rounded-full border px-4 py-2 text-sm leading-5 font-semibold ${guardNote}`}>Durante la guardia podés comunicarte al mismo número habitual.</p>
                     </div>
                   )}
                 </div>

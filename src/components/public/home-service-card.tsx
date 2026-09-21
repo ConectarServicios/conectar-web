@@ -1,5 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
-
 import { ServiceCatalogIcon } from "@/components/public/service-catalog-icon";
 import type { ServiceDefinition } from "@/data/services/types";
 
@@ -12,7 +10,7 @@ export function HomeServiceCard({ service }: HomeServiceCardProps) {
     <article className="group flex h-full flex-col rounded-2xl border border-home-border bg-white p-5 shadow-sm shadow-slate-950/5 transition duration-200 hover:-translate-y-1 hover:border-home-accent-strong/30 hover:shadow-lg hover:shadow-slate-950/10 sm:p-6">
       <span
         aria-hidden="true"
-        className="flex size-11 items-center justify-center rounded-xl bg-home-surface text-home-accent-strong transition-colors group-hover:bg-home-accent-strong group-hover:text-white"
+        className="flex size-11 items-center justify-center rounded-xl bg-home-surface text-home-accent-strong transition-[color,background-color,transform] duration-200 group-hover:scale-[1.04] group-hover:bg-home-accent-strong group-hover:text-white motion-reduce:transform-none"
       >
         <ServiceCatalogIcon icon={service.icon} />
       </span>
@@ -23,11 +21,10 @@ export function HomeServiceCard({ service }: HomeServiceCardProps) {
         {service.shortDescription}
       </p>
       <a
-        className="mt-4 inline-flex w-fit items-center gap-2 rounded-sm text-sm font-bold text-home-accent-strong outline-none transition-colors hover:text-brand-navy focus-visible:ring-2 focus-visible:ring-home-accent focus-visible:ring-offset-4"
+        className="mt-4 inline-flex min-h-11 w-fit max-w-full items-center justify-center gap-2 rounded-xl border border-home-accent-strong bg-home-surface px-4 py-2 text-sm font-bold text-home-accent-strong transition-colors hover:bg-home-accent-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-home-accent"
         href={service.href ?? "#contacto"}
       >
         {service.cta?.label ?? "Conocer más"}
-        <ArrowUpRight aria-hidden="true" size={16} strokeWidth={2.5} />
       </a>
     </article>
   );

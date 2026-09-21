@@ -48,7 +48,6 @@ export async function PromoTopBar() {
               : {})}
           >
             {item.button_text || "Ver promoción"}
-            <span aria-hidden="true">→</span>
           </Link>
         </div>
       </div>

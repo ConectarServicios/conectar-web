@@ -1,6 +1,5 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,6 +12,7 @@ import {
   publicNavigation,
 } from "@/components/public/public-navigation";
 import { SegmentSelector } from "@/components/public/segment-selector";
+import { WhatsAppIcon } from "@/components/public/whatsapp-icon";
 import { isAllowedContactNumber } from "@/lib/validations/contact-information";
 import type { SiteConfiguration } from "@/types/site-settings";
 
@@ -126,10 +126,7 @@ export function PublicHeader({
               target="_blank"
               aria-label="Contactar por WhatsApp (abre en una pestaña nueva)"
             >
-              <MessageCircle
-                aria-hidden="true"
-                className="size-4"
-              />
+              <WhatsAppIcon />
               WhatsApp
             </a>
           )}

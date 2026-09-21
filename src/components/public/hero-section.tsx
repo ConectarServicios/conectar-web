@@ -1,5 +1,3 @@
-import { ArrowRight } from "lucide-react";
-
 export type PublicSegment = "hogar" | "corporativo";
 
 const content = {
@@ -71,7 +69,7 @@ export function HeroSection({ segment }: Readonly<{ segment: PublicSegment }>) {
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <a className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transform-none ${isHome ? "home-gradient text-brand-navy hover:brightness-105" : "bg-corporate-accent text-white hover:bg-[#477dff]"}`} href={current.primary.href}>
-                {current.primary.label}<ArrowRight aria-hidden="true" className="size-4" />
+                {current.primary.label}
               </a>
               <a className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/20 bg-white/[0.04] px-6 font-bold text-white transition hover:border-white/35 hover:bg-white/[0.09] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" href={current.secondary.href}>
                 {current.secondary.label}

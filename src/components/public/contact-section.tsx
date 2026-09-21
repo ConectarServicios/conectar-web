@@ -85,7 +85,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                     <div className="p-5 sm:p-6">
                       <h3 className={`flex items-center gap-2 font-bold ${heading}`}><Headset className={`size-5 ${accent}`} aria-hidden="true" /> Guardia de soporte</h3>
                       <HoursList dark={dark} value={contact.guard_hours} />
-                      {whatsapp && <a className={`mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 ${variant === "corporativo" ? "text-corporate-accent-soft" : dark ? "text-home-yellow" : "text-orange-700"} ${focusAccent}`} href={`https://wa.me/${whatsappDigits}`} rel="noopener noreferrer" target="_blank">WhatsApp de guardia</a>}
+                      <p className={`mt-3 text-sm leading-6 ${muted}`}>Durante la guardia podés comunicarte al mismo número habitual.</p>
                     </div>
                   )}
                 </div>

@@ -10,7 +10,7 @@ export function HomeServiceCard({ service }: HomeServiceCardProps) {
     <article className="group flex h-full flex-col rounded-2xl border border-home-border bg-white p-5 shadow-sm shadow-slate-950/5 transition duration-200 hover:-translate-y-1 hover:border-home-accent-strong/30 hover:shadow-lg hover:shadow-slate-950/10 sm:p-6">
       <span
         aria-hidden="true"
-        className="flex size-11 items-center justify-center rounded-xl bg-home-surface text-home-accent-strong transition-colors group-hover:bg-home-accent-strong group-hover:text-white"
+        className="flex size-11 items-center justify-center rounded-xl bg-home-surface text-home-accent-strong transition-[color,background-color,transform] duration-200 group-hover:scale-[1.04] group-hover:bg-home-accent-strong group-hover:text-white motion-reduce:transform-none"
       >
         <ServiceCatalogIcon icon={service.icon} />
       </span>

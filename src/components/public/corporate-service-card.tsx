@@ -18,7 +18,7 @@ export function CorporateServiceCard({
     >
       <span
         aria-hidden="true"
-        className="flex size-11 items-center justify-center rounded-xl bg-corporate-surface-soft text-corporate-accent-strong transition-colors group-hover:bg-corporate-accent group-hover:text-white"
+        className="flex size-11 items-center justify-center rounded-xl bg-corporate-surface-soft text-corporate-accent-strong transition-[color,background-color,transform] duration-200 group-hover:scale-[1.04] group-hover:bg-corporate-accent group-hover:text-white motion-reduce:transform-none"
       >
         <ServiceCatalogIcon icon={service.icon} />
       </span>

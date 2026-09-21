@@ -84,7 +84,7 @@ export function CorporateTrustSection() {
                   aria-hidden="true"
                   className="flex size-11 items-center justify-center rounded-full bg-corporate-surface-soft text-corporate-accent-strong"
                 >
-                  <Icon size={21} strokeWidth={1.9} />
+                  <Icon size={21} strokeWidth={2} />
                 </span>
                 <h4 className="font-display mt-5 text-lg font-bold tracking-[-0.02em] text-brand-navy">
                   {title}

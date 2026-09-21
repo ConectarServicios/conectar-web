@@ -7,7 +7,9 @@ const capabilities = [
   "Atención local",
 ] as const;
 
-export function InstitutionalSection() {
+export function InstitutionalSection({ page = false }: Readonly<{ page?: boolean }>) {
+  const Heading = page ? "h1" : "h2";
+
   return (
     <section
       className="relative scroll-mt-20 overflow-hidden bg-[#F7F6F2] py-20 sm:py-28"
@@ -26,12 +28,12 @@ export function InstitutionalSection() {
               Quiénes somos
             </p>
 
-            <h2
+            <Heading
               className="mt-5 max-w-3xl text-4xl font-black tracking-tight text-brand-navy-deep text-balance sm:text-5xl lg:text-6xl"
               id="institutional-title"
             >
               Tecnología de acá, para conectar lo que importa.
-            </h2>
+            </Heading>
           </div>
 
           <div className="flex flex-col justify-end">

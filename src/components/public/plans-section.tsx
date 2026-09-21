@@ -1,4 +1,4 @@
-import { PlanCard } from "@/components/public/plan-card";
+import { PlansCarousel } from "@/components/public/plans-carousel";
 import type { Plan } from "@/types/plans";
 
 const currency = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" });
@@ -39,9 +39,7 @@ export function PlansSection({ installationBenefitsText, installationPrice, plan
         ) : plans.length === 0 ? (
           <p className="public-empty-state">Estamos actualizando nuestros planes disponibles.</p>
         ) : (
-          <div className="mt-12 grid grid-cols-[repeat(auto-fit,minmax(min(100%,17rem),1fr))] gap-6 lg:gap-7">
-            {plans.map((plan) => <PlanCard key={plan.id} now={now} plan={plan} />)}
-          </div>
+          <PlansCarousel now={now.toISOString()} plans={plans} />
         )}
       </div>
     </section>

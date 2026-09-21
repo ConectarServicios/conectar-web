@@ -16,6 +16,7 @@ test("root redirects to Hogar", async () => {
 for (const path of [
   "/hogar",
   "/corporativo",
+  "/quienes-somos",
   "/servicios",
   "/conectar-play",
   "/noticias",
@@ -28,11 +29,12 @@ for (const path of [
   });
 }
 
-test("public pages expose coherent segment and contact destinations", async () => {
-  const [home, corporate, services] = await Promise.all([
+test("public pages expose coherent segment, institutional, and contact destinations", async () => {
+  const [home, corporate, services, institutional] = await Promise.all([
     request("/hogar").then((response) => response.text()),
     request("/corporativo").then((response) => response.text()),
     request("/servicios").then((response) => response.text()),
+    request("/quienes-somos").then((response) => response.text()),
   ]);
   assert.match(home, /href="\/corporativo"/);
   assert.match(home, /href="\/hogar#contacto"/);
@@ -40,6 +42,10 @@ test("public pages expose coherent segment and contact destinations", async () =
   assert.match(corporate, /href="\/corporativo#contacto"/);
   assert.match(services, /href="\/hogar#contacto"/);
   assert.match(services, /href="\/corporativo#contacto"/);
+  assert.match(home, /href="\/quienes-somos"/);
+  assert.doesNotMatch(home, /id="quienes-somos"/);
+  assert.match(institutional, /Quiénes somos/);
+  assert.doesNotMatch(institutional, /aria-current="page"[^>]*href="\/(?:hogar|corporativo)"/);
 });
 
 test("unknown route renders the public 404", async () => {

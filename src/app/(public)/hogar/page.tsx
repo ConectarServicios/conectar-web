@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { HeroSection } from "@/components/public/hero-section";
-import { InstitutionalSection } from "@/components/public/institutional-section";
 import { ConectarPlayHomeSection } from "@/components/public/conectar-play-home-section";
 import { PlansSection } from "@/components/public/plans-section";
 import { HomeSecuritySection } from "@/components/public/home-security-section";
@@ -89,7 +88,6 @@ export default async function HogarPage() {
       <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
       <HomeSecuritySection />
       {events.unavailable ? <UnavailableSection>Los eventos no están disponibles temporalmente.</UnavailableSection> : <EventsHomeSection imageUrls={eventImages} items={events.data} />}
-      <InstitutionalSection />
       {news.unavailable ? <UnavailableSection>Las noticias no están disponibles temporalmente.</UnavailableSection> : <NewsHomeSection imageUrls={newsImages} items={news.data} />}
       <HomeServicesSection />
       <HomeSocialProofSection />

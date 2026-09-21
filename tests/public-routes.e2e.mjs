@@ -43,6 +43,11 @@ test("public pages expose coherent segment, institutional, and contact destinati
   assert.match(services, /href="\/hogar#contacto"/);
   assert.match(services, /href="\/corporativo#contacto"/);
   assert.match(home, /href="\/quienes-somos"/);
+  assert.match(home, /id="cobertura"/);
+  assert.match(home, /¿Conectar llega a tu domicilio\?/);
+  assert.match(home, /name="address"/);
+  assert.match(home, /¿Necesitás ayuda o querés contratar\?/);
+  assert.match(corporate, /¿Necesitás ayuda o querés contratar\?/);
   assert.doesNotMatch(home, /id="quienes-somos"/);
   assert.match(institutional, /Quiénes somos/);
   assert.doesNotMatch(institutional, /aria-current="page"[^>]*href="\/(?:hogar|corporativo)"/);

@@ -21,6 +21,7 @@ import { eventImageUrl, getUpcomingPublicEvents } from "@/lib/supabase/events";
 import { getFeaturedFaqs } from "@/lib/supabase/faqs";
 import { getPublicInstallationConfiguration } from "@/lib/supabase/site-settings";
 import { FaqHomeSection } from "@/components/public/faq-home-section";
+import { CoverageSection } from "@/components/public/coverage-section";
 
 export const metadata: Metadata = {
   title: "Internet para hogares | Conectar Servicios",
@@ -77,6 +78,7 @@ export default async function HogarPage() {
   return (
     <main>
       <HeroSection segment="hogar" />
+      <CoverageSection whatsapp={contact.data?.whatsapp ?? null} />
       {promotions.unavailable ? <UnavailableSection>Las promociones no están disponibles temporalmente.</UnavailableSection> : <PromotionsSection imageUrls={promotionImages} items={promotions.data} />}
       <PlansSection
         installationBenefitsText={installation.benefitsText}

@@ -10,7 +10,6 @@ import {
   isNavigationItemActive,
   publicNavigation,
 } from "@/components/public/public-navigation";
-import { SegmentSelector } from "@/components/public/segment-selector";
 
 type PublicMobileNavProps = Readonly<{
   selfServiceUrl: string;
@@ -163,14 +162,6 @@ export function PublicMobileNav({
           aria-label="Navegación mobile"
           ref={menuRef}
         >
-          <div className="mb-2 border-b border-white/10 px-2 pb-3">
-            <p className="mb-2 text-xs font-bold tracking-[0.12em] text-slate-400 uppercase">
-              Audiencia
-            </p>
-
-            <SegmentSelector onNavigate={closeMenu} />
-          </div>
-
           {publicNavigation.map((item) => {
             const active = isNavigationItemActive(
               pathname,
@@ -183,16 +174,6 @@ export function PublicMobileNav({
                   className="py-2"
                   key={item.label}
                 >
-                  <p
-                    className={`px-4 py-2 text-xs font-bold tracking-[0.12em] uppercase ${
-                      active
-                        ? "text-white"
-                        : "text-slate-400"
-                    }`}
-                  >
-                    {item.label}
-                  </p>
-
                   {item.children.map((child) => (
                     <Link
                       className="block rounded-xl px-4 py-3 font-semibold text-slate-100 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-white"

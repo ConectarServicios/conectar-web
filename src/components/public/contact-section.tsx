@@ -1,5 +1,6 @@
 import { Clock3, Headset, Mail, MapPin, Phone } from "lucide-react";
 
+import { WhatsAppIcon } from "@/components/public/whatsapp-icon";
 import { isAllowedContactNumber } from "@/lib/validations/contact-information";
 import type { ContactInformation } from "@/types/contact-information";
 
@@ -46,7 +47,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   {whatsapp && (
                     <a className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-whatsapp px-5 py-3 font-extrabold text-brand-navy-deep transition hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-whatsapp" href={`https://wa.me/${whatsappDigits}`} rel="noopener noreferrer" target="_blank">
-                      Hablar por WhatsApp
+                      <WhatsAppIcon /> Hablar por WhatsApp
                     </a>
                   )}
                   {phone && (
@@ -56,7 +57,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                   )}
                 </div>
 
-                <dl className={`mt-7 grid gap-5 border-t pt-6 sm:grid-cols-2 ${dark ? "border-white/10" : "border-slate-200"}`}>
+                <dl className={`mt-7 flex flex-col gap-5 border-t pt-6 ${dark ? "border-white/10" : "border-slate-200"}`}>
                   {contact.commercial_email && (
                     <div className="min-w-0">
                       <dt className={`flex items-center gap-2 text-xs font-black tracking-[0.14em] uppercase ${dark ? "text-slate-400" : "text-slate-500"}`}><Mail className="size-4" aria-hidden="true" /> Email comercial</dt>

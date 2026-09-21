@@ -7,14 +7,16 @@ export const metadata: Metadata = {
   title: "Preguntas frecuentes | Conectar Servicios",
   description:
     "Respuestas a consultas habituales sobre Internet, Wi-Fi, facturación, soporte y servicios de Conectar.",
+  alternates: { canonical: "/preguntas-frecuentes" },
 };
 
 export default async function FaqsPage() {
-  const [faqs, playResult] = await Promise.all([
+  const [faqsResult, playResult] = await Promise.all([
     getPublicFaqs(),
     getPlayFaqs(),
   ]);
-  const hasFaqs = faqs.length > 0 || playResult.data.length > 0;
+  const hasFaqs = faqsResult.data.length > 0 || playResult.data.length > 0;
+  const unavailable = faqsResult.unavailable || playResult.unavailable;
   return (
     <main className="bg-slate-50 py-14 sm:py-20">
       <div className="public-container">
@@ -29,7 +31,13 @@ export default async function FaqsPage() {
           </p>
         </header>
         {hasFaqs ? (
-          <FaqsExplorer faqs={faqs} playFaqs={playResult.data} />
+          <><FaqsExplorer faqs={faqsResult.data} playFaqs={playResult.data} />
+          {unavailable && <p className="public-empty-state" role="status">Parte de las preguntas frecuentes no está disponible temporalmente.</p>}</>
+        ) : unavailable ? (
+          <section className="public-empty-state mt-12" role="status">
+            <h2 className="text-2xl font-black">Las preguntas frecuentes no están disponibles temporalmente.</h2>
+            <p className="mt-3 text-slate-600">Intentá nuevamente más tarde.</p>
+          </section>
         ) : (
           <section className="mt-12 rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center sm:p-12">
             <h2 className="text-2xl font-black">

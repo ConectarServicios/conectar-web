@@ -11,10 +11,12 @@ import {
   getPlaySettings,
 } from "@/lib/supabase/conectar-play";
 import { ContextualPromotions } from "@/components/public/contextual-promotions";
+import { isExternalPublicUrl, normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 
 export const metadata: Metadata = {
   title: "Conectar Play | Conectar Servicios",
   description: "Información, planes y compatibilidad de Conectar Play.",
+  alternates: { canonical: "/conectar-play" },
 };
 
 export default async function ConectarPlayPage() {
@@ -28,10 +30,16 @@ export default async function ConectarPlayPage() {
 
   const settings = settingsResult.data;
   const plans = plansResult.data;
+  const showsCompatibility = Boolean(
+    settings && (settings.compatibility_text || settings.incompatible_tv_text),
+  );
+  const webUrl = settings?.web_url
+    ? normalizePublicNavigationUrl(settings.web_url)
+    : null;
 
   return (
     <main>
-      <section className="relative overflow-hidden bg-[#071a2f] py-20 text-white sm:py-28">
+      <section className="relative overflow-hidden bg-brand-navy-deep py-20 text-white sm:py-28">
         <div
           className="public-grid-pattern absolute inset-0"
           aria-hidden="true"
@@ -59,12 +67,11 @@ export default async function ConectarPlayPage() {
               Ver planes
             </a>
 
-            <a
-              className="public-button-secondary-dark"
-              href="#compatibilidad"
-            >
-              Compatibilidad
-            </a>
+            {showsCompatibility && (
+              <a className="public-button-secondary-dark" href="#compatibilidad">
+                Compatibilidad
+              </a>
+            )}
           </div>
         </div>
       </section>
@@ -77,7 +84,9 @@ export default async function ConectarPlayPage() {
 
           <h2 className="public-heading mt-3">Elegí tu experiencia</h2>
 
-          {plans.length ? (
+          {plansResult.unavailable ? (
+            <p className="public-empty-state" role="status">Los planes de Conectar Play no están disponibles temporalmente.</p>
+          ) : plans.length ? (
             <div className="mt-10">
               <ConectarPlayPlans plans={plans} />
             </div>
@@ -88,6 +97,10 @@ export default async function ConectarPlayPage() {
           )}
         </div>
       </section>
+
+      {settingsResult.unavailable && (
+        <section className="bg-slate-50 py-12"><div className="public-container"><p className="public-empty-state" role="status">La información de Conectar Play no está disponible temporalmente.</p></div></section>
+      )}
 
       {settings && (
         <section className="bg-slate-50 py-20">
@@ -118,34 +131,33 @@ export default async function ConectarPlayPage() {
         </section>
       )}
 
-      {settings &&
-        (settings.compatibility_text || settings.incompatible_tv_text) && (
-          <section className="py-20" id="compatibilidad">
-            <div className="public-container grid gap-8 lg:grid-cols-2">
-              <div>
-                <p className="public-eyebrow">Compatibilidad</p>
+      {showsCompatibility && settings && (
+        <section className="py-20" id="compatibilidad">
+          <div className="public-container grid gap-8 lg:grid-cols-2">
+            <div>
+              <p className="public-eyebrow">Compatibilidad</p>
 
-                <h2 className="public-heading mt-3">
-                  Usalo en dispositivos compatibles
-                </h2>
-              </div>
-
-              <div className="space-y-4 text-lg leading-8 text-slate-600">
-                {settings.compatibility_text && (
-                  <p>{settings.compatibility_text}</p>
-                )}
-
-                {settings.incompatible_tv_text && (
-                  <p className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
-                    {settings.incompatible_tv_text}
-                  </p>
-                )}
-              </div>
+              <h2 className="public-heading mt-3">
+                Usalo en dispositivos compatibles
+              </h2>
             </div>
-          </section>
-        )}
 
-      {settings?.web_url && (
+            <div className="space-y-4 text-lg leading-8 text-slate-600">
+              {settings.compatibility_text && (
+                <p>{settings.compatibility_text}</p>
+              )}
+
+              {settings.incompatible_tv_text && (
+                <p className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
+                  {settings.incompatible_tv_text}
+                </p>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {webUrl && isExternalPublicUrl(webUrl) && (
         <section className="bg-white py-12">
           <div className="public-container">
             <div className="flex flex-col gap-6 rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
@@ -165,7 +177,7 @@ export default async function ConectarPlayPage() {
 
               <a
                 className="public-button-primary shrink-0"
-                href={settings.web_url}
+                href={webUrl}
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -177,7 +189,10 @@ export default async function ConectarPlayPage() {
       )}
 
       {settings?.onn_enabled && (
-        <section className="bg-[#0b2440] py-20 text-white">
+        <section
+          className="scroll-mt-24 bg-brand-navy py-20 text-white"
+          id="stick"
+        >
           <div className="public-container grid gap-10 lg:grid-cols-[1.3fr_.7fr] lg:items-center">
             <div>
               <p className="text-xs font-black tracking-[.18em] text-orange-400 uppercase">
@@ -225,7 +240,9 @@ export default async function ConectarPlayPage() {
         </section>
       )}
 
-      {packsResult.data.length > 0 && (
+      {packsResult.unavailable ? (
+        <section className="bg-slate-50 py-12"><div className="public-container"><p className="public-empty-state" role="status">Los packs adicionales no están disponibles temporalmente.</p></div></section>
+      ) : packsResult.data.length > 0 && (
         <section className="bg-slate-50 py-20">
           <div className="public-container">
             <p className="public-eyebrow">Packs adicionales</p>
@@ -247,7 +264,7 @@ export default async function ConectarPlayPage() {
                   )}
 
                   {pack.price !== null && (
-                    <p className="mt-4 font-black text-[#0b2440]">
+                    <p className="mt-4 font-black text-brand-navy">
                       {money(pack.price)} / mes
                     </p>
                   )}
@@ -258,7 +275,9 @@ export default async function ConectarPlayPage() {
         </section>
       )}
 
-      {faqsResult.data.length > 0 && (
+      {faqsResult.unavailable ? (
+        <section className="py-12"><div className="public-container"><p className="public-empty-state" role="status">Las preguntas de Conectar Play no están disponibles temporalmente.</p></div></section>
+      ) : faqsResult.data.length > 0 && (
         <section className="py-20">
           <div className="public-container max-w-4xl">
             <p className="public-eyebrow">Preguntas frecuentes</p>
@@ -288,7 +307,7 @@ export default async function ConectarPlayPage() {
       )}
 
       {settings?.support_text && (
-        <section className="bg-[#071a2f] py-16 text-white">
+        <section className="bg-brand-navy-deep py-16 text-white">
           <div className="public-container text-center">
             <p className="text-sm font-black tracking-widest text-orange-400 uppercase">
               Soporte
@@ -304,7 +323,7 @@ export default async function ConectarPlayPage() {
 
             <Link
               className="public-button-primary mt-7"
-              href="/#contacto"
+              href="/hogar#contacto"
             >
               Ir a contacto
             </Link>

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:smoke": "node --experimental-strip-types --test tests/public-hardening.test.ts",
+    "test:e2e": "node --test tests/public-routes.e2e.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

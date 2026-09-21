@@ -1,10 +1,13 @@
 import type { MetadataRoute } from "next";
 
-import { getPublicSitemapRecords } from "@/lib/supabase/sitemap";
+import { getIndexableServicePaths } from "@/data/services/queries";
+import { getPublicContentSitemapRecords } from "@/lib/supabase/sitemap";
 import { getSiteUrl } from "@/lib/utils/site-url";
 
 const staticRoutes = [
-  "/",
+  "/hogar",
+  "/corporativo",
+  "/quienes-somos",
   "/servicios",
   "/conectar-play",
   "/promociones",
@@ -17,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
   if (!siteUrl) return [];
 
-  const records = await getPublicSitemapRecords();
+  const records = await getPublicContentSitemapRecords();
   const entry = (path: string, lastModified?: string | null) => ({
     url: new URL(path, siteUrl).toString(),
     ...(lastModified ? { lastModified } : {}),
@@ -25,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticRoutes.map((route) => entry(route)),
-    ...records.areas.map((item) => entry(`/servicios/${item.slug}`, item.updated_at)),
+    ...getIndexableServicePaths().map((path) => entry(path)),
     ...records.news.map((item) => entry(`/noticias/${item.slug}`, item.updated_at)),
     ...records.events.map((item) => entry(`/eventos/${item.slug}`, item.updated_at)),
     ...records.promotions.map((item) => entry(`/promociones/${item.slug}`, item.updated_at)),

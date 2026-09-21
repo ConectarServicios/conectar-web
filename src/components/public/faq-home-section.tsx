@@ -5,10 +5,12 @@ import type { FaqItem } from "@/types/faqs";
 export function FaqHomeSection({ items }: Readonly<{ items: FaqItem[] }>) {
   if (!items.length) return null;
   return (
-    <section className="bg-white py-20 sm:py-24">
-      <div className="public-container grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:gap-16">
+    <section className="border-t border-home-border/80 bg-institutional-surface py-16 sm:py-20 lg:py-24">
+      <div className="public-container grid gap-9 lg:grid-cols-[.8fr_1.2fr] lg:gap-16">
         <div>
-          <p className="public-eyebrow">Preguntas frecuentes</p>
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-home-accent-strong sm:text-sm">
+            Preguntas frecuentes
+          </p>
           <h2 className="public-heading mt-3">¿Tenés alguna duda?</h2>
           <p className="mt-4 max-w-lg text-lg leading-8 text-slate-600">
             Encontrá respuestas rápidas a las consultas más habituales sobre
@@ -21,7 +23,8 @@ export function FaqHomeSection({ items }: Readonly<{ items: FaqItem[] }>) {
             Ver todas las preguntas frecuentes
           </Link>
         </div>
-<div className="self-start rounded-2xl border border-slate-200 bg-slate-50 px-5 shadow-sm sm:px-7">          <FaqAccordion compact items={items} />
+        <div className="self-start">
+          <FaqAccordion items={items} />
         </div>
       </div>
     </section>

@@ -11,6 +11,7 @@
     "test:e2e": "node --test tests/public-routes.e2e.mjs"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.57.4",
     "lucide-react": "^0.468.0",

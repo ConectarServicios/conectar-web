@@ -1,4 +1,4 @@
-import { Headset } from "lucide-react";
+import { Headset } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 
 import { HomeServiceCard } from "@/components/public/home-service-card";
@@ -38,7 +38,7 @@ export function HomeServicesSection() {
               aria-hidden="true"
               className="flex size-11 items-center justify-center rounded-xl bg-home-surface text-home-accent-strong transition-colors group-hover:bg-home-accent-strong group-hover:text-white"
             >
-              <Headset size={23} strokeWidth={2} />
+              <Headset size={24} weight="duotone" />
             </span>
             <h3 className="font-display mt-4 text-lg font-bold tracking-[-0.025em] text-brand-navy sm:text-xl">
               Atención local

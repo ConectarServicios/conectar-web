@@ -1,4 +1,4 @@
-import { ServiceCatalogIcon } from "@/components/public/service-catalog-icon";
+import { HomeServiceIcon } from "@/components/public/home-service-icon";
 import type { ServiceDefinition } from "@/data/services/types";
 
 type HomeServiceCardProps = {
@@ -12,7 +12,7 @@ export function HomeServiceCard({ service }: HomeServiceCardProps) {
         aria-hidden="true"
         className="flex size-11 items-center justify-center rounded-xl bg-home-surface text-home-accent-strong transition-colors group-hover:bg-home-accent-strong group-hover:text-white"
       >
-        <ServiceCatalogIcon icon={service.icon} />
+        <HomeServiceIcon icon={service.icon} />
       </span>
       <h3 className="font-display mt-4 text-lg font-bold tracking-[-0.025em] text-brand-navy sm:text-xl">
         {service.title}

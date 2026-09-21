@@ -1,4 +1,8 @@
-import { CreditCard, FileText, RefreshCw } from "lucide-react";
+import {
+  ArrowsClockwise,
+  CreditCard,
+  Receipt,
+} from "@phosphor-icons/react/dist/ssr";
 
 type SelfServiceSectionProps = Readonly<{
   href: string;
@@ -13,13 +17,13 @@ const benefits = [
   {
     title: "Facturas y cuenta",
     description: "Consultá tu facturación y la información de tu servicio.",
-    icon: FileText,
+    icon: Receipt,
   },
   {
     title: "Débito automático",
     description:
       "Adherite para simplificar el pago de tus próximas facturas.",
-    icon: RefreshCw,
+    icon: ArrowsClockwise,
   },
 ] as const;
 
@@ -74,7 +78,7 @@ export function SelfServiceSection({ href }: SelfServiceSectionProps) {
                   aria-hidden="true"
                   className="grid size-11 shrink-0 place-items-center rounded-xl bg-white/10 text-orange-300"
                 >
-                  <Icon size={21} strokeWidth={2} />
+                  <Icon size={22} weight="duotone" />
                 </span>
                 <div>
                   <h3 className="text-base font-bold text-white sm:text-lg">

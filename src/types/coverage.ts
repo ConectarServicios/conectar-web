@@ -1,5 +1,12 @@
 export type CoverageStatus = "available" | "unavailable" | "review" | "not-configured";
 
+export type CoverageReason =
+  | "upcoming"
+  | "outside-service-area"
+  | "ambiguous"
+  | "geocoding-error"
+  | "missing-configuration";
+
 export type CoverageInput = {
   address: string;
 };
@@ -7,6 +14,7 @@ export type CoverageInput = {
 export type CoverageResult = {
   address: string;
   status: CoverageStatus;
+  reason?: CoverageReason;
 };
 
 export interface CoverageProvider {

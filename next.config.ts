@@ -12,6 +12,9 @@ const remotePatterns = supabaseUrl
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  outputFileTracingIncludes: {
+    "/api/coverage": ["./src/data/coverage/cobertura-conectar-sunchales.geojson"],
+  },
   experimental: {
     serverActions: { bodySizeLimit: "6mb" },
   },

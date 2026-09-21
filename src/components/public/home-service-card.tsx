@@ -1,5 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
-
 import { ServiceCatalogIcon } from "@/components/public/service-catalog-icon";
 import type { ServiceDefinition } from "@/data/services/types";
 
@@ -27,7 +25,6 @@ export function HomeServiceCard({ service }: HomeServiceCardProps) {
         href={service.href ?? "#contacto"}
       >
         {service.cta?.label ?? "Conocer más"}
-        <ArrowUpRight aria-hidden="true" size={16} strokeWidth={2.5} />
       </a>
     </article>
   );

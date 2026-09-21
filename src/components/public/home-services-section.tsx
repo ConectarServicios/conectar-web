@@ -1,4 +1,4 @@
-import { ArrowUpRight, Headset } from "lucide-react";
+import { Headset } from "lucide-react";
 import Link from "next/link";
 
 import { HomeServiceCard } from "@/components/public/home-service-card";
@@ -52,11 +52,6 @@ export function HomeServicesSection() {
               href="#contacto"
             >
               Conocer más
-              <ArrowUpRight
-                aria-hidden="true"
-                size={16}
-                strokeWidth={2.5}
-              />
             </a>
           </article>
         </div>

@@ -1,5 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
-
 import { ServiceCatalogIcon } from "@/components/public/service-catalog-icon";
 import type { ServiceDefinition } from "@/data/services/types";
 
@@ -35,7 +33,6 @@ export function CorporateServiceCard({
         href={service.href ?? "#contacto"}
       >
         {service.hasDetailPage ? "Conocer más" : "Consultar"}
-        <ArrowUpRight aria-hidden="true" size={16} strokeWidth={2.5} />
       </a>
     </article>
   );

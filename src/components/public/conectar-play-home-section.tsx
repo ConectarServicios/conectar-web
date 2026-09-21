@@ -1,4 +1,4 @@
-import { ArrowRight, Gauge, MapPin, MonitorSmartphone } from "lucide-react";
+import { Gauge, MapPin, MonitorSmartphone } from "lucide-react";
 import Link from "next/link";
 
 import { ConectarPlayPlans } from "@/components/public/conectar-play-plans";
@@ -97,7 +97,6 @@ export function ConectarPlayHomeSection({
               href="/conectar-play#stick"
             >
               Ver opciones del Stick
-              <ArrowRight aria-hidden="true" size={18} strokeWidth={2.5} />
             </Link>
           </aside>
         )}

@@ -1,4 +1,4 @@
-import { ArrowRight, Clock3, Headset, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Clock3, Headset, Mail, MapPin, Phone } from "lucide-react";
 
 import { isAllowedContactNumber } from "@/lib/validations/contact-information";
 import type { ContactInformation } from "@/types/contact-information";
@@ -46,7 +46,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   {whatsapp && (
                     <a className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-whatsapp px-5 py-3 font-extrabold text-brand-navy-deep transition hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-whatsapp" href={`https://wa.me/${whatsappDigits}`} rel="noopener noreferrer" target="_blank">
-                      <MessageCircle className="size-5" aria-hidden="true" /> Hablar por WhatsApp <ArrowRight className="size-4" aria-hidden="true" />
+                      Hablar por WhatsApp
                     </a>
                   )}
                   {phone && (
@@ -84,7 +84,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                     <div className="p-5 sm:p-6">
                       <h3 className={`flex items-center gap-2 font-bold ${heading}`}><Headset className={`size-5 ${accent}`} aria-hidden="true" /> Guardia de soporte</h3>
                       <HoursList dark={dark} value={contact.guard_hours} />
-                      {whatsapp && <a className={`mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 ${variant === "corporativo" ? "text-corporate-accent-soft" : dark ? "text-home-yellow" : "text-orange-700"} ${focusAccent}`} href={`https://wa.me/${whatsappDigits}`} rel="noopener noreferrer" target="_blank">WhatsApp de guardia <ArrowRight className="size-4" aria-hidden="true" /></a>}
+                      {whatsapp && <a className={`mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 ${variant === "corporativo" ? "text-corporate-accent-soft" : dark ? "text-home-yellow" : "text-orange-700"} ${focusAccent}`} href={`https://wa.me/${whatsappDigits}`} rel="noopener noreferrer" target="_blank">WhatsApp de guardia</a>}
                     </div>
                   )}
                 </div>

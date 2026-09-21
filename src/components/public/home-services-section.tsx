@@ -1,4 +1,4 @@
-import { ArrowUpRight, Headset } from "lucide-react";
+import { Headset } from "lucide-react";
 import Link from "next/link";
 
 import { HomeServiceCard } from "@/components/public/home-service-card";
@@ -48,15 +48,10 @@ export function HomeServicesSection() {
               también fines de semana.
             </p>
             <a
-              className="mt-4 inline-flex w-fit items-center gap-2 rounded-sm text-sm font-bold text-home-accent-strong outline-none transition-colors hover:text-brand-navy focus-visible:ring-2 focus-visible:ring-home-accent focus-visible:ring-offset-4"
+              className="mt-4 inline-flex min-h-11 w-fit max-w-full items-center justify-center gap-2 rounded-xl border border-home-accent-strong bg-home-surface px-4 py-2 text-sm font-bold text-home-accent-strong transition-colors hover:bg-home-accent-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-home-accent"
               href="#contacto"
             >
               Conocer más
-              <ArrowUpRight
-                aria-hidden="true"
-                size={16}
-                strokeWidth={2.5}
-              />
             </a>
           </article>
         </div>

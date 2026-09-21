@@ -31,7 +31,7 @@ export function CorporateServiceCard({
         {service.shortDescription}
       </p>
       <a
-        className="mt-4 inline-flex w-fit items-center gap-2 rounded-sm text-sm font-bold text-corporate-accent-strong outline-none transition-colors hover:text-[#173b99] focus-visible:ring-2 focus-visible:ring-corporate-accent focus-visible:ring-offset-4"
+        className="mt-4 inline-flex min-h-11 w-fit max-w-full items-center justify-center gap-2 rounded-xl border border-corporate-accent bg-corporate-surface-soft px-4 py-2 text-sm font-bold text-corporate-accent-strong transition-colors hover:bg-corporate-accent hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corporate-accent"
         href={service.href ?? "#contacto"}
       >
         {service.hasDetailPage ? "Conocer más" : "Consultar"}

@@ -19,9 +19,13 @@ import { ContextualPromotions } from "@/components/public/contextual-promotions"
 import { EventsHomeSection } from "@/components/public/events-home-section";
 import { eventImageUrl, getUpcomingPublicEvents } from "@/lib/supabase/events";
 import { getFeaturedFaqs } from "@/lib/supabase/faqs";
-import { getPublicInstallationConfiguration } from "@/lib/supabase/site-settings";
+import {
+  getPublicInstallationConfiguration,
+  getPublicSiteConfiguration,
+} from "@/lib/supabase/site-settings";
 import { FaqHomeSection } from "@/components/public/faq-home-section";
 import { CoverageSection } from "@/components/public/coverage-section";
+import { SelfServiceSection } from "@/components/public/self-service-section";
 
 export const metadata: Metadata = {
   title: "Internet para hogares | Conectar Servicios",
@@ -59,7 +63,7 @@ async function getPublicPlans(): Promise<PublicData<Plan>> {
 }
 
 export default async function HogarPage() {
-  const [plans, installation, playSettings, playPlans, contact, news, promotions, events, featuredFaqs] = await Promise.all([
+  const [plans, installation, playSettings, playPlans, contact, news, promotions, events, featuredFaqs, configuration] = await Promise.all([
     getPublicPlans(),
     getPublicInstallationConfiguration(),
     getPlaySettings(),
@@ -69,6 +73,7 @@ export default async function HogarPage() {
     getPublicPromotions("home", 3),
     getUpcomingPublicEvents(3),
     getFeaturedFaqs(6),
+    getPublicSiteConfiguration(),
   ]);
   const supabase = await createClient();
   const newsImages = Object.fromEntries(news.data.map((item) => [item.id, newsImageUrl(supabase, item.cover_image)]));
@@ -89,6 +94,7 @@ export default async function HogarPage() {
       <ContextualPromotions exclude={promotions.data.map((item) => item.id)} placement="plans" />
       <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
       <HomeSecuritySection />
+      <SelfServiceSection href={configuration.selfServiceUrl} />
       {events.unavailable ? <UnavailableSection>Los eventos no están disponibles temporalmente.</UnavailableSection> : <EventsHomeSection imageUrls={eventImages} items={events.data} />}
       {news.unavailable ? <UnavailableSection>Las noticias no están disponibles temporalmente.</UnavailableSection> : <NewsHomeSection imageUrls={newsImages} items={news.data} />}
       <HomeServicesSection />

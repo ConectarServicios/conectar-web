@@ -31,8 +31,15 @@ function HighlightList() {
           className="flex min-h-20 min-w-0 items-center gap-3.5 rounded-2xl border border-white/[0.12] bg-white/[0.06] px-4 py-3.5 shadow-[0_12px_30px_-20px_rgba(0,0,0,.8)] backdrop-blur-sm sm:px-5"
           key={title}
         >
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-home-accent/25 bg-home-accent/[0.10] shadow-[inset_0_1px_0_rgba(255,255,255,.08)]">
-            <Image aria-hidden="true" alt="" height={24} src={icon} width={24} />
+          <span className="flex size-9 shrink-0 items-center justify-center sm:size-10">
+            <Image
+              aria-hidden="true"
+              alt=""
+              className="size-[30px] object-contain sm:size-8"
+              height={32}
+              src={icon}
+              width={32}
+            />
           </span>
           <span className="min-w-0">
             <strong className="font-display block text-sm leading-5 font-bold text-white sm:text-[0.9375rem]">

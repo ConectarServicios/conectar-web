@@ -29,17 +29,14 @@ export function CorporateProcessSection() {
           </h2>
         </div>
 
-        <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-5">
+        <ol className="relative mt-10 grid gap-4 before:pointer-events-none before:absolute before:top-[46px] before:right-[46px] before:left-[46px] before:z-10 before:hidden before:h-px before:bg-corporate-accent/25 before:content-[''] sm:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-5 lg:before:block">
           {steps.map((step, index) => (
             <li className="relative rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6" key={step.title}>
-              <span className="font-display flex size-11 items-center justify-center rounded-xl bg-corporate-accent text-lg font-bold text-white" aria-hidden="true">
+              <span className="font-display relative z-20 flex size-11 items-center justify-center rounded-xl bg-corporate-accent text-lg font-bold text-white" aria-hidden="true">
                 {index + 1}
               </span>
               <h3 className="font-display mt-5 text-xl font-bold tracking-[-0.02em] text-brand-navy">{step.title}</h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">{step.description}</p>
-              {index < steps.length - 1 && (
-                <span className="absolute top-12 -right-3 hidden h-px w-6 bg-corporate-accent/40 lg:block" aria-hidden="true" />
-              )}
             </li>
           ))}
         </ol>

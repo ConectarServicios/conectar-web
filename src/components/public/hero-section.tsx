@@ -1,3 +1,5 @@
+import { HomeHighlights } from "@/components/public/home-highlights";
+
 export type PublicSegment = "hogar" | "corporativo";
 
 const content = {
@@ -23,20 +25,12 @@ const content = {
   secondary: { label: string; href: string };
 }>;
 
-const trustItems = {
-  hogar: [
-    { title: "Fibra óptica propia", detail: "Red FTTH hasta tu casa" },
-    { title: "Atención local", detail: "Equipo en Sunchales" },
-    { title: "Guardia fin de semana", detail: "Sáb, dom y feriados" },
-    { title: "Autogestión online", detail: "Tu cuenta, 24 h" },
-  ],
-  corporativo: [
-    { title: "Un solo proveedor", detail: "Red + infra + seguridad" },
-    { title: "Datos en Argentina", detail: "Control total de tu información" },
-    { title: "Monitoreo 24/7", detail: "Con guardia de soporte" },
-    { title: "Respuesta local", detail: "Cercana y directa" },
-  ],
-};
+const corporateTrustItems = [
+  { title: "Un solo proveedor", detail: "Red + infra + seguridad" },
+  { title: "Datos en Argentina", detail: "Control total de tu información" },
+  { title: "Monitoreo 24/7", detail: "Con guardia de soporte" },
+  { title: "Respuesta local", detail: "Cercana y directa" },
+];
 
 export function HeroSection({ segment }: Readonly<{ segment: PublicSegment }>) {
   const current = content[segment];
@@ -79,16 +73,20 @@ export function HeroSection({ segment }: Readonly<{ segment: PublicSegment }>) {
         </div>
       </section>
 
-      <aside className="bg-[#0d2740] text-white" aria-label="Razones para elegir Conectar Servicios">
-        <ul className="public-container grid list-none grid-cols-1 divide-y divide-white/10 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x lg:divide-white/10">
-          {trustItems[segment].map(({ title, detail }) => (
-            <li className="px-1 py-5 sm:px-5 lg:py-6 lg:first:pl-0 lg:last:pr-0" key={title}>
-              <strong className="font-display block text-sm font-bold text-white">{title}</strong>
-              <span className="mt-1 block text-xs text-[#a9bfd2]">{detail}</span>
-            </li>
-          ))}
-        </ul>
-      </aside>
+      {isHome ? (
+        <HomeHighlights />
+      ) : (
+        <aside className="bg-[#0d2740] text-white" aria-label="Razones para elegir Conectar Servicios">
+          <ul className="public-container grid list-none grid-cols-1 divide-y divide-white/10 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x lg:divide-white/10">
+            {corporateTrustItems.map(({ title, detail }) => (
+              <li className="px-1 py-5 sm:px-5 lg:py-6 lg:first:pl-0 lg:last:pr-0" key={title}>
+                <strong className="font-display block text-sm font-bold text-white">{title}</strong>
+                <span className="mt-1 block text-xs text-[#a9bfd2]">{detail}</span>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
     </>
   );
 }

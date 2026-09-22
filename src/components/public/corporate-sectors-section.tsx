@@ -1,17 +1,14 @@
 import {
-  Boxes,
   BriefcaseBusiness,
-  Cctv,
   HeartPulse,
   Landmark,
-  Network,
-  Server,
-  ShieldCheck,
   Store,
-  Terminal,
   Wheat,
   type LucideIcon,
 } from "lucide-react";
+
+import styles from "@/components/public/technology-marquee.module.css";
+import { TechnologyLogo } from "@/components/public/technology-logo";
 
 const sectors: ReadonlyArray<{ icon: LucideIcon; name: string }> = [
   { name: "Agroindustria y lácteo", icon: Wheat },
@@ -21,14 +18,37 @@ const sectors: ReadonlyArray<{ icon: LucideIcon; name: string }> = [
   { name: "Estudios y profesionales", icon: BriefcaseBusiness },
 ];
 
-const technologies: ReadonlyArray<{ icon: LucideIcon; name: string }> = [
-  { name: "Linux", icon: Terminal },
-  { name: "Windows Server", icon: Server },
-  { name: "Cisco", icon: Network },
-  { name: "VMware", icon: Boxes },
-  { name: "Wazuh", icon: ShieldCheck },
-  { name: "Hikvision", icon: Cctv },
-];
+const technologies = [
+  { name: "Linux", logo: "linux" },
+  { name: "Windows Server", logo: "windows" },
+  { name: "Cisco", logo: "cisco" },
+  { name: "VMware", logo: "vmware" },
+  { name: "Wazuh", logo: "wazuh" },
+  { name: "Hikvision", logo: "hikvision" },
+] as const;
+
+const technologyPillClassName =
+  "group inline-flex min-h-12 shrink-0 items-center gap-3 rounded-full border border-corporate-border bg-white px-4 py-2.5 text-brand-navy shadow-sm shadow-slate-950/[0.04] transition-[border-color,box-shadow] duration-200 hover:border-corporate-accent/40 hover:shadow-md sm:min-h-14 sm:px-5";
+
+function TechnologyList({ duplicate = false }: { duplicate?: boolean }) {
+  return (
+    <ul
+      aria-hidden={duplicate || undefined}
+      className={`${styles.list} ${duplicate ? styles.duplicate : ""}`}
+    >
+      {technologies.map(({ logo, name }) => (
+        <li className={technologyPillClassName} key={name}>
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-corporate-surface-soft text-corporate-accent-strong transition-colors group-hover:bg-[#dce6ff] sm:size-9">
+            <TechnologyLogo name={logo} />
+          </span>
+          <span className="font-display whitespace-nowrap text-sm font-bold tracking-[-0.015em] sm:text-base">
+            {name}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export function CorporateSectorsSection() {
   return (
@@ -88,21 +108,12 @@ export function CorporateSectorsSection() {
           </div>
 
           <div className="mt-8 border-y border-slate-300/80 py-5 sm:py-6 lg:mt-10">
-            <ul className="flex list-none flex-wrap gap-x-8 gap-y-5 sm:gap-x-10 lg:justify-between">
-              {technologies.map(({ icon: Icon, name }, index) => (
-                <li className="group inline-flex items-center gap-3" key={name}>
-                  <span className="flex size-9 items-center justify-center text-corporate-accent-strong" aria-hidden="true">
-                    <Icon size={20} strokeWidth={1.8} />
-                  </span>
-                  <span className="font-display text-base font-bold tracking-[-0.015em] text-brand-navy">
-                    {name}
-                  </span>
-                  {index < technologies.length - 1 ? (
-                    <span className="ml-5 hidden size-1 rounded-full bg-slate-300 lg:block" aria-hidden="true" />
-                  ) : null}
-                </li>
-              ))}
-            </ul>
+            <div className={styles.viewport}>
+              <div className={styles.track}>
+                <TechnologyList />
+                <TechnologyList duplicate />
+              </div>
+            </div>
           </div>
         </div>
       </div>

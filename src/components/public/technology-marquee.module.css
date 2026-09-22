@@ -1,0 +1,70 @@
+.viewport {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 2rem, black calc(100% - 2rem), transparent);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  gap: 1rem;
+  animation: technology-marquee 36s linear infinite;
+  will-change: transform;
+}
+
+.viewport:hover .track {
+  animation-play-state: paused;
+}
+
+.list {
+  display: flex;
+  flex: none;
+  list-style: none;
+  gap: 1rem;
+}
+
+@keyframes technology-marquee {
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+@media (max-width: 639px) {
+  .viewport {
+    mask-image: linear-gradient(to right, transparent, black 1rem, black calc(100% - 1rem), transparent);
+  }
+
+  .track,
+  .list {
+    gap: 0.75rem;
+  }
+
+  .track {
+    animation-duration: 30s;
+  }
+
+  @keyframes technology-marquee {
+    to {
+      transform: translateX(calc(-50% - 0.375rem));
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewport {
+    mask-image: none;
+  }
+
+  .track {
+    width: 100%;
+    animation: none;
+    will-change: auto;
+  }
+
+  .list {
+    flex-wrap: wrap;
+  }
+
+  .duplicate {
+    display: none;
+  }
+}

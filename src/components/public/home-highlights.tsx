@@ -1,7 +1,5 @@
 import Image from "next/image";
 
-import styles from "@/components/public/home-highlights.module.css";
-
 const highlights = [
   {
     title: "Fibra óptica propia",
@@ -25,15 +23,12 @@ const highlights = [
   },
 ] as const;
 
-function HighlightList({ duplicate = false }: Readonly<{ duplicate?: boolean }>) {
+function HighlightList() {
   return (
-    <ul
-      aria-hidden={duplicate || undefined}
-      className={`${styles.list} ${duplicate ? styles.duplicate : ""}`}
-    >
+    <ul className="grid list-none grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
       {highlights.map(({ detail, icon, title }) => (
         <li
-          className="flex min-h-20 w-[17rem] shrink-0 snap-start items-center gap-3.5 rounded-2xl border border-white/[0.12] bg-white/[0.06] px-4 py-3.5 shadow-[0_12px_30px_-20px_rgba(0,0,0,.8)] backdrop-blur-sm sm:w-[18rem] sm:px-5"
+          className="flex min-h-20 min-w-0 items-center gap-3.5 rounded-2xl border border-white/[0.12] bg-white/[0.06] px-4 py-3.5 shadow-[0_12px_30px_-20px_rgba(0,0,0,.8)] backdrop-blur-sm sm:px-5"
           key={title}
         >
           <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-home-accent/25 bg-home-accent/[0.10] shadow-[inset_0_1px_0_rgba(255,255,255,.08)]">
@@ -60,16 +55,8 @@ export function HomeHighlights() {
       aria-label="Razones para elegir Conectar Servicios"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_50%,rgba(242,138,46,.10),transparent_28%),radial-gradient(circle_at_85%_50%,rgba(31,112,184,.12),transparent_30%)]" aria-hidden="true" />
-      <div className="relative mx-auto w-full max-w-[80rem] pl-5 sm:pl-8">
-        <div
-          className={`${styles.viewport} rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-home-accent`}
-          tabIndex={0}
-        >
-          <div className={styles.track}>
-            <HighlightList />
-            <HighlightList duplicate />
-          </div>
-        </div>
+      <div className="public-container relative">
+        <HighlightList />
       </div>
     </aside>
   );

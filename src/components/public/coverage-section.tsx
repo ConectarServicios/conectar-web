@@ -125,8 +125,9 @@ export function CoverageSection({ whatsapp }: Readonly<{ whatsapp: string | null
                   </div>
                 </div>
                 {whatsappUrl ? (
-                  <a aria-label="Consultar por WhatsApp" className="mt-4 inline-flex size-12 items-center justify-center rounded-xl bg-whatsapp text-brand-navy-deep transition hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-whatsapp" href={whatsappUrl} rel="noopener noreferrer" target="_blank">
+                  <a aria-label="Consultar por WhatsApp" className="mt-4 inline-flex min-h-12 w-full min-w-0 max-w-full items-center justify-center gap-2 rounded-xl bg-whatsapp px-4 py-3 text-center font-extrabold text-brand-navy-deep transition-colors hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-whatsapp sm:w-auto sm:px-5" href={whatsappUrl} rel="noopener noreferrer" target="_blank">
                     <WhatsAppIcon className="size-6 shrink-0" />
+                    <span>Consultar por WhatsApp</span>
                   </a>
                 ) : (
                   <p className="mt-4 text-sm text-slate-300">La consulta por WhatsApp no está disponible en este momento.</p>

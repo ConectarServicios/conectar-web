@@ -57,7 +57,7 @@ export function HomeServicesSection() {
         </div>
         <div className="mt-8 flex justify-center sm:mt-10">
           <Link
-            className="inline-flex min-h-11 items-center justify-center rounded-xl border border-home-accent-strong px-5 py-2.5 text-sm font-bold text-home-accent-strong transition-colors hover:bg-home-surface focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-home-accent"
+            className="public-button-primary"
             href="/servicios"
           >
             Ver todos los servicios

@@ -3,6 +3,7 @@
 import { CheckCircle2, CircleAlert, MapPin, Search } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
+import { WhatsAppIcon } from "@/components/public/whatsapp-icon";
 import { buildCoverageWhatsAppUrl } from "@/lib/coverage/service";
 import { COVERAGE_ADDRESS_MAX_LENGTH, COVERAGE_ADDRESS_MIN_LENGTH, validateCoverageAddress } from "@/lib/coverage/validation";
 import type { CoverageResult, CoverageStatus } from "@/types/coverage";
@@ -124,8 +125,8 @@ export function CoverageSection({ whatsapp }: Readonly<{ whatsapp: string | null
                   </div>
                 </div>
                 {whatsappUrl ? (
-                  <a className="mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-whatsapp px-5 py-2.5 text-center font-bold text-brand-navy-deep transition hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-whatsapp" href={whatsappUrl} rel="noopener noreferrer" target="_blank">
-                    Consultar por WhatsApp
+                  <a aria-label="Consultar por WhatsApp" className="mt-4 inline-flex size-12 items-center justify-center rounded-xl bg-whatsapp text-brand-navy-deep transition hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-whatsapp" href={whatsappUrl} rel="noopener noreferrer" target="_blank">
+                    <WhatsAppIcon className="size-6 shrink-0" />
                   </a>
                 ) : (
                   <p className="mt-4 text-sm text-slate-300">La consulta por WhatsApp no está disponible en este momento.</p>

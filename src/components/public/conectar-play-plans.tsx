@@ -33,15 +33,13 @@ export function ConectarPlayPlans({
   plans,
   className,
   showActions = false,
-  variant = "detail",
 }: {
   plans: ConectarPlayPlan[];
   className?: string;
   showActions?: boolean;
-  variant?: "detail" | "home";
 }) {
   return (
-    <div className={className ?? "grid gap-5 md:grid-cols-2"}>
+    <div className={className ?? "grid gap-5 md:grid-cols-2 xl:grid-cols-3"}>
       {plans.map((plan) => {
         const descriptionLines = getDescriptionLines(plan.description);
         const promotion = promotionIsCurrent(plan);
@@ -56,12 +54,12 @@ export function ConectarPlayPlans({
 
         return (
           <article
-            className={`relative flex min-w-0 flex-col bg-white p-6 shadow-sm ${variant === "home" ? "rounded-3xl sm:p-7" : "rounded-2xl"} ${plan.featured ? (variant === "home" ? "border-2 border-home-accent ring-4 ring-home-surface/70" : "border border-orange-400 ring-2 ring-orange-100") : "border border-home-border"}`}
+            className={`relative flex min-w-0 flex-col rounded-3xl bg-white p-6 shadow-sm sm:p-7 ${plan.featured ? "border-2 border-home-accent ring-4 ring-home-surface/70" : "border border-home-border"}`}
             key={plan.id}
           >
             {plan.featured && (
-              <p className={variant === "home" ? "absolute -top-3 left-6 rounded-full bg-home-accent-strong px-3 py-1 text-xs font-black tracking-wider text-white uppercase shadow-sm" : "mb-3 text-xs font-black tracking-wider text-orange-700 uppercase"}>
-                {variant === "home" ? "Más elegido" : "Destacado"}
+              <p className="absolute -top-3 left-6 rounded-full bg-home-accent-strong px-3 py-1 text-xs font-black tracking-wider text-white uppercase shadow-sm">
+                Más elegido
               </p>
             )}
             <h3 className="text-xl font-black text-slate-950">{plan.name}</h3>
@@ -75,7 +73,7 @@ export function ConectarPlayPlans({
                 {descriptionLines.map((line, index) => (
                   <li className="flex gap-2 leading-7" key={`${line}-${index}`}>
                     <span
-                      className={`font-black ${variant === "home" ? "text-home-accent-strong" : "text-orange-600"}`}
+                      className="font-black text-home-accent-strong"
                       aria-hidden="true"
                     >
                       ✓
@@ -92,17 +90,17 @@ export function ConectarPlayPlans({
               </span>
             </p>
             {promotion && promotionText && (
-              <div className={`mt-4 rounded-xl p-3 text-sm font-bold ${variant === "home" ? "bg-home-surface text-brand-navy" : "bg-orange-50 text-orange-900"}`}>
+              <div className="mt-4 rounded-xl bg-home-surface p-3 text-sm font-bold text-brand-navy">
                 <p>{promotionText}</p>
               </div>
             )}
             {showFootballLabel && (
-              <p className={`mt-4 font-bold text-slate-800 ${variant === "home" ? "flex items-center gap-2" : ""}`}>
-                {variant === "home" && <span className="text-home-accent" aria-hidden="true">✓</span>}
+              <p className="mt-4 flex items-center gap-2 font-bold text-slate-800">
+                <span className="text-home-accent" aria-hidden="true">✓</span>
                 Incluye Pack Fútbol
               </p>
             )}
-            {showActions && variant !== "home" && (
+            {showActions && (
               <Link
                 className="mt-auto pt-6 text-sm font-black text-home-accent-strong underline decoration-2 underline-offset-4 outline-none transition hover:text-brand-navy focus-visible:rounded focus-visible:ring-2 focus-visible:ring-home-accent"
                 href="/conectar-play#planes-play"

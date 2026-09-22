@@ -1,8 +1,10 @@
-export function WhatsAppIcon() {
+export function WhatsAppIcon({
+  className = "size-4 shrink-0",
+}: Readonly<{ className?: string }>) {
   return (
     <svg
       aria-hidden="true"
-      className="size-4 shrink-0"
+      className={className}
       fill="currentColor"
       viewBox="0 0 24 24"
     >

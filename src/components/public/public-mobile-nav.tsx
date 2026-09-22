@@ -1,6 +1,5 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -10,6 +9,7 @@ import {
   isNavigationItemActive,
   publicNavigation,
 } from "@/components/public/public-navigation";
+import { WhatsAppIcon } from "@/components/public/whatsapp-icon";
 
 type PublicMobileNavProps = Readonly<{
   selfServiceUrl: string;
@@ -231,10 +231,7 @@ export function PublicMobileNav({
               rel="noopener noreferrer"
               target="_blank"
             >
-              <MessageCircle
-                aria-hidden="true"
-                className="size-5"
-              />
+              <WhatsAppIcon className="size-5 shrink-0" />
               WhatsApp
             </a>
           )}

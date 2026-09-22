@@ -37,9 +37,6 @@ export function CorporateProcessSection() {
               </span>
               <h3 className="font-display mt-5 text-xl font-bold tracking-[-0.02em] text-brand-navy">{step.title}</h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">{step.description}</p>
-              {index < steps.length - 1 && (
-                <span className="absolute top-12 -right-3 hidden h-px w-6 bg-corporate-accent/40 lg:block" aria-hidden="true" />
-              )}
             </li>
           ))}
         </ol>

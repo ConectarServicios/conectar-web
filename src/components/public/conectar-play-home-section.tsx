@@ -67,7 +67,6 @@ export function ConectarPlayHomeSection({
             <ConectarPlayPlans
               className="contents"
               plans={plans}
-              variant="home"
             />
           </div>
         )}

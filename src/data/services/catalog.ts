@@ -13,7 +13,7 @@ export const serviceCatalog = [
     showOnHomeHogar: true,
     showOnHomeCorporativo: false,
     cta: { label: "Conocer más" },
-    href: "#contacto",
+    href: "/servicios/internet-wifi",
     hasDetailPage: false,
   },
   {

@@ -1,22 +1,14 @@
 import Image from "next/image";
-import {
-  BriefcaseBusiness,
-  HeartPulse,
-  Landmark,
-  Store,
-  Wheat,
-  type LucideIcon,
-} from "lucide-react";
 
 import styles from "@/components/public/technology-marquee.module.css";
 
-const sectors: ReadonlyArray<{ icon: LucideIcon; name: string }> = [
-  { name: "Agroindustria y lácteo", icon: Wheat },
-  { name: "Salud", icon: HeartPulse },
-  { name: "Comercio y PyME", icon: Store },
-  { name: "Cooperativas y mutuales", icon: Landmark },
-  { name: "Estudios y profesionales", icon: BriefcaseBusiness },
-];
+const sectors = [
+  { name: "Agroindustria y lácteo", iconSrc: "/brand/corporate-sectors/agro.svg" },
+  { name: "Salud", iconSrc: "/brand/corporate-sectors/health.svg" },
+  { name: "Comercio y PyME", iconSrc: "/brand/corporate-sectors/commerce.svg" },
+  { name: "Cooperativas y mutuales", iconSrc: "/brand/corporate-sectors/cooperatives.svg" },
+  { name: "Estudios y profesionales", iconSrc: "/brand/corporate-sectors/professionals.svg" },
+] as const;
 
 const technologies = [
   {
@@ -114,18 +106,21 @@ export function CorporateSectorsSection() {
           </p>
         </div>
 
-        <ul className="mt-8 flex list-none flex-wrap gap-3 sm:gap-4 lg:mt-10">
-          {sectors.map(({ icon: Icon, name }) => (
+        <ul className="mt-8 flex list-none flex-wrap gap-3 sm:gap-4 lg:mt-10 lg:justify-between">
+          {sectors.map(({ iconSrc, name }) => (
             <li
-              className="group inline-flex min-h-14 items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-3 text-brand-navy shadow-sm shadow-slate-950/[0.03] transition duration-200 hover:-translate-y-0.5 hover:border-corporate-accent/30 hover:shadow-md sm:min-h-16 sm:px-5"
+              className="inline-flex min-h-14 items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-3 text-brand-navy shadow-sm shadow-slate-950/[0.04] sm:min-h-16 sm:gap-3.5 sm:px-5"
               key={name}
             >
-              <span
+              <Image
+                alt=""
                 aria-hidden="true"
-                className="flex size-8 shrink-0 items-center justify-center rounded-full bg-corporate-surface-soft text-corporate-accent-strong transition-colors group-hover:bg-[#dce6ff]"
-              >
-                <Icon size={17} strokeWidth={2} />
-              </span>
+                className="size-8 shrink-0 object-contain"
+                height={32}
+                src={iconSrc}
+                unoptimized
+                width={32}
+              />
 
               <span className="font-display text-sm leading-5 font-bold sm:text-base">
                 {name}

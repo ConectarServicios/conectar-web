@@ -3,21 +3,16 @@ import type { ContactInformation } from "@/types/contact-information";
 type ContactField = Exclude<keyof ContactInformation, "id">;
 
 const MAX_TEXT_LENGTH = 500;
-const PROHIBITED_NUMBER = ["420", "002"].join("");
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function valueOf(formData: FormData, field: ContactField) {
   return String(formData.get(field) ?? "").trim();
 }
 
-function containsProhibitedNumber(value: string) {
-  return value.replace(/\D/g, "").includes(PROHIBITED_NUMBER);
-}
-
 export function isAllowedContactNumber(value: string | null) {
   if (!value) return false;
   const digits = value.replace(/\D/g, "");
-  return digits.length >= 8 && digits.length <= 15 && !containsProhibitedNumber(value);
+  return digits.length >= 8 && digits.length <= 15;
 }
 
 export function parseContactInformation(formData: FormData) {

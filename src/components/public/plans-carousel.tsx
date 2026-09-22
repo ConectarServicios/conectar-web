@@ -9,9 +9,10 @@ import type { Plan } from "@/types/plans";
 type PlansCarouselProps = Readonly<{
   now: string;
   plans: Plan[];
+  whatsapp: string | null;
 }>;
 
-export function PlansCarousel({ now, plans }: PlansCarouselProps) {
+export function PlansCarousel({ now, plans, whatsapp }: PlansCarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const currentDate = new Date(now);
@@ -88,7 +89,7 @@ export function PlansCarousel({ now, plans }: PlansCarouselProps) {
             key={plan.id}
             role="group"
           >
-            <PlanCard now={currentDate} plan={plan} />
+            <PlanCard now={currentDate} plan={plan} whatsapp={whatsapp} />
           </div>
         ))}
       </div>

@@ -8,9 +8,10 @@ type PlansSectionProps = Readonly<{
   installationPrice: number | null;
   plans: Plan[];
   unavailable: boolean;
+  whatsapp: string | null;
 }>;
 
-export function PlansSection({ installationBenefitsText, installationPrice, plans, unavailable }: PlansSectionProps) {
+export function PlansSection({ installationBenefitsText, installationPrice, plans, unavailable, whatsapp }: PlansSectionProps) {
   const now = new Date();
   return (
     <section className="scroll-mt-20 bg-home-surface-soft py-20 sm:py-28" id="planes" aria-labelledby="plans-title">
@@ -39,7 +40,7 @@ export function PlansSection({ installationBenefitsText, installationPrice, plan
         ) : plans.length === 0 ? (
           <p className="public-empty-state">Estamos actualizando nuestros planes disponibles.</p>
         ) : (
-          <PlansCarousel now={now.toISOString()} plans={plans} />
+          <PlansCarousel now={now.toISOString()} plans={plans} whatsapp={whatsapp} />
         )}
       </div>
     </section>

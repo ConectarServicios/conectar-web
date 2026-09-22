@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import { isAllowedContactNumber } from "@/lib/validations/contact-information";
 import type { Plan } from "@/types/plans";
 
 const currency = new Intl.NumberFormat("es-AR", {
@@ -16,8 +17,13 @@ function hasCurrentPromotion(plan: Plan, now: Date) {
   return (!startsAt || startsAt <= now) && (!endsAt || now <= endsAt);
 }
 
-export function PlanCard({ plan, now }: Readonly<{ plan: Plan; now: Date }>) {
+export function PlanCard({ plan, now, whatsapp }: Readonly<{ plan: Plan; now: Date; whatsapp: string | null }>) {
   const promotionIsCurrent = hasCurrentPromotion(plan, now);
+  const whatsappDigits = whatsapp?.replace(/\D/g, "") ?? "";
+  const whatsappMessage = `Hola, quiero consultar por el plan de ${plan.speed_mbps} MB.`;
+  const whatsappUrl = isAllowedContactNumber(whatsapp)
+    ? `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(whatsappMessage)}`
+    : null;
 
   return (
     <article className={`relative flex h-full min-w-0 flex-col rounded-3xl border bg-white p-6 transition motion-reduce:transform-none sm:p-7 ${plan.featured ? "border-home-accent shadow-[0_18px_45px_-28px_rgba(234,88,12,0.45)] ring-1 ring-home-accent/25 hover:-translate-y-1 hover:shadow-[0_22px_55px_-28px_rgba(234,88,12,0.5)]" : "border-home-border shadow-sm hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg"}`}>
@@ -68,9 +74,11 @@ export function PlanCard({ plan, now }: Readonly<{ plan: Plan; now: Date }>) {
         )}
         <a
           className={`mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl px-5 py-3 text-center font-extrabold transition focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-home-accent ${plan.featured ? "home-gradient text-[#03221b] hover:brightness-105" : "border border-home-accent-strong text-home-accent-strong hover:bg-home-accent-strong hover:text-white"}`}
-          href="#contacto"
+          href={whatsappUrl ?? "#contacto"}
+          rel={whatsappUrl ? "noopener noreferrer" : undefined}
+          target={whatsappUrl ? "_blank" : undefined}
         >
-          Consultar plan
+          Quiero este plan
         </a>
       </div>
     </article>

@@ -26,6 +26,8 @@ test("detects external HTTP URLs case-insensitively and rejects unsafe protocols
 
 test("accepts plausible Argentine contact numbers and rejects malformed values", () => {
   assert.equal(isAllowedContactNumber("+54 9 11 1234-5678"), true);
+  assert.equal(isAllowedContactNumber("5493493400983"), true);
+  assert.equal(isAllowedContactNumber("549349420002"), true);
   assert.equal(isAllowedContactNumber(""), false);
   assert.equal(isAllowedContactNumber("123"), false);
   assert.equal(isAllowedContactNumber("1".repeat(16)), false);

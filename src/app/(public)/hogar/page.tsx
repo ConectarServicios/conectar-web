@@ -90,6 +90,7 @@ export default async function HogarPage() {
         installationPrice={installation.price}
         plans={plans.data}
         unavailable={plans.unavailable}
+        whatsapp={contact.data?.whatsapp ?? null}
       />
       <ContextualPromotions exclude={promotions.data.map((item) => item.id)} placement="plans" />
       <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />

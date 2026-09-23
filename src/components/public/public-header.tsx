@@ -68,7 +68,9 @@ export function PublicHeader({
             </span>
           </Link>
 
-          <SegmentSelector className="hidden min-[1180px]:inline-flex" />
+          <div className="hidden min-[1180px]:block">
+            <SegmentSelector />
+          </div>
         </div>
 
         <nav
@@ -133,7 +135,9 @@ export function PublicHeader({
         </nav>
 
         <div className="flex items-center gap-2 min-[1180px]:hidden">
-          <SegmentSelector />
+          <div className="sm:hidden">
+            <SegmentSelector />
+          </div>
           <PublicMobileNav
             key={pathname}
             selfServiceUrl={configuration.selfServiceUrl}

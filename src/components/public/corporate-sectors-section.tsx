@@ -4,9 +4,9 @@ import styles from "@/components/public/technology-marquee.module.css";
 
 const sectors = [
   { name: "Agroindustria y lácteo", iconSrc: "/brand/corporate-sectors/agro.svg" },
-  { name: "Salud", iconSrc: "/brand/corporate-sectors/health.svg" },
   { name: "Comercio y PyME", iconSrc: "/brand/corporate-sectors/commerce.svg" },
   { name: "Cooperativas y mutuales", iconSrc: "/brand/corporate-sectors/cooperatives.svg" },
+  { name: "Salud", iconSrc: "/brand/corporate-sectors/health.svg" },
   { name: "Estudios y profesionales", iconSrc: "/brand/corporate-sectors/professionals.svg" },
 ] as const;
 

@@ -76,12 +76,12 @@ export function HeroSection({ segment }: Readonly<{ segment: PublicSegment }>) {
       {isHome ? (
         <HomeHighlights />
       ) : (
-        <aside className="bg-[#0d2740] text-white" aria-label="Razones para elegir Conectar Servicios">
-          <ul className="public-container grid list-none grid-cols-1 divide-y divide-white/10 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x lg:divide-white/10">
+        <aside className="border-b border-corporate-accent/35 bg-[#102d49] py-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.035)] sm:py-5" aria-label="Razones para elegir Conectar Servicios">
+          <ul className="public-container grid list-none grid-cols-1 gap-3 min-[440px]:grid-cols-2 lg:grid-cols-4 lg:gap-4">
             {corporateTrustItems.map(({ title, detail }) => (
-              <li className="px-1 py-5 sm:px-5 lg:py-6 lg:first:pl-0 lg:last:pr-0" key={title}>
-                <strong className="font-display block text-sm font-bold text-white">{title}</strong>
-                <span className="mt-1 block text-xs text-[#a9bfd2]">{detail}</span>
+              <li className="rounded-xl border border-white/10 bg-white/[0.055] px-4 py-4 shadow-sm shadow-slate-950/10 sm:px-5 sm:py-5" key={title}>
+                <strong className="font-display block text-sm font-bold text-white sm:text-[0.9375rem]">{title}</strong>
+                <span className="mt-1.5 block text-xs leading-5 text-[#b8cbdb]">{detail}</span>
               </li>
             ))}
           </ul>

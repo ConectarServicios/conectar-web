@@ -5,8 +5,8 @@ export type PublicSegment = "hogar" | "corporativo";
 const content = {
   hogar: {
     eyebrow: "Internet 100% fibra óptica · Sunchales",
-    title: "Conectividad para tu hogar, con atención de acá.",
-    description: "Fibra óptica estable y rápida, televisión con Conectar Play y alarmas y cámaras para cuidar tu casa — todo con un equipo local que te atiende también los fines de semana.",
+    title: "Conectividad para tu hogar, con atención cercana.",
+    description: "Fibra óptica rápida y estable, entretenimiento con Conectar Play y soluciones de seguridad para proteger tu casa. Todo con el respaldo de un equipo local, incluso los fines de semana.",
     primary: { label: "Ver planes", href: "#planes" },
     secondary: { label: "Conocer Conectar Play", href: "/conectar-play" },
   },

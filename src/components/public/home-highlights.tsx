@@ -3,7 +3,7 @@ import Image from "next/image";
 const highlights = [
   {
     title: "Fibra óptica propia",
-    detail: "Red FTTH hasta tu casa",
+    detail: "Conectividad directa hasta tu hogar",
     icon: "/brand/home-highlights/fiber.svg",
   },
   {
@@ -12,13 +12,13 @@ const highlights = [
     icon: "/brand/home-highlights/local-support.svg",
   },
   {
-    title: "Guardia fin de semana",
-    detail: "Sáb, dom y feriados",
+    title: "oporte también los fines de semana",
+    detail: "Sábados, domingos y feriados",
     icon: "/brand/home-highlights/weekend-support.svg",
   },
   {
-    title: "Autogestión online",
-    detail: "Tu cuenta, 24 h",
+    title: "Autogestión 24/7",
+    detail: "Gestioná tu cuenta cuando quieras",
     icon: "/brand/home-highlights/self-service.svg",
   },
 ] as const;

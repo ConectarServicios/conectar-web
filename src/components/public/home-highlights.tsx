@@ -12,7 +12,7 @@ const highlights = [
     icon: "/brand/home-highlights/local-support.svg",
   },
   {
-    title: "oporte también los fines de semana",
+    title: "Soporte también los fines de semana",
     detail: "Sábados, domingos y feriados",
     icon: "/brand/home-highlights/weekend-support.svg",
   },

@@ -25,20 +25,20 @@ export async function PromoTopBar() {
       aria-label="Promoción vigente"
     >
       <div className="public-container">
-        <div className="flex min-h-12 flex-wrap items-center justify-center gap-x-4 gap-y-2 py-2 text-center text-sm sm:flex-nowrap">
+        <div className="flex h-14 items-center justify-center gap-2 text-center text-xs sm:min-h-12 sm:h-auto sm:gap-4 sm:py-2 sm:text-sm">
           <span
-            className="shrink-0 text-base"
+            className="hidden shrink-0 text-base sm:inline"
             aria-hidden="true"
           >
             🔥
           </span>
 
-          <p className="min-w-0 font-extrabold leading-5">
+          <p className="min-w-0 font-extrabold leading-4 sm:leading-5">
             {item.title}
           </p>
 
           <Link
-            className="inline-flex min-h-8 shrink-0 items-center gap-1.5 rounded-full bg-brand-navy-deep px-4 py-1.5 font-extrabold text-white transition hover:bg-brand-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-deep"
+            className="inline-flex min-h-8 shrink-0 items-center gap-1 rounded-full bg-brand-navy-deep px-3 py-1 font-extrabold whitespace-nowrap text-white transition hover:bg-brand-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-deep sm:gap-1.5 sm:px-4 sm:py-1.5"
             href={href}
             {...(external
               ? {

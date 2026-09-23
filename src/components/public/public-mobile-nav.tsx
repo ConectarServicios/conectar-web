@@ -115,7 +115,7 @@ export function PublicMobileNav({
   return (
     <div className="min-[1180px]:hidden">
       <button
-        className="grid size-11 place-items-center rounded-xl border border-white/20 text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        className="grid size-10 place-items-center rounded-xl border border-white/20 text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:size-11"
         type="button"
         aria-controls="mobile-navigation"
         aria-expanded={open}
@@ -157,7 +157,7 @@ export function PublicMobileNav({
 
       {open && (
         <nav
-          className="absolute inset-x-4 top-[4.75rem] max-h-[calc(100vh-6rem)] max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-2xl border border-white/10 bg-brand-navy p-3 shadow-2xl shadow-black/30"
+          className="absolute inset-x-4 top-[4.25rem] max-h-[calc(100vh-5rem)] max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-2xl border border-white/10 bg-brand-navy p-3 shadow-2xl shadow-black/30 sm:top-[4.75rem] sm:max-h-[calc(100vh-6rem)] sm:max-h-[calc(100dvh-6rem)]"
           id="mobile-navigation"
           aria-label="Navegación mobile"
           ref={menuRef}

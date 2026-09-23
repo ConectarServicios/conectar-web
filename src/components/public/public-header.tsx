@@ -42,7 +42,7 @@ export function PublicHeader({
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-brand-navy-deep/95 text-white shadow-lg shadow-slate-950/20 backdrop-blur-xl">
-      <div className="public-container flex h-[72px] items-center justify-between gap-4">
+      <div className="public-container flex h-16 items-center justify-between gap-2 sm:h-[72px] sm:gap-4">
         <div className="flex shrink-0 items-center gap-4">
           <Link
             className="group flex shrink-0 items-center gap-2.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
@@ -50,7 +50,7 @@ export function PublicHeader({
             aria-label={`${configuration.siteName}, ir a Hogar`}
           >
             <span
-              className="relative h-10 w-8 shrink-0"
+              className="relative h-9 w-7 shrink-0 sm:h-10 sm:w-8"
               aria-hidden="true"
             >
               <Image
@@ -68,7 +68,9 @@ export function PublicHeader({
             </span>
           </Link>
 
-          <SegmentSelector className="hidden min-[1180px]:inline-flex" />
+          <div className="hidden min-[1180px]:block">
+            <SegmentSelector />
+          </div>
         </div>
 
         <nav
@@ -132,15 +134,20 @@ export function PublicHeader({
           )}
         </nav>
 
-        <PublicMobileNav
-          key={pathname}
-          selfServiceUrl={configuration.selfServiceUrl}
-          whatsappUrl={
-            whatsappDigits
-              ? `https://wa.me/${whatsappDigits}`
-              : null
-          }
-        />
+        <div className="flex items-center gap-2 min-[1180px]:hidden">
+          <div className="sm:hidden">
+            <SegmentSelector />
+          </div>
+          <PublicMobileNav
+            key={pathname}
+            selfServiceUrl={configuration.selfServiceUrl}
+            whatsappUrl={
+              whatsappDigits
+                ? `https://wa.me/${whatsappDigits}`
+                : null
+            }
+          />
+        </div>
       </div>
     </header>
   );

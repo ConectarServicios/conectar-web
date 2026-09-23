@@ -16,7 +16,7 @@ export function SegmentSelector({
 
   return (
     <div
-      className={`inline-flex rounded-full border border-white/15 bg-white/[0.06] p-1 ${className}`}
+      className={`inline-flex rounded-full border border-white/15 bg-white/[0.06] p-0.5 sm:p-1 ${className}`}
       aria-label="Elegir audiencia del sitio"
     >
       {segments.map((item) => {
@@ -25,7 +25,7 @@ export function SegmentSelector({
         return (
           <Link
             aria-current={selected ? "page" : undefined}
-            className={`flex min-h-9 items-center rounded-full px-3.5 text-xs font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
+            className={`flex min-h-8 items-center rounded-full px-2.5 text-[0.6875rem] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:min-h-9 sm:px-3.5 sm:text-xs ${
               selected
                 ? item.value === "hogar"
                   ? "home-gradient text-[#031d19] shadow-sm"

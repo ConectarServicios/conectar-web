@@ -49,7 +49,7 @@ export function HeroSection({ segment }: Readonly<{ segment: PublicSegment }>) {
           <div className="public-grid-pattern absolute inset-0 opacity-70" />
         </div>
 
-        <div className="public-container flex min-h-[520px] items-center py-16 sm:py-20 lg:min-h-[560px] lg:py-24">
+        <div className="public-container flex items-start py-10 sm:min-h-[520px] sm:items-center sm:py-20 lg:min-h-[560px] lg:py-24">
           <div className="max-w-[820px]">
             <p className={`mb-6 inline-flex max-w-full items-center gap-2.5 rounded-full border px-4 py-2 text-xs leading-5 font-bold sm:text-sm ${isHome ? "border-home-accent/40 bg-home-accent/10 text-home-yellow" : "border-corporate-accent/40 bg-corporate-accent/12 text-[#9bb7ff]"}`}>
               <span className={`size-2 shrink-0 rounded-full ${isHome ? "home-gradient shadow-[0_0_14px_#f28a2e]" : "bg-corporate-accent shadow-[0_0_14px_#2f6bff]"}`} aria-hidden="true" />
@@ -62,10 +62,10 @@ export function HeroSection({ segment }: Readonly<{ segment: PublicSegment }>) {
               {current.description}
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transform-none ${isHome ? "home-gradient text-brand-navy hover:brightness-105" : "bg-corporate-accent text-white hover:bg-[#477dff]"}`} href={current.primary.href}>
+              <a className={`inline-flex min-h-14 items-center justify-center gap-2 rounded-xl px-8 text-base font-black shadow-[0_14px_30px_-16px_rgba(242,138,46,.9)] transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transform-none ${isHome ? "home-gradient text-brand-navy hover:brightness-105" : "bg-corporate-accent text-white hover:bg-[#477dff]"}`} href={current.primary.href}>
                 {current.primary.label}
               </a>
-              <a className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/20 bg-white/[0.04] px-6 font-bold text-white transition hover:border-white/35 hover:bg-white/[0.09] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" href={current.secondary.href}>
+              <a className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/15 bg-transparent px-6 font-semibold text-slate-200 transition hover:border-white/30 hover:bg-white/[0.06] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:self-center" href={current.secondary.href}>
                 {current.secondary.label}
               </a>
             </div>

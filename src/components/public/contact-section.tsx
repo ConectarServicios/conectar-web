@@ -31,10 +31,10 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
   const muted = dark ? "text-slate-300" : "text-slate-600";
   const heading = dark ? "text-white" : "text-slate-950";
   const guardNote = variant === "corporativo"
-    ? "border-corporate-accent/40 bg-corporate-accent/12 text-[#9bb7ff]"
+    ? "text-[#9bb7ff]"
     : variant === "hogar"
-      ? "border-home-accent/40 bg-home-accent/10 text-home-yellow"
-      : "border-orange-200 bg-orange-50 text-orange-800";
+      ? "text-home-yellow"
+      : "text-orange-800";
 
   return (
     <section className={`scroll-mt-24 ${dark ? "bg-[#06182c] py-14 text-white sm:py-18" : "border-t border-slate-200 bg-slate-50 py-16 sm:py-20"}`} id="contacto" aria-labelledby="contact-title">
@@ -90,7 +90,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                     <div className="min-w-0 p-5 sm:p-6">
                       <h3 className={`flex items-center gap-2 font-bold ${heading}`}><Headset className={`size-5 ${accent}`} aria-hidden="true" /> Guardia de soporte</h3>
                       <HoursList dark={dark} value={contact.guard_hours} />
-                      <p className={`mt-3 inline-flex w-full min-w-0 max-w-full rounded-full border px-3 py-2 text-sm leading-5 font-semibold sm:w-auto sm:px-4 ${guardNote}`}>Durante la guardia podés comunicarte al mismo número habitual.</p>
+                      <p className={`mt-3 text-sm leading-5 font-semibold ${guardNote}`}>Durante la guardia podés comunicarte al mismo número habitual.</p>
                     </div>
                   )}
                 </div>

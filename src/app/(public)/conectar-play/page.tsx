@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import type { LucideIcon } from "lucide-react";
 
 import Link from "next/link";
+import { Globe2, MonitorSmartphone, Tv, UsersRound } from "lucide-react";
 
 import { ConectarPlayPlans } from "@/components/public/conectar-play-plans";
 
@@ -67,9 +69,15 @@ export default async function ConectarPlayPage() {
               Ver planes
             </a>
 
-            {showsCompatibility && (
-              <a className="public-button-secondary-dark" href="#compatibilidad">
-                Compatibilidad
+            {webUrl && isExternalPublicUrl(webUrl) && (
+              <a
+                aria-label="Abrir Conectar Play Web (abre en una pestaña nueva)"
+                className="public-button-secondary-dark"
+                href={webUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Abrir Conectar Play Web
               </a>
             )}
           </div>
@@ -109,23 +117,40 @@ export default async function ConectarPlayPage() {
 
             <h2 className="public-heading mt-3">Disfrutá Conectar Play</h2>
 
-            <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Info
+                accentClassName="bg-brand-orange"
+                icon={Tv}
+                iconClassName="bg-brand-orange/10 text-brand-orange"
                 title="Canales"
                 text={`Más de ${settings.channel_count} canales, HBO y HBO Max incluidos. El plan con Pack Fútbol suma ESPN Premium y TNT Sports.`}
               />
 
               <Info
+                accentClassName="bg-brand-coral"
+                icon={UsersRound}
+                iconClassName="bg-brand-coral/10 text-brand-coral"
                 title="Uso simultáneo"
                 text={`Hasta ${settings.simultaneous_devices} dispositivos simultáneos`}
               />
 
               {settings.compatibility_text && (
                 <Info
+                  accentClassName="bg-brand-yellow"
+                  icon={MonitorSmartphone}
+                  iconClassName="bg-brand-yellow/20 text-brand-navy-deep"
                   title="Múltiples pantallas"
                   text={settings.compatibility_text}
                 />
               )}
+
+              <Info
+                accentClassName="bg-brand-navy"
+                icon={Globe2}
+                iconClassName="bg-brand-navy/10 text-brand-navy"
+                title="Acceso web"
+                text="Podés ver Conectar Play directamente desde tu navegador, sin necesidad de instalar la aplicación."
+              />
             </div>
           </div>
         </section>
@@ -152,37 +177,6 @@ export default async function ConectarPlayPage() {
                   {settings.incompatible_tv_text}
                 </p>
               )}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {webUrl && isExternalPublicUrl(webUrl) && (
-        <section className="bg-white py-12">
-          <div className="public-container">
-            <div className="flex flex-col gap-6 rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
-              <div className="max-w-2xl">
-                <p className="public-eyebrow">Acceso web</p>
-
-                <h2 className="mt-2 text-2xl font-black text-slate-950">
-                  También podés verlo desde tu navegador
-                </h2>
-
-                <p className="mt-3 leading-7 text-slate-600">
-                  Accedé a Conectar Play directamente desde una computadora o
-                  dispositivo compatible, sin necesidad de instalar la
-                  aplicación.
-                </p>
-              </div>
-
-              <a
-                className="public-button-primary shrink-0"
-                href={webUrl}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Abrir Conectar Play Web
-              </a>
             </div>
           </div>
         </section>
@@ -335,17 +329,34 @@ export default async function ConectarPlayPage() {
 }
 
 function Info({
+  accentClassName,
+  icon: Icon,
+  iconClassName,
   title,
   text,
 }: {
+  accentClassName: string;
+  icon: LucideIcon;
+  iconClassName: string;
   title: string;
   text: string;
 }) {
   return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-6">
-      <h3 className="font-black text-slate-950">{title}</h3>
+    <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md motion-reduce:transform-none">
+      <span
+        aria-hidden="true"
+        className={`absolute inset-x-0 top-0 h-1 ${accentClassName}`}
+      />
 
-      <p className="mt-2 leading-7 text-slate-600">{text}</p>
+      <div
+        className={`grid size-12 place-items-center rounded-xl ${iconClassName}`}
+      >
+        <Icon aria-hidden="true" className="size-6" strokeWidth={2} />
+      </div>
+
+      <h3 className="mt-5 text-lg font-black text-brand-navy-deep">{title}</h3>
+
+      <p className="mt-3 leading-7 text-slate-600">{text}</p>
     </article>
   );
 }

@@ -80,12 +80,12 @@ export function CoverageSection({ whatsapp }: Readonly<{ whatsapp: string | null
   return (
     <section className="bg-white py-14 sm:py-18" aria-labelledby="coverage-title" id="cobertura">
       <div className="public-container">
-        <div className="relative overflow-hidden rounded-3xl bg-brand-navy-deep px-5 py-8 text-white shadow-xl sm:px-10 sm:py-10 lg:grid lg:grid-cols-[minmax(0,0.9fr)_minmax(420px,1.1fr)] lg:items-center lg:gap-12 lg:px-14">
+        <div className="relative overflow-hidden rounded-3xl bg-brand-navy-deep px-5 py-8 text-white shadow-xl sm:px-10 sm:py-10 lg:grid lg:grid-cols-[minmax(0,1.2fr)_minmax(440px,0.8fr)] lg:items-center lg:gap-10 lg:px-12 lg:py-9">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_15%,rgba(242,138,46,.2),transparent_35%)]" aria-hidden="true" />
           <div className="relative">
             <p className="text-xs font-black tracking-[0.2em] text-home-yellow uppercase">Cobertura</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight text-balance sm:text-4xl" id="coverage-title">¿Conectar llega a tu domicilio?</h2>
-            <p className="mt-4 max-w-xl leading-7 text-slate-300">Ingresá tu dirección y verificá la disponibilidad del servicio en tu zona.</p>
+            <p className="mt-4 max-w-2xl leading-7 text-slate-300">Ingresá tu dirección y verificá la disponibilidad del servicio en tu zona.</p>
           </div>
 
           <div className="relative mt-7 lg:mt-0">

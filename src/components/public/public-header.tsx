@@ -114,7 +114,7 @@ export function PublicHeader({
           </Link>
 
           <a
-            className="ml-2 inline-flex min-h-10 items-center justify-center rounded-lg border border-white/20 bg-white/[0.04] px-4 text-sm font-bold text-white transition hover:border-white/40 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className={`${linkClass} text-slate-300`}
             href={configuration.selfServiceUrl}
           >
             Autogestión
@@ -135,7 +135,7 @@ export function PublicHeader({
         </nav>
 
         <div className="flex items-center gap-2 min-[1180px]:hidden">
-          <div className="sm:hidden">
+          <div>
             <SegmentSelector />
           </div>
           <PublicMobileNav

@@ -216,7 +216,7 @@ export function PublicMobileNav({
           </Link>
 
           <a
-            className="mt-2 flex min-h-12 items-center justify-center rounded-xl border border-white/20 bg-white/[0.04] px-4 py-3 font-bold text-white transition hover:border-white/40 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="block rounded-xl px-4 py-3 font-semibold text-slate-100 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-white"
             href={selfServiceUrl}
             onClick={closeMenu}
           >

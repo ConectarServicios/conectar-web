@@ -50,7 +50,7 @@ export function PublicHeader({
             aria-label={`${configuration.siteName}, ir a Hogar`}
           >
             <span
-              className="relative h-9 w-7 shrink-0 sm:h-10 sm:w-8"
+              className="relative h-11 w-9 shrink-0 sm:h-10 sm:w-8"
               aria-hidden="true"
             >
               <Image

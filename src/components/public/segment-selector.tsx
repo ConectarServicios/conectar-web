@@ -25,7 +25,7 @@ export function SegmentSelector({
         return (
           <Link
             aria-current={selected ? "page" : undefined}
-            className={`flex min-h-8 items-center rounded-full px-2.5 text-[0.6875rem] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:min-h-9 sm:px-3.5 sm:text-xs ${
+            className={`flex min-h-9 items-center rounded-full px-2.5 text-[0.6875rem] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:px-3.5 sm:text-xs ${
               selected
                 ? item.value === "hogar"
                   ? "home-gradient text-[#031d19] shadow-sm"

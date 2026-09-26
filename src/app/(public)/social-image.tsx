@@ -15,75 +15,34 @@ export function createSocialImage(size: { width: number; height: number }) {
       <div
         style={{
           alignItems: "center",
-          background: "#071a2f",
+          background: "#2F6BFF",
           color: "#ffffff",
           display: "flex",
+          flexDirection: "column",
           height: "100%",
-          padding: "76px 88px",
-          position: "relative",
+          justifyContent: "center",
           width: "100%",
         }}
       >
-        <div
-          style={{
-            background: "#f58220",
-            height: 10,
-            left: 88,
-            position: "absolute",
-            top: 70,
-            width: 96,
-          }}
+        {/* ImageResponse renders standard img elements through Satori. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt=""
+          height={280}
+          src={isotipoSrc}
+          style={{ objectFit: "contain" }}
+          width={280}
         />
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            maxWidth: 760,
-            paddingTop: 28,
+            fontSize: 54,
+            fontWeight: 700,
+            letterSpacing: "-1px",
+            lineHeight: 1,
+            marginTop: 34,
           }}
         >
-          <div
-            style={{
-              fontSize: 76,
-              fontWeight: 700,
-              letterSpacing: "-2px",
-              lineHeight: 1.05,
-            }}
-          >
-            Conectar Servicios
-          </div>
-          <div
-            style={{
-              color: "#d8e4ee",
-              fontSize: 34,
-              lineHeight: 1.35,
-              marginTop: 32,
-            }}
-          >
-            Soluciones de conectividad para hogares y organizaciones.
-          </div>
-        </div>
-        <div
-          style={{
-            alignItems: "center",
-            background: "#ffffff",
-            borderRadius: 48,
-            display: "flex",
-            height: 236,
-            justifyContent: "center",
-            marginLeft: "auto",
-            width: 236,
-          }}
-        >
-          {/* ImageResponse renders standard img elements through Satori. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt=""
-            height={176}
-            src={isotipoSrc}
-            style={{ objectFit: "contain" }}
-            width={176}
-          />
+          Conectar Servicios
         </div>
       </div>
     ),

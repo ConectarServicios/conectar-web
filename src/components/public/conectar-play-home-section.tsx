@@ -1,4 +1,5 @@
-import { Gauge, MapPin, MonitorSmartphone } from "lucide-react";
+import { Gauge, Globe2, MapPin, MonitorSmartphone } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 
 import { ConectarPlayPlans } from "@/components/public/conectar-play-plans";
@@ -50,14 +51,36 @@ export function ConectarPlayHomeSection({
 
         {settings && (
           <ul
-            className="mt-8 grid gap-3 sm:grid-cols-3"
+            className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
             aria-label="Beneficios de Conectar Play"
           >
-            <Benefit icon={Gauge} text="Zapping instantáneo" />
-            <Benefit icon={MapPin} text="Canales locales y regionales" />
             <Benefit
+              accentClassName="bg-brand-orange"
+              description="Cambios de canal sin demoras."
+              icon={Gauge}
+              iconClassName="bg-brand-orange/10 text-brand-orange"
+              title="Zapping instantáneo"
+            />
+            <Benefit
+              accentClassName="bg-brand-coral"
+              description="Contenido nacional y señales de tu zona."
+              icon={MapPin}
+              iconClassName="bg-brand-coral/10 text-brand-coral"
+              title="Canales locales y regionales"
+            />
+            <Benefit
+              accentClassName="bg-brand-yellow"
+              description="Usalo en varios equipos al mismo tiempo."
               icon={MonitorSmartphone}
-              text={`Hasta ${settings.simultaneous_devices} dispositivos`}
+              iconClassName="bg-brand-yellow/20 text-brand-navy-deep"
+              title={`Hasta ${settings.simultaneous_devices} dispositivos`}
+            />
+            <Benefit
+              accentClassName="bg-brand-navy"
+              description="Miralo también desde tu navegador."
+              icon={Globe2}
+              iconClassName="bg-brand-navy/10 text-brand-navy"
+              title="Acceso web"
             />
           </ul>
         )}
@@ -111,18 +134,35 @@ export function ConectarPlayHomeSection({
 }
 
 function Benefit({
+  accentClassName,
+  description,
   icon: Icon,
-  text,
+  iconClassName,
+  title,
 }: {
-  icon: typeof Gauge;
-  text: string;
+  accentClassName: string;
+  description: string;
+  icon: LucideIcon;
+  iconClassName: string;
+  title: string;
 }) {
   return (
-    <li className="flex min-w-0 items-center gap-3 rounded-2xl border border-home-border bg-white px-4 py-4 text-sm font-bold text-brand-navy shadow-sm sm:px-5">
-      <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-home-surface text-home-accent-strong">
-        <Icon aria-hidden="true" size={20} strokeWidth={2} />
+    <li className="relative min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <span
+        aria-hidden="true"
+        className={`absolute inset-x-0 top-0 h-1 ${accentClassName}`}
+      />
+      <span
+        className={`grid size-11 place-items-center rounded-xl ${iconClassName}`}
+      >
+        <Icon aria-hidden="true" className="size-5" strokeWidth={2} />
       </span>
-      <span>{text}</span>
+      <h3 className="mt-4 text-base font-black leading-6 text-brand-navy-deep">
+        {title}
+      </h3>
+      <p className="mt-2 text-sm leading-6 text-slate-600">
+        {description}
+      </p>
     </li>
   );
 }

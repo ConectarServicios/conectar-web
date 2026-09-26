@@ -27,7 +27,7 @@ export function PlanCard({ plan, now, whatsapp }: Readonly<{ plan: Plan; now: Da
 
   return (
     <article className={`relative flex h-full min-w-0 flex-col rounded-3xl border bg-white p-6 transition motion-reduce:transform-none sm:p-7 ${plan.featured ? "border-home-accent shadow-[0_18px_45px_-28px_rgba(234,88,12,0.45)] ring-1 ring-home-accent/25 hover:-translate-y-1 hover:shadow-[0_22px_55px_-28px_rgba(234,88,12,0.5)]" : "border-home-border shadow-sm hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg"}`}>
-      <span className={`absolute inset-x-6 top-0 h-1 rounded-b-full ${plan.featured ? "home-gradient" : "bg-slate-200"}`} aria-hidden="true" />
+      <span className={`absolute inset-x-6 top-0 rounded-b-full ${plan.featured ? "h-1.5 home-gradient" : "h-1 bg-slate-200/70"}`} aria-hidden="true" />
       {plan.featured && (
         <span className="absolute -top-3 left-6 rounded-full bg-home-accent-strong px-3 py-1 text-xs font-black tracking-wide text-white uppercase shadow-sm">
           Más elegido
@@ -44,7 +44,7 @@ export function PlanCard({ plan, now, whatsapp }: Readonly<{ plan: Plan; now: Da
         </dl>
         {plan.description && <p className="mt-4 text-sm leading-6 text-slate-600">{plan.description}</p>}
       </div>
-      <div className="min-h-32 py-5">
+      <div className="min-h-28 py-4">
         {promotionIsCurrent ? (
           <>
             {plan.promotion_label && <p className="mb-1 text-sm font-extrabold text-home-accent-strong">{plan.promotion_label}</p>}
@@ -73,7 +73,7 @@ export function PlanCard({ plan, now, whatsapp }: Readonly<{ plan: Plan; now: Da
           </ul>
         )}
         <a
-          className={`mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl px-5 py-3 text-center font-extrabold transition focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-home-accent ${plan.featured ? "home-gradient text-[#03221b] hover:brightness-105" : "border border-home-accent-strong text-home-accent-strong hover:bg-home-accent-strong hover:text-white"}`}
+          className={`mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl px-5 py-3 text-center font-extrabold transition focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-home-accent ${plan.featured ? "home-gradient text-[#03221b] hover:brightness-105" : "border border-home-accent/70 text-home-accent-strong hover:border-home-accent hover:bg-home-accent/5"}`}
           href={whatsappUrl ?? "#contacto"}
           rel={whatsappUrl ? "noopener noreferrer" : undefined}
           target={whatsappUrl ? "_blank" : undefined}

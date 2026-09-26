@@ -11,7 +11,7 @@ import type { CoverageResult, CoverageStatus } from "@/types/coverage";
 const statusContent: Record<CoverageStatus, { title: string; description: string }> = {
   available: {
     title: "Tenemos cobertura en tu zona.",
-    description: "Contactanos para conocer los planes disponibles para tu domicilio.",
+    description: "Contactanos paraplaceholder:text-slate-400 conocer los planes disponibles para tu domicilio.",
   },
   unavailable: {
     title: "Por el momento no contamos con cobertura en ese domicilio.",
@@ -97,12 +97,12 @@ export function CoverageSection({ whatsapp }: Readonly<{ whatsapp: string | null
                   <input
                     aria-describedby={error ? "coverage-error" : "coverage-help"}
                     aria-invalid={Boolean(error)}
-                    className="min-h-12 w-full rounded-xl border border-slate-300 bg-white py-3 pr-4 pl-11 text-base text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-home-accent focus:ring-2 focus:ring-home-accent/25"
+                    className="min-h-12 w-full rounded-xl border border-slate-300 bg-white py-3 pr-4 pl-11 text-base text-slate-950 outline-none transition placeholder:text-sm placeholder:text-slate-400 focus:border-home-accent focus:ring-2 focus:ring-home-accent/25"
                     id="coverage-address"
                     maxLength={COVERAGE_ADDRESS_MAX_LENGTH}
                     minLength={COVERAGE_ADDRESS_MIN_LENGTH}
                     name="address"
-                    placeholder="Ej. Av. Independencia 1234, Sunchales"
+                    placeholder="Ej. F. Dentesano 11, Sunchales"
                     required
                     type="text"
                   />

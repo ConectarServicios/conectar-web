@@ -1,4 +1,6 @@
 import { HomeHighlights } from "@/components/public/home-highlights";
+import { ImportantNewsBanner } from "@/components/public/important-news-banner";
+import type { NewsItem } from "@/types/news";
 
 export type PublicSegment = "hogar" | "corporativo";
 
@@ -39,8 +41,9 @@ const corporateTrustItems = [
 ];
 
 export function HeroSection({
+  alert,
   segment,
-}: Readonly<{ segment: PublicSegment }>) {
+}: Readonly<{ alert?: NewsItem | null; segment: PublicSegment }>) {
   const current = content[segment];
   const isHome = segment === "hogar";
 
@@ -67,6 +70,8 @@ export function HeroSection({
 
         <div className="public-container flex items-start py-10 sm:min-h-[520px] sm:items-center sm:py-20 lg:min-h-[560px] lg:py-24">
           <div className="max-w-[820px]">
+            {alert ? <ImportantNewsBanner item={alert} /> : null}
+
             <p
               className={`mb-6 inline-flex max-w-full items-center gap-2.5 rounded-full border px-4 py-2 text-xs leading-5 font-bold sm:text-sm ${
                 isHome

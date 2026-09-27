@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { HeroSection } from "@/components/public/hero-section";
-import { ImportantNewsBanner } from "@/components/public/important-news-banner";
 import { ConectarPlayHomeSection } from "@/components/public/conectar-play-home-section";
 import { PlansSection } from "@/components/public/plans-section";
 import { HomeSecuritySection } from "@/components/public/home-security-section";
@@ -84,8 +83,7 @@ export default async function HogarPage() {
 
   return (
     <main>
-      <HeroSection segment="hogar" />
-      {alert.data ? <ImportantNewsBanner item={alert.data} /> : null}
+      <HeroSection alert={alert.data} segment="hogar" />
       <CoverageSection whatsapp={contact.data?.whatsapp ?? null} />
       {promotions.unavailable ? <UnavailableSection>Las promociones no están disponibles temporalmente.</UnavailableSection> : <PromotionsSection imageUrls={promotionImages} items={promotions.data} />}
       <PlansSection

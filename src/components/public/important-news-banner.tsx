@@ -9,40 +9,36 @@ type ImportantNewsBannerProps = Readonly<{
 
 export function ImportantNewsBanner({ item }: ImportantNewsBannerProps) {
   return (
-    <section className="bg-white py-4 sm:py-6">
-      <div className="public-container">
-        <aside
-          aria-label="Aviso importante"
-          className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-3 rounded-2xl border border-amber-300/80 bg-amber-50 px-4 py-4 text-brand-navy-deep shadow-sm sm:rounded-3xl sm:px-6 sm:py-5 lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center lg:gap-x-5"
-        >
-          <TriangleAlert
-            aria-hidden="true"
-            className="mt-0.5 size-6 shrink-0 text-amber-700 sm:size-7 lg:mt-0"
-            strokeWidth={2.4}
-          />
+    <aside
+      aria-label="Aviso importante"
+      className="mb-5 grid w-full max-w-[780px] grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-2.5 rounded-2xl border border-amber-300/45 bg-amber-100/[0.09] px-4 py-3.5 text-white shadow-sm shadow-slate-950/20 backdrop-blur-sm sm:px-5 sm:py-4 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:gap-x-4"
+    >
+      <TriangleAlert
+        aria-hidden="true"
+        className="mt-0.5 size-5 shrink-0 text-amber-300 sm:size-6 md:mt-0"
+        strokeWidth={2.4}
+      />
 
-          <div className="min-w-0">
-            <p className="text-[0.68rem] font-black tracking-[0.14em] text-amber-800 uppercase">
-              Aviso importante
-            </p>
-            <p className="mt-1 line-clamp-3 text-base leading-5 font-extrabold sm:line-clamp-2 sm:text-lg sm:leading-6">
-              {item.title}
-            </p>
-            {item.excerpt ? (
-              <p className="mt-1.5 line-clamp-3 text-sm leading-5 text-brand-navy/80 sm:line-clamp-2">
-                {item.excerpt}
-              </p>
-            ) : null}
-          </div>
-
-          <Link
-            className="col-start-2 inline-flex min-h-10 w-fit items-center rounded-full bg-brand-navy-deep px-4 py-2 text-sm font-extrabold whitespace-nowrap text-white transition hover:bg-brand-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-deep lg:col-start-auto"
-            href={`/noticias/${item.slug}`}
-          >
-            Ver comunicado
-          </Link>
-        </aside>
+      <div className="min-w-0">
+        <p className="text-[0.65rem] font-black tracking-[0.14em] text-amber-300 uppercase">
+          Aviso importante
+        </p>
+        <p className="mt-0.5 line-clamp-3 text-sm leading-5 font-extrabold text-white sm:line-clamp-2 sm:text-base">
+          {item.title}
+        </p>
+        {item.excerpt ? (
+          <p className="mt-1 hidden text-xs leading-5 text-slate-200 min-[390px]:line-clamp-2 sm:text-sm">
+            {item.excerpt}
+          </p>
+        ) : null}
       </div>
-    </section>
+
+      <Link
+        className="col-start-2 inline-flex min-h-9 w-fit items-center rounded-full border border-amber-300/50 bg-amber-300/10 px-3.5 py-1.5 text-xs font-extrabold whitespace-nowrap text-amber-100 transition hover:border-amber-200 hover:bg-amber-300/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200 md:col-start-auto md:px-4 md:text-sm"
+        href={`/noticias/${item.slug}`}
+      >
+        Ver comunicado
+      </Link>
+    </aside>
   );
 }

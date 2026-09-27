@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { ImportantNewsBanner } from "@/components/public/important-news-banner";
 import { PublicFooter } from "@/components/public/public-footer";
 import { PublicHeader } from "@/components/public/public-header";
 import { PromoTopBar } from "@/components/public/promo-top-bar";
 import { getPublicContactInformation } from "@/lib/supabase/contact-information";
+import { getPublicFeaturedAlert } from "@/lib/supabase/news";
 import { getPublicSiteConfiguration } from "@/lib/supabase/site-settings";
 import { getSiteUrl } from "@/lib/utils/site-url";
 
@@ -42,17 +44,19 @@ type PublicLayoutProps = Readonly<{
 }>;
 
 export default async function PublicLayout({ children }: PublicLayoutProps) {
-  const [configuration, contact] = await Promise.all([
+  const [configuration, contact, alert] = await Promise.all([
     getPublicSiteConfiguration(),
     getPublicContactInformation(),
+    getPublicFeaturedAlert(),
   ]);
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-slate-950">
-        <PromoTopBar />
-        <PublicHeader configuration={configuration} whatsapp={contact.data?.whatsapp ?? null} />
-        <div className="flex-1">{children}</div>
-        <PublicFooter configuration={configuration} />
+      {alert.data ? <ImportantNewsBanner item={alert.data} /> : null}
+      <PromoTopBar hideOnMobile={Boolean(alert.data)} />
+      <PublicHeader configuration={configuration} whatsapp={contact.data?.whatsapp ?? null} />
+      <div className="flex-1">{children}</div>
+      <PublicFooter configuration={configuration} />
     </div>
   );
 }

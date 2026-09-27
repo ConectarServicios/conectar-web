@@ -11,7 +11,7 @@ export function ImportantNewsBanner({ item }: ImportantNewsBannerProps) {
   return (
     <aside
       aria-label="Aviso importante"
-      className="mb-5 grid w-full max-w-[780px] grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-2.5 rounded-2xl border border-amber-300/45 bg-amber-100/[0.09] px-4 py-3.5 text-white shadow-sm shadow-slate-950/20 backdrop-blur-sm sm:px-5 sm:py-4 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:gap-x-4"
+      className="mb-6 grid w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-3 rounded-2xl border border-amber-300/60 bg-amber-100/[0.12] px-4 py-4 text-white shadow-sm shadow-slate-950/25 backdrop-blur-sm sm:px-6 sm:py-5 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:gap-x-5"
     >
       <TriangleAlert
         aria-hidden="true"
@@ -23,11 +23,11 @@ export function ImportantNewsBanner({ item }: ImportantNewsBannerProps) {
         <p className="text-[0.65rem] font-black tracking-[0.14em] text-amber-300 uppercase">
           Aviso importante
         </p>
-        <p className="mt-0.5 line-clamp-3 text-sm leading-5 font-extrabold text-white sm:line-clamp-2 sm:text-base">
+        <p className="mt-1 line-clamp-3 text-sm leading-5 font-extrabold text-white sm:line-clamp-2 sm:text-base">
           {item.title}
         </p>
         {item.excerpt ? (
-          <p className="mt-1 hidden text-xs leading-5 text-slate-200 min-[390px]:line-clamp-2 sm:text-sm">
+          <p className="mt-1.5 hidden text-xs leading-5 text-slate-200 min-[390px]:line-clamp-2 sm:text-sm">
             {item.excerpt}
           </p>
         ) : null}

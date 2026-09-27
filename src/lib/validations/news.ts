@@ -24,6 +24,7 @@ export function parseNewsForm(formData: FormData): { data?: NewsFormValues; erro
   const category = String(formData.get("category") ?? "");
   const status = String(formData.get("status") ?? "draft");
   const rawDate = String(formData.get("published_at") ?? "").trim();
+  const rawAlertEndsAt = String(formData.get("alert_ends_at") ?? "").trim();
   const errors: Record<string, string> = {};
   if (!title) errors.title = "Ingresá un título.";
   if (!slug) errors.slug = "Ingresá un slug.";
@@ -36,6 +37,14 @@ export function parseNewsForm(formData: FormData): { data?: NewsFormValues; erro
     publishedAt = parseArgentinaDateTimeLocal(rawDate);
     if (!publishedAt) errors.published_at = "Ingresá una fecha válida.";
   }
+  let alertEndsAt: string | null = null;
+  if (rawAlertEndsAt) {
+    alertEndsAt = parseArgentinaDateTimeLocal(rawAlertEndsAt);
+    if (!alertEndsAt) errors.alert_ends_at = "Ingresá una fecha válida.";
+  }
+  if (publishedAt && alertEndsAt && alertEndsAt <= publishedAt) {
+    errors.alert_ends_at = "La finalización debe ser posterior a la fecha de publicación.";
+  }
   if (Object.keys(errors).length) return { errors };
-  return { errors, data: { title, slug, excerpt, content, cover_image: null, category, status: status as NewsFormValues["status"], featured: formData.get("featured") === "on", published_at: publishedAt } };
+  return { errors, data: { title, slug, excerpt, content, cover_image: null, category, status: status as NewsFormValues["status"], featured: formData.get("featured") === "on", published_at: publishedAt, alert_ends_at: alertEndsAt } };
 }

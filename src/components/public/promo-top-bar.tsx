@@ -6,11 +6,7 @@ import {
   normalizePublicNavigationUrl,
 } from "@/lib/utils/public-navigation-url";
 
-type PromoTopBarProps = Readonly<{
-  hideOnMobile?: boolean;
-}>;
-
-export async function PromoTopBar({ hideOnMobile = false }: PromoTopBarProps) {
+export async function PromoTopBar() {
   const {
     data: [item],
   } = await getPublicPromotions("top_bar", 1);
@@ -25,7 +21,7 @@ export async function PromoTopBar({ hideOnMobile = false }: PromoTopBarProps) {
 
   return (
     <aside
-      className={`${hideOnMobile ? "hidden sm:block" : ""} border-b border-orange-700/20 bg-[#F28A2E] text-brand-navy-deep`}
+      className="border-b border-orange-700/20 bg-[#F28A2E] text-brand-navy-deep"
       aria-label="Promoción vigente"
     >
       <div className="public-container">

@@ -9,40 +9,40 @@ type ImportantNewsBannerProps = Readonly<{
 
 export function ImportantNewsBanner({ item }: ImportantNewsBannerProps) {
   return (
-    <aside
-      aria-label="Aviso importante"
-      className="border-b border-amber-500/40 bg-amber-100 text-brand-navy-deep"
-    >
+    <section className="bg-white py-4 sm:py-6">
       <div className="public-container">
-        <div className="grid min-h-14 grid-cols-[auto_minmax(0,1fr)] items-center gap-2.5 py-2 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-4">
+        <aside
+          aria-label="Aviso importante"
+          className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-3 rounded-2xl border border-amber-300/80 bg-amber-50 px-4 py-4 text-brand-navy-deep shadow-sm sm:rounded-3xl sm:px-6 sm:py-5 lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center lg:gap-x-5"
+        >
           <TriangleAlert
             aria-hidden="true"
-            className="size-5 shrink-0 text-amber-700 sm:size-6"
+            className="mt-0.5 size-6 shrink-0 text-amber-700 sm:size-7 lg:mt-0"
             strokeWidth={2.4}
           />
 
           <div className="min-w-0">
-            <p className="hidden text-[0.68rem] font-black tracking-[0.14em] text-amber-800 uppercase sm:block">
+            <p className="text-[0.68rem] font-black tracking-[0.14em] text-amber-800 uppercase">
               Aviso importante
             </p>
-            <p className="line-clamp-2 text-sm leading-4 font-extrabold sm:line-clamp-1 sm:text-base sm:leading-5">
+            <p className="mt-1 line-clamp-3 text-base leading-5 font-extrabold sm:line-clamp-2 sm:text-lg sm:leading-6">
               {item.title}
             </p>
             {item.excerpt ? (
-              <p className="mt-0.5 hidden truncate text-sm text-brand-navy/80 md:block">
+              <p className="mt-1.5 line-clamp-3 text-sm leading-5 text-brand-navy/80 sm:line-clamp-2">
                 {item.excerpt}
               </p>
             ) : null}
           </div>
 
           <Link
-            className="col-start-2 inline-flex min-h-8 w-fit items-center rounded-full border border-brand-navy-deep/25 px-3 py-1 text-xs font-extrabold whitespace-nowrap transition hover:border-brand-navy-deep hover:bg-white/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-deep sm:col-start-auto sm:row-start-auto sm:px-4 sm:text-sm"
+            className="col-start-2 inline-flex min-h-10 w-fit items-center rounded-full bg-brand-navy-deep px-4 py-2 text-sm font-extrabold whitespace-nowrap text-white transition hover:bg-brand-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-deep lg:col-start-auto"
             href={`/noticias/${item.slug}`}
           >
             Ver comunicado
           </Link>
-        </div>
+        </aside>
       </div>
-    </aside>
+    </section>
   );
 }

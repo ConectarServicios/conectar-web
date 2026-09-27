@@ -15,13 +15,6 @@ drop policy if exists "Senior administrators can upload hero banner images" on s
 drop policy if exists "Senior administrators can update hero banner images" on storage.objects;
 drop policy if exists "Senior administrators can delete hero banner images" on storage.objects;
 
--- Storage objects must be removed through the Storage API so their underlying
--- files are deleted as well. Remove the bucket automatically only when empty;
--- a non-empty bucket must be emptied and removed through that API.
-delete from storage.buckets as buckets
-where buckets.id = 'hero-banners'
-  and not exists (
-    select 1
-    from storage.objects as objects
-    where objects.bucket_id = buckets.id
-  );
+-- The hero-banners Storage bucket is intentionally not deleted from SQL.
+-- Supabase Storage metadata and physical objects must be removed through
+-- the Storage API or Dashboard if this bucket is no longer needed.

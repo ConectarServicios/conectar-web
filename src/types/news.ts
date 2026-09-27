@@ -1,6 +1,15 @@
-export const NEWS_CATEGORIES = ["Novedad", "Comunicado", "Mantenimiento", "Institucional", "Servicios"] as const;
+export const NEWS_ALERT_CATEGORY = "Aviso" as const;
+export const NEWS_CATEGORIES = [
+  "Novedad",
+  "Comunicado",
+  "Mantenimiento",
+  "Institucional",
+  "Servicios",
+  NEWS_ALERT_CATEGORY,
+] as const;
 export const NEWS_STATUSES = ["draft", "published", "archived"] as const;
 
+export type NewsCategory = (typeof NEWS_CATEGORIES)[number];
 export type NewsStatus = (typeof NEWS_STATUSES)[number];
 export type NewsItem = {
   id: string; title: string; slug: string; excerpt: string | null; content: string;

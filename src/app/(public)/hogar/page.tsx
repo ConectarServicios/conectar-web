@@ -12,7 +12,7 @@ import { getPlayPlans, getPlaySettings } from "@/lib/supabase/conectar-play";
 import type { Plan } from "@/types/plans";
 import { getPublicContactInformation } from "@/lib/supabase/contact-information";
 import { NewsHomeSection } from "@/components/public/news-home-section";
-import { getPublicNews, newsImageUrl } from "@/lib/supabase/news";
+import { getPublicFeaturedAlert, getPublicNews, newsImageUrl } from "@/lib/supabase/news";
 import { getPublicPromotions, promotionImageUrl } from "@/lib/supabase/promotions";
 import { PromotionsSection } from "@/components/public/promotions-section";
 import { ContextualPromotions } from "@/components/public/contextual-promotions";
@@ -63,7 +63,7 @@ async function getPublicPlans(): Promise<PublicData<Plan>> {
 }
 
 export default async function HogarPage() {
-  const [plans, installation, playSettings, playPlans, contact, news, promotions, events, featuredFaqs, configuration] = await Promise.all([
+  const [plans, installation, playSettings, playPlans, contact, news, promotions, events, featuredFaqs, configuration, alert] = await Promise.all([
     getPublicPlans(),
     getPublicInstallationConfiguration(),
     getPlaySettings(),
@@ -74,6 +74,7 @@ export default async function HogarPage() {
     getUpcomingPublicEvents(3),
     getFeaturedFaqs(6),
     getPublicSiteConfiguration(),
+    getPublicFeaturedAlert(),
   ]);
   const supabase = await createClient();
   const newsImages = Object.fromEntries(news.data.map((item) => [item.id, newsImageUrl(supabase, item.cover_image)]));
@@ -82,7 +83,7 @@ export default async function HogarPage() {
 
   return (
     <main>
-      <HeroSection segment="hogar" />
+      <HeroSection alert={alert.data} segment="hogar" />
       <CoverageSection whatsapp={contact.data?.whatsapp ?? null} />
       {promotions.unavailable ? <UnavailableSection>Las promociones no están disponibles temporalmente.</UnavailableSection> : <PromotionsSection imageUrls={promotionImages} items={promotions.data} />}
       <PlansSection

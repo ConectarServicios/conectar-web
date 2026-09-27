@@ -46,6 +46,7 @@ export function HeroSection({
 }: Readonly<{ alert?: NewsItem | null; segment: PublicSegment }>) {
   const current = content[segment];
   const isHome = segment === "hogar";
+  const hasHomeAlert = isHome && Boolean(alert);
 
   return (
     <>
@@ -68,7 +69,13 @@ export function HeroSection({
           <div className="public-grid-pattern absolute inset-0 opacity-70" />
         </div>
 
-        <div className="public-container flex items-start py-10 sm:min-h-[520px] sm:items-center sm:py-20 lg:min-h-[560px] lg:py-24">
+        <div
+          className={`public-container flex items-start sm:min-h-[520px] lg:min-h-[560px] ${
+            hasHomeAlert
+              ? "pt-8 pb-10 sm:items-start sm:pt-10 sm:pb-20 lg:pt-12 lg:pb-24"
+              : "py-10 sm:items-center sm:py-20 lg:py-24"
+          }`}
+        >
           <div className="w-full">
             {alert ? <ImportantNewsBanner item={alert} /> : null}
 

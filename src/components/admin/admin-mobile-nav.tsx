@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
 
 import { AdminNav } from "@/components/admin/admin-nav";
 import type { AdminRole } from "@/types/admin";
@@ -11,11 +12,12 @@ export function AdminMobileNav({ role }: Readonly<{ role: AdminRole }>) {
   const drawerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
     if (!isOpen) return;
 
     const drawer = drawerRef.current;
     const trigger = triggerRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     drawer?.querySelector<HTMLElement>("button, a[href]")?.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -46,7 +48,7 @@ export function AdminMobileNav({ role }: Readonly<{ role: AdminRole }>) {
 
     document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", handleKeyDown);
       trigger?.focus();
     };
@@ -58,25 +60,25 @@ export function AdminMobileNav({ role }: Readonly<{ role: AdminRole }>) {
         aria-controls="admin-mobile-menu"
         aria-expanded={isOpen}
         aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
-        className="grid h-10 w-10 place-items-center rounded-lg border border-slate-300 bg-white text-slate-800 shadow-sm hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+        className="grid size-11 shrink-0 touch-manipulation place-items-center rounded-xl border border-slate-300 bg-white text-slate-800 shadow-sm hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
         onClick={() => setIsOpen((open) => !open)}
         ref={triggerRef}
         type="button"
       >
-        <span aria-hidden="true" className="text-xl leading-none">{isOpen ? "×" : "☰"}</span>
+        <Menu aria-hidden="true" className="size-5" />
       </button>
       {isOpen ? (
         <>
-          <button aria-label="Cerrar menú" className="fixed inset-0 z-40 bg-slate-950/60" onClick={() => setIsOpen(false)} type="button" />
-          <aside aria-label="Navegación administrativa" aria-modal="true" id="admin-mobile-menu" ref={drawerRef} role="dialog" className="fixed inset-y-0 left-0 z-50 w-[min(20rem,88vw)] overflow-y-auto bg-slate-950 p-5 shadow-2xl">
-            <div className="mb-8 flex items-start justify-between border-b border-slate-800 pb-5">
+          <button aria-label="Cerrar menú" className="fixed inset-0 z-40 touch-none bg-slate-950/65 backdrop-blur-[1px]" onClick={() => setIsOpen(false)} type="button" />
+          <aside aria-label="Navegación administrativa" aria-modal="true" id="admin-mobile-menu" ref={drawerRef} role="dialog" className="fixed inset-y-0 left-0 z-50 flex h-dvh w-[min(20rem,88vw)] flex-col overflow-hidden bg-slate-950 shadow-2xl [padding-top:env(safe-area-inset-top)] [padding-bottom:env(safe-area-inset-bottom)]">
+            <div className="flex shrink-0 items-start justify-between border-b border-slate-800 p-5">
               <div>
                 <p className="text-lg font-bold text-white">Conectar</p>
                 <p className="text-xs font-medium tracking-[0.16em] text-orange-400 uppercase">Servicios · Admin</p>
               </div>
-              <button aria-label="Cerrar menú" className="rounded-md px-2 text-2xl text-slate-300 hover:bg-slate-800 hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" onClick={() => setIsOpen(false)} type="button">×</button>
+              <button aria-label="Cerrar menú" className="grid size-11 touch-manipulation place-items-center rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" onClick={() => setIsOpen(false)} type="button"><X aria-hidden="true" className="size-6" /></button>
             </div>
-            <AdminNav onNavigate={() => setIsOpen(false)} role={role} />
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-6 [-webkit-overflow-scrolling:touch]"><AdminNav onNavigate={() => setIsOpen(false)} role={role} /></div>
           </aside>
         </>
       ) : null}

@@ -1,12 +1,12 @@
 "use client";
 
+import { ADMIN_INPUT_CLASS as inputClass, ADMIN_FORM_CLASS, ADMIN_FIELDSET_CLASS } from "@/components/admin/admin-form-styles";
 import Link from "next/link";
 import { useActionState } from "react";
 
 import { saveSocialLink } from "@/app/admin/social/actions";
 import { SOCIAL_PLATFORMS, type SocialLinkActionState, type SocialLinkFormValues } from "@/types/social-links";
 
-const inputClass = "mt-2 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-slate-950 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200";
 const initialState: SocialLinkActionState = {};
 
 export function SocialLinkForm({ id, initialValues }: Readonly<{ id?: string; initialValues?: SocialLinkFormValues }>) {
@@ -14,10 +14,10 @@ export function SocialLinkForm({ id, initialValues }: Readonly<{ id?: string; in
   const error = (name: string) => state.fieldErrors?.[name];
 
   return (
-    <form action={action} className="space-y-6">
+    <form action={action} className={ADMIN_FORM_CLASS}>
       {id && <input name="id" type="hidden" value={id} />}
       {state.message && <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{state.message}</p>}
-      <fieldset className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold text-slate-950">Datos del perfil oficial</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="text-sm font-semibold text-slate-700">Plataforma

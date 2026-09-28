@@ -1,5 +1,6 @@
 "use client";
 
+import { ADMIN_INPUT_CLASS as inputClass, ADMIN_FORM_CLASS, ADMIN_FIELDSET_CLASS } from "@/components/admin/admin-form-styles";
 import Link from "next/link";
 import { useActionState } from "react";
 
@@ -7,8 +8,6 @@ import { inviteAdminUser, updateAdminUser } from "@/app/admin/users/actions";
 import { ADMIN_ROLES, ADMIN_ROLE_LABELS } from "@/types/admin";
 import type { AdminUser, AdminUserActionState } from "@/types/admin-users";
 
-const inputClass =
-  "mt-2 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-slate-950 shadow-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 disabled:bg-slate-100";
 const roleHelp = {
   editor: "Puede administrar contenido editorial.",
   admin: "Puede administrar contenido y configuración.",
@@ -38,7 +37,7 @@ export function AdminUserForm(props: Props) {
     props.user.role === "super_admin";
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form action={formAction} className={ADMIN_FORM_CLASS}>
       {state.message ? (
         <p
           aria-live="polite"
@@ -53,7 +52,7 @@ export function AdminUserForm(props: Props) {
         </p>
       ) : null}
 
-      <fieldset className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold">Datos del usuario</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="text-sm font-semibold">

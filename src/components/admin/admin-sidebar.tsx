@@ -1,9 +1,11 @@
+"use client";
+
+import { useState } from "react";
+
 import { AdminNav } from "@/components/admin/admin-nav";
 import type { AdminRole } from "@/types/admin";
 
 type AdminSidebarProps = Readonly<{
-  expanded: boolean | null;
-  onToggle: () => void;
   role: AdminRole;
 }>;
 
@@ -30,58 +32,29 @@ function SidebarToggle({
   );
 }
 
-export function AdminSidebar({ expanded, onToggle, role }: AdminSidebarProps) {
-  const sidebarWidth =
-    expanded === null
-      ? "w-16 min-[1440px]:w-72"
-      : expanded
-        ? "w-72"
-        : "w-16";
-  const expandedContent =
-    expanded === null
-      ? "hidden min-[1440px]:block"
-      : expanded
-        ? "block"
-        : "hidden";
-  const collapsedIdentity =
-    expanded === null
-      ? "block min-[1440px]:hidden"
-      : expanded
-        ? "hidden"
-        : "block";
-  const headerLayout =
-    expanded === null
-      ? "flex-col gap-1 min-[1440px]:flex-row min-[1440px]:justify-between"
-      : expanded
-        ? "flex-row justify-between gap-3"
-        : "flex-col gap-1";
+export function AdminSidebar({ role }: AdminSidebarProps) {
+  const [expanded, setExpanded] = useState(false);
+  const sidebarWidth = expanded ? "w-72" : "w-[4.5rem]";
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-30 hidden border-r border-slate-800 bg-slate-950 transition-[width] duration-200 lg:block ${sidebarWidth}`}
+      className={`sticky top-0 z-30 hidden h-dvh shrink-0 border-r border-slate-800 bg-slate-950 transition-[width] duration-200 lg:block ${sidebarWidth}`}
     >
-      <div className={`flex h-20 items-center justify-center border-b border-slate-800 px-3 ${headerLayout}`}>
-        <div className={expandedContent}>
+      <div className={`flex h-16 items-center border-b border-slate-800 px-3 ${expanded ? "justify-between gap-3" : "flex-col justify-center gap-0.5"}`}>
+        <div className={expanded ? "block" : "hidden"}>
           <p className="text-lg font-bold tracking-tight text-white">Conectar</p>
           <p className="text-xs font-medium tracking-[0.16em] text-orange-400 uppercase">Servicios · Admin</p>
         </div>
-        <p aria-hidden="true" className={`text-lg font-bold text-white ${collapsedIdentity}`}>
+        <p aria-hidden="true" className={`text-lg font-bold text-white ${expanded ? "hidden" : "block"}`}>
           C
         </p>
-        {expanded === null ? (
-          <>
-            <SidebarToggle className="min-[1440px]:hidden" expanded={false} onToggle={onToggle} />
-            <SidebarToggle className="hidden min-[1440px]:grid" expanded onToggle={onToggle} />
-          </>
-        ) : (
-          <SidebarToggle expanded={expanded} onToggle={onToggle} />
-        )}
+        <SidebarToggle expanded={expanded} onToggle={() => setExpanded((current) => !current)} />
       </div>
       <div
-        className={`h-[calc(100vh-5rem)] overflow-y-auto px-4 py-6 ${expandedContent}`}
+        className={`h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain py-5 ${expanded ? "px-4" : "px-2"}`}
         id="admin-desktop-navigation"
       >
-        <AdminNav role={role} />
+        <AdminNav compact={!expanded} role={role} />
       </div>
     </aside>
   );

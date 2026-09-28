@@ -1,5 +1,6 @@
 "use client";
 
+import { ADMIN_INPUT_CLASS as inputClass, ADMIN_FIELDSET_CLASS as fieldsetClass, ADMIN_FORM_CLASS } from "@/components/admin/admin-form-styles";
 import Link from "next/link";
 import { useActionState, useState } from "react";
 
@@ -8,9 +9,6 @@ import { formatArgentinaDateTimeLocal } from "@/lib/utils/news-dates";
 import { normalizeEventSlug } from "@/lib/validations/events";
 import type { EventActionState, EventFormValues } from "@/types/events";
 
-const inputClass =
-  "mt-2 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-slate-950 shadow-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200";
-const fieldsetClass = "rounded-2xl border bg-white p-6 shadow-sm";
 
 export function EventForm({
   id,
@@ -22,7 +20,7 @@ export function EventForm({
   const error = (key: string) => state.fieldErrors?.[key];
 
   return (
-    <form action={action} className="space-y-6">
+    <form action={action} className={ADMIN_FORM_CLASS}>
       {id && <input name="id" type="hidden" value={id} />}
       {state.message && (
         <p

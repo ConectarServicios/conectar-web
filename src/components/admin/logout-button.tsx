@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
 
@@ -34,7 +35,8 @@ export function LogoutButton({ variant = "dark" }: LogoutButtonProps) {
   return (
     <div className="flex flex-col items-end gap-1">
       <button
-        className={`rounded-md px-3 py-2 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${
+        aria-label={isSubmitting ? "Cerrando sesión" : "Cerrar sesión"}
+        className={`inline-flex min-h-11 items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${
           variant === "light"
             ? "bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-slate-900"
             : "border border-slate-500 text-white hover:bg-slate-800 focus-visible:outline-white"
@@ -43,7 +45,8 @@ export function LogoutButton({ variant = "dark" }: LogoutButtonProps) {
         onClick={handleLogout}
         type="button"
       >
-        {isSubmitting ? "Cerrando sesión…" : "Cerrar sesión"}
+        <LogOut aria-hidden="true" className="size-4" />
+        <span className="hidden sm:inline">{isSubmitting ? "Cerrando…" : "Salir"}</span>
       </button>
       {error ? (
         <p

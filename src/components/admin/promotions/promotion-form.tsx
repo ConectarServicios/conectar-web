@@ -1,5 +1,6 @@
 "use client";
 
+import { ADMIN_INPUT_CLASS as input, ADMIN_FORM_CLASS, ADMIN_FIELDSET_CLASS } from "@/components/admin/admin-form-styles";
 import Link from "next/link";
 import { useActionState, useState } from "react";
 
@@ -8,7 +9,6 @@ import { formatArgentinaDateTimeLocal } from "@/lib/utils/news-dates";
 import { normalizePromotionSlug } from "@/lib/validations/promotions";
 import type { PromotionActionState, PromotionFormValues } from "@/types/promotions";
 
-const input = "mt-2 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-slate-950 shadow-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200";
 const locations = [
   ["top_bar", "Barra promocional superior"],
   ["home", "Home"],
@@ -23,11 +23,11 @@ export function PromotionForm({ id, initialValues }: Readonly<{ id?: string; ini
   const error = (key: string) => state.fieldErrors?.[key];
 
   return (
-    <form action={action} className="space-y-6">
+    <form action={action} className={ADMIN_FORM_CLASS}>
       {id && <input name="id" type="hidden" value={id} />}
       {state.message && <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{state.message}</p>}
 
-      <fieldset className="rounded-2xl border bg-white p-6 shadow-sm">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold">Contenido</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="text-sm font-semibold sm:col-span-2">Título *
@@ -62,7 +62,7 @@ export function PromotionForm({ id, initialValues }: Readonly<{ id?: string; ini
         </div>
       </fieldset>
 
-      <fieldset className="rounded-2xl border bg-white p-6 shadow-sm">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold">Vigencia</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="text-sm font-semibold">Inicio
@@ -81,7 +81,7 @@ export function PromotionForm({ id, initialValues }: Readonly<{ id?: string; ini
         </div>
       </fieldset>
 
-      <fieldset className="rounded-2xl border bg-white p-6 shadow-sm">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold">Visibilidad</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="flex items-center gap-3 text-sm font-semibold sm:col-span-2">

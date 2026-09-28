@@ -20,7 +20,7 @@ export function SettingsForm({ action, children }: SettingsFormProps) {
   const [state, formAction, pending] = useActionState(action, initialState);
 
   return (
-    <form action={formAction} className="mt-6 max-w-2xl space-y-5">
+    <form action={formAction} className="mt-6 max-w-3xl space-y-5">
       {children(state.fieldErrors ?? {})}
       {state.message && (
         <p

@@ -1,5 +1,6 @@
 "use client";
 
+import { ADMIN_INPUT_CLASS as inputClass, ADMIN_FORM_CLASS, ADMIN_FIELDSET_CLASS } from "@/components/admin/admin-form-styles";
 import Link from "next/link";
 import { useActionState } from "react";
 
@@ -10,8 +11,6 @@ import {
   type FaqFormValues,
 } from "@/types/faqs";
 
-const inputClass =
-  "mt-2 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-slate-950 shadow-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200";
 
 export function FaqForm({
   id,
@@ -23,7 +22,7 @@ export function FaqForm({
   );
   const error = (key: string) => state.fieldErrors?.[key];
   return (
-    <form action={action} className="space-y-6">
+    <form action={action} className={ADMIN_FORM_CLASS}>
       {id && <input name="id" type="hidden" value={id} />}
       {state.message && (
         <p
@@ -33,7 +32,7 @@ export function FaqForm({
           {state.message}
         </p>
       )}
-      <fieldset className="rounded-2xl border bg-white p-5 shadow-sm sm:p-6">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold">Contenido</legend>
         <div className="grid gap-5">
           <label className="text-sm font-semibold">
@@ -61,7 +60,7 @@ export function FaqForm({
           </label>
         </div>
       </fieldset>
-      <fieldset className="rounded-2xl border bg-white p-5 shadow-sm sm:p-6">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold">
           Organización y publicación
         </legend>

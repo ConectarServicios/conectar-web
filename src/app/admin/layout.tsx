@@ -50,7 +50,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
         fullName={profile.full_name}
         role={profile.role}
       />
-      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <main className="mx-auto w-full max-w-[96rem] overflow-x-clip px-3 py-6 min-[390px]:px-4 sm:px-6 sm:py-8 lg:px-8">
         {children}
       </main>
     </AdminShell>

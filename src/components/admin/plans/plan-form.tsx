@@ -1,5 +1,6 @@
 "use client";
 
+import { ADMIN_INPUT_CLASS as inputClass, ADMIN_FORM_CLASS, ADMIN_FIELDSET_CLASS } from "@/components/admin/admin-form-styles";
 import Link from "next/link";
 import { useActionState, useState } from "react";
 
@@ -7,7 +8,6 @@ import { savePlan } from "@/app/admin/plans/actions";
 import { slugifyPlanName } from "@/lib/validations/plans";
 import type { PlanActionState, PlanFormValues } from "@/types/plans";
 
-const inputClass = "mt-2 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-slate-950 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200";
 const initialState: PlanActionState = {};
 
 function localDateTime(value: string | null) {
@@ -29,16 +29,16 @@ export function PlanForm({ id, initialValues }: Readonly<{ id?: string; initialV
   const error = (name: string) => state.fieldErrors?.[name];
 
   return (
-    <form action={action} className="space-y-6">
+    <form action={action} className={ADMIN_FORM_CLASS}>
       {id && <input name="id" type="hidden" value={id} />}
       <input name="features" type="hidden" value={JSON.stringify(features)} />
       <input name="promotion_start" type="hidden" value={promotionStart} />
       <input name="promotion_end" type="hidden" value={promotionEnd} />
       {state.message && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{state.message}</div>}
 
-      <fieldset className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold text-slate-950">Datos principales</legend>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <label className="text-sm font-semibold text-slate-700">Nombre
             <input className={inputClass} defaultValue={initialValues?.name} name="name" required onChange={(event) => { if (!slugTouched) setSlug(slugifyPlanName(event.target.value)); }} />
             {error("name") && <span className="mt-1 block text-xs text-red-700">{error("name")}</span>}
@@ -62,9 +62,9 @@ export function PlanForm({ id, initialValues }: Readonly<{ id?: string; initialV
         </div>
       </fieldset>
 
-      <fieldset className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold text-slate-950">Precios</legend>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2 lg:max-w-2xl">
           <label className="text-sm font-semibold text-slate-700">Precio regular
             <input className={inputClass} defaultValue={initialValues?.regular_price} min="0" name="regular_price" required step="0.01" type="number" />
             {error("regular_price") && <span className="mt-1 block text-xs text-red-700">{error("regular_price")}</span>}
@@ -76,9 +76,9 @@ export function PlanForm({ id, initialValues }: Readonly<{ id?: string; initialV
         </div>
       </fieldset>
 
-      <fieldset className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold text-slate-950">Promoción</legend>
-        <div className="grid gap-5 sm:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:max-w-4xl lg:grid-cols-[minmax(12rem,1fr)_minmax(13rem,1fr)_minmax(13rem,1fr)]">
           <label className="text-sm font-semibold text-slate-700">Etiqueta
             <input className={inputClass} defaultValue={initialValues?.promotion_label ?? ""} name="promotion_label" />
           </label>
@@ -93,9 +93,9 @@ export function PlanForm({ id, initialValues }: Readonly<{ id?: string; initialV
         </div>
       </fieldset>
 
-      <fieldset className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold text-slate-950">Presentación</legend>
-        <div className="grid items-end gap-5 sm:grid-cols-3">
+        <div className="grid items-end gap-5 sm:grid-cols-[minmax(10rem,14rem)_auto_auto]">
           <label className="text-sm font-semibold text-slate-700">Orden de visualización
             <input className={inputClass} defaultValue={initialValues?.display_order ?? 0} min="0" name="display_order" required step="1" type="number" />
             {error("display_order") && <span className="mt-1 block text-xs text-red-700">{error("display_order")}</span>}
@@ -105,14 +105,14 @@ export function PlanForm({ id, initialValues }: Readonly<{ id?: string; initialV
         </div>
       </fieldset>
 
-      <fieldset className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <fieldset className={ADMIN_FIELDSET_CLASS}>
         <legend className="px-2 text-lg font-bold text-slate-950">Características</legend>
         <div className="space-y-3">
           {features.map((feature, index) => (
-            <div className="grid grid-cols-[1fr_5rem_auto] gap-2" key={`${feature.id ?? "new"}-${index}`}>
+            <div className="grid gap-2 rounded-xl border border-slate-200 p-3 min-[430px]:grid-cols-[minmax(0,1fr)_5rem_auto] min-[430px]:border-0 min-[430px]:p-0" key={`${feature.id ?? "new"}-${index}`}>
               <input aria-label={`Texto de característica ${index + 1}`} className={inputClass.replace("mt-2 ", "")} placeholder="Ej. Wi-Fi incluido" value={feature.text} onChange={(event) => setFeatures((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, text: event.target.value } : item))} />
               <input aria-label={`Orden de característica ${index + 1}`} className={inputClass.replace("mt-2 ", "")} min="0" step="1" type="number" value={feature.display_order} onChange={(event) => setFeatures((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, display_order: Number(event.target.value) } : item))} />
-              <button aria-label={`Quitar característica ${index + 1}`} className="rounded-lg px-3 font-bold text-red-700 hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600" type="button" onClick={() => setFeatures((current) => current.filter((_, itemIndex) => itemIndex !== index))}>Quitar</button>
+              <button aria-label={`Quitar característica ${index + 1}`} className="min-h-11 justify-self-start rounded-lg px-3 font-bold text-red-700 hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600" type="button" onClick={() => setFeatures((current) => current.filter((_, itemIndex) => itemIndex !== index))}>Quitar</button>
             </div>
           ))}
           {error("features") && <p className="text-xs text-red-700">{error("features")}</p>}

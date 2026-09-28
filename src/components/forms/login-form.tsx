@@ -2,6 +2,7 @@
 
 import { type FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
 
@@ -12,6 +13,7 @@ export function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,7 +40,7 @@ export function LoginForm() {
   }
 
   return (
-    <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+    <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
       <div>
         <label
           className="block text-sm font-medium text-slate-800"
@@ -46,16 +48,16 @@ export function LoginForm() {
         >
           Email
         </label>
-        <input
+        <div className="relative mt-2"><Mail aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-slate-400" /><input
           autoComplete="email"
           autoFocus
-          className="mt-2 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-200 disabled:bg-slate-100"
+          className="min-h-12 w-full rounded-xl border border-slate-300 py-2.5 pr-3 pl-10 text-slate-950 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200 disabled:bg-slate-100"
           disabled={isSubmitting}
           id="email"
           name="email"
           required
           type="email"
-        />
+        /></div>
       </div>
 
       <div>
@@ -65,16 +67,16 @@ export function LoginForm() {
         >
           Contraseña
         </label>
-        <input
+        <div className="relative mt-2"><LockKeyhole aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-slate-400" /><input
           autoComplete="current-password"
-          className="mt-2 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-200 disabled:bg-slate-100"
+          className="min-h-12 w-full rounded-xl border border-slate-300 py-2.5 pr-12 pl-10 text-slate-950 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200 disabled:bg-slate-100"
           disabled={isSubmitting}
           id="password"
           minLength={1}
           name="password"
           required
-          type="password"
-        />
+          type={showPassword ? "text" : "password"}
+        /><button aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"} aria-pressed={showPassword} className="absolute inset-y-0 right-0 grid w-12 place-items-center rounded-r-xl text-slate-500 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-orange-500" onClick={() => setShowPassword((visible) => !visible)} type="button">{showPassword ? <EyeOff aria-hidden="true" className="size-5" /> : <Eye aria-hidden="true" className="size-5" />}</button></div>
       </div>
 
       {error ? (
@@ -88,7 +90,7 @@ export function LoginForm() {
       ) : null}
 
       <button
-        className="w-full rounded-md bg-slate-900 px-4 py-2.5 font-semibold text-white transition hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:opacity-60"
+        className="min-h-12 w-full rounded-xl bg-[#071A2F] px-4 py-2.5 font-semibold text-white transition hover:bg-[#1E3250] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 disabled:cursor-not-allowed disabled:opacity-60"
         disabled={isSubmitting}
         type="submit"
       >

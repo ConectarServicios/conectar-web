@@ -1,12 +1,12 @@
 "use client";
 
+import { ADMIN_INPUT_CLASS as inputClassName } from "@/components/admin/admin-form-styles";
 import { useActionState } from "react";
 
 import { saveContactInformation } from "@/app/admin/contact/actions";
 import type { ContactInformation, ContactInformationActionState } from "@/types/contact-information";
 
 const initialState: ContactInformationActionState = {};
-const inputClassName = "mt-2 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-slate-950 shadow-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-200";
 
 type EditableContact = Omit<ContactInformation, "id">;
 
@@ -18,7 +18,7 @@ export function ContactInformationForm({ contact }: Readonly<{ contact: Editable
   const [state, action, pending] = useActionState(saveContactInformation, initialState);
 
   return (
-    <form action={action} className="mt-6 max-w-3xl space-y-8">
+    <form action={action} className="mt-6 max-w-4xl space-y-8">
       <fieldset className="grid gap-5 sm:grid-cols-2">
         <legend className="mb-4 text-base font-bold text-slate-950">Canales institucionales</legend>
         <label className="block text-sm font-semibold text-slate-700" htmlFor="phone">Teléfono <span className="font-normal text-slate-500">(opcional)</span><input className={inputClassName} defaultValue={contact.phone ?? ""} id="phone" maxLength={500} name="phone" type="tel" /><FieldError message={state.fieldErrors?.phone} /></label>

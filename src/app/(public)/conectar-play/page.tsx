@@ -386,7 +386,7 @@ function Price({
 
       <p className="mt-1 text-2xl font-black whitespace-nowrap">{stickMoney(value)}</p>
 
-      <p className="text-sm text-slate-600">por equipo</p>
+      <p className="text-sm font-bold text-slate-600">por equipo</p>
     </div>
   );
 }

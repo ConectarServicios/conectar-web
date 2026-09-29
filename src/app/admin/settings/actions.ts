@@ -36,7 +36,8 @@ async function persistSettings(values: Partial<SiteConfiguration>): Promise<Sett
   const supabase = await getAuthorizedClient();
   if (!supabase) return { message: "No tenés permiso para realizar esta acción." };
 
-  const rows = (Object.entries(values) as [keyof SiteConfiguration, string | number][]).map(
+  const entries = Object.entries(values) as [keyof SiteConfiguration, string | number | null][];
+  const rows = entries.filter(([, value]) => value !== null).map(
     ([field, value]) => ({
       key: SITE_SETTING_KEYS[field],
       value,
@@ -44,7 +45,18 @@ async function persistSettings(values: Partial<SiteConfiguration>): Promise<Sett
       description: SITE_SETTING_DESCRIPTIONS[field],
     }),
   );
-  const { error } = await supabase.from("site_settings").upsert(rows, { onConflict: "key" });
+  const keysToRemove = entries
+    .filter(([, value]) => value === null)
+    .map(([field]) => SITE_SETTING_KEYS[field]);
+  const [{ error: upsertError }, { error: deleteError }] = await Promise.all([
+    rows.length
+      ? supabase.from("site_settings").upsert(rows, { onConflict: "key" })
+      : Promise.resolve({ error: null }),
+    keysToRemove.length
+      ? supabase.from("site_settings").delete().in("key", keysToRemove)
+      : Promise.resolve({ error: null }),
+  ]);
+  const error = upsertError ?? deleteError;
 
   if (error) {
     console.error("Unable to persist site configuration", error);

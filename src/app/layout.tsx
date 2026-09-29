@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
 import { Manrope, Sora } from "next/font/google";
 import { getSiteUrl } from "@/lib/utils/site-url";
 import "./globals.css";
@@ -28,7 +29,7 @@ export const viewport: Viewport = {
   themeColor: "#071a2f",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="es" className={`${manrope.variable} ${sora.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>

@@ -10,7 +10,7 @@ const labels = { draft:"Borrador", published:"Publicado", archived:"Archivado" }
 const date = (value: string | null) => value ? argentinaAdminDateTimeFormatter.format(new Date(value)) : "—";
 export default async function NewsAdminPage({ searchParams }: Readonly<{ searchParams: Promise<{ success?: string; error?: string }> }>) {
   const params = await searchParams; const supabase = await createClient();
-  const { data, error } = await supabase.from("news").select("id,title,slug,excerpt,content,cover_image,category,status,featured,published_at,author_id,created_at,author:profiles(full_name)").order("featured",{ascending:false}).order("published_at",{ascending:false,nullsFirst:false}).order("created_at",{ascending:false});
+  const { data, error } = await supabase.from("news").select("id,title,slug,excerpt,content,cover_image,category,status,featured,published_at,alert_ends_at,content_module,author_id,created_at,author:profiles(full_name)").order("featured",{ascending:false}).order("published_at",{ascending:false,nullsFirst:false}).order("created_at",{ascending:false});
   if (error) console.error("Unable to list news", error); const news = (data ?? []) as unknown as NewsItem[];
   return <>
     <div className="flex flex-col items-start gap-4 sm:flex-row sm:justify-between"><AdminPageHeader description="Creá, programá y administrá las novedades institucionales." title="Noticias / Comunicados"/><Link className="shrink-0 self-start rounded-xl bg-orange-600 px-5 py-3 text-center font-bold text-white" href="/admin/news/new">Nueva noticia</Link></div>

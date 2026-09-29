@@ -38,6 +38,10 @@ export default async function ConectarPlayPage() {
   const webUrl = settings?.web_url
     ? normalizePublicNavigationUrl(settings.web_url)
     : null;
+  const hasStickRental = Boolean(
+    settings &&
+      (settings.onn_rental_price !== null || settings.onn_rental_two_price !== null),
+  );
 
   return (
     <main>
@@ -209,25 +213,31 @@ export default async function ConectarPlayPage() {
               </p>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              {settings.onn_sale_price !== null && (
-                <Price
-                  label="Precio de venta"
-                  value={settings.onn_sale_price}
-                />
-              )}
-
-              {settings.onn_rental_price !== null && (
-                <div>
-                  <Price
-                    label="Alquiler mensual"
-                    value={settings.onn_rental_price}
-                  />
-
+            <div className="grid min-w-0 gap-4 sm:grid-cols-2 lg:grid-cols-1">
+              {hasStickRental && (
+                <div className="min-w-0">
+                  <div className="rounded-2xl border border-white/20 bg-white p-5 text-slate-950 shadow-lg shadow-slate-950/15">
+                    <p className="text-xs font-black tracking-[.16em] text-brand-orange uppercase">Alquiler</p>
+                    <div className="mt-3 grid gap-4 min-[390px]:grid-cols-2">
+                      {settings.onn_rental_price !== null && (
+                        <RentalPrice label="1 Stick" value={settings.onn_rental_price} />
+                      )}
+                      {settings.onn_rental_two_price !== null && (
+                        <RentalPrice label="2 Stick" value={settings.onn_rental_two_price} />
+                      )}
+                    </div>
+                  </div>
                   <p className="mt-2 text-sm text-slate-300">
                     El Stick alquilado se entrega en comodato.
                   </p>
                 </div>
+              )}
+
+              {settings.onn_sale_price !== null && (
+                <Price
+                  label="Stick Conectar Play"
+                  value={settings.onn_sale_price}
+                />
               )}
             </div>
           </div>
@@ -370,9 +380,24 @@ function Price({
 }) {
   return (
     <div className="rounded-2xl border border-white/20 bg-white p-5 text-slate-950 shadow-lg shadow-slate-950/15">
-      <p className="text-sm font-bold text-slate-600">{label}</p>
+      <p className="text-xs font-black tracking-[.16em] text-brand-orange uppercase">Compra</p>
+
+      <p className="mt-3 text-sm font-bold text-slate-600">{label}</p>
 
       <p className="mt-1 text-2xl font-black">{money(value)}</p>
+
+      <p className="text-sm text-slate-600">por equipo</p>
+    </div>
+  );
+}
+
+function RentalPrice({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="min-w-0 border-slate-200 first:border-0 min-[390px]:border-l min-[390px]:pl-4">
+      <p className="text-sm font-bold text-slate-600">{label}</p>
+      <p className="mt-1 text-xl font-black break-words sm:text-2xl">
+        {money(value)} <span className="text-sm font-bold text-slate-600">/ mes</span>
+      </p>
     </div>
   );
 }

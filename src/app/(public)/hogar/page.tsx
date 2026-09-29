@@ -88,6 +88,8 @@ export default async function HogarPage() {
       {promotions.unavailable ? <UnavailableSection>Las promociones no están disponibles temporalmente.</UnavailableSection> : <PromotionsSection imageUrls={promotionImages} items={promotions.data} />}
       <PlansSection
         installationBenefitsText={installation.benefitsText}
+        installationInstallmentCount={installation.installmentCount}
+        installationInstallmentPrice={installation.installmentPrice}
         installationPrice={installation.price}
         plans={plans.data}
         unavailable={plans.unavailable}

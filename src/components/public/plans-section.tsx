@@ -6,13 +6,22 @@ const currency = new Intl.NumberFormat("es-AR", { style: "currency", currency: "
 type PlansSectionProps = Readonly<{
   installationBenefitsText: string | null;
   installationPrice: number | null;
+  installationInstallmentCount: number | null;
+  installationInstallmentPrice: number | null;
   plans: Plan[];
   unavailable: boolean;
   whatsapp: string | null;
 }>;
 
-export function PlansSection({ installationBenefitsText, installationPrice, plans, unavailable, whatsapp }: PlansSectionProps) {
+export function PlansSection({ installationBenefitsText, installationInstallmentCount, installationInstallmentPrice, installationPrice, plans, unavailable, whatsapp }: PlansSectionProps) {
   const now = new Date();
+  const hasInstallments =
+    installationInstallmentCount !== null &&
+    Number.isInteger(installationInstallmentCount) &&
+    installationInstallmentCount > 0 &&
+    installationInstallmentPrice !== null &&
+    Number.isFinite(installationInstallmentPrice) &&
+    installationInstallmentPrice >= 0;
   return (
     <section className="scroll-mt-20 bg-home-surface-soft py-20 sm:py-28" id="planes" aria-labelledby="plans-title">
       <div className="public-container">
@@ -21,15 +30,19 @@ export function PlansSection({ installationBenefitsText, installationPrice, plan
           <h2 className="public-heading mt-3" id="plans-title">Una conexión para cada necesidad</h2>
           <p className="mt-5 text-lg leading-8 text-slate-600">Elegí la velocidad que acompaña tus actividades.</p>
           {(installationPrice !== null || installationBenefitsText) && (
-            <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
+            <div className="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
               {installationPrice !== null && (
-                <>
+                <p>
                   <span className="font-extrabold text-slate-800">Instalación {currency.format(installationPrice)}</span>
-                  {installationBenefitsText && <span aria-hidden="true"> — </span>}
-                </>
+                </p>
               )}
-              {installationBenefitsText}
-            </p>
+              {hasInstallments && (
+                <p className="font-semibold text-slate-700">
+                  También disponible en {installationInstallmentCount} cuotas de {currency.format(installationInstallmentPrice)}
+                </p>
+              )}
+              {installationBenefitsText && <p className="mt-1">{installationBenefitsText}</p>}
+            </div>
           )}
           {installationPrice === null && (
             <p className="mt-3 text-sm font-extrabold text-slate-700">Consultá el costo de instalación.</p>

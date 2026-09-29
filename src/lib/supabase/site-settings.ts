@@ -7,6 +7,8 @@ import type { SiteConfiguration } from "@/types/site-settings";
 export const SITE_SETTING_KEYS = {
   internetInstallationPrice: "internet_installation_price",
   internetInstallationBenefitsText: "internet_installation_benefits_text",
+  internetInstallationInstallmentCount: "internet_installation_installment_count",
+  internetInstallationInstallmentPrice: "internet_installation_installment_price",
   siteName: "site_name",
   footerTagline: "footer_tagline",
   selfServiceUrl: "self_service_url",
@@ -18,6 +20,8 @@ export const SITE_CONFIGURATION_DEFAULTS: SiteConfiguration = {
   internetInstallationPrice: 0,
   internetInstallationBenefitsText:
     "Consultá por descuentos y bonificaciones disponibles según beneficios y convenios vigentes.",
+  internetInstallationInstallmentCount: null,
+  internetInstallationInstallmentPrice: null,
   siteName: "Conectar Servicios",
   footerTagline: "Soluciones de conectividad.",
   selfServiceUrl: "https://autogestion.conectarservicios.com.ar/",
@@ -30,6 +34,8 @@ export const SITE_SETTING_DESCRIPTIONS: Record<keyof SiteConfiguration, string> 
   internetInstallationPrice: "Precio vigente de instalación del servicio de Internet",
   internetInstallationBenefitsText:
     "Texto público sobre beneficios y bonificaciones de instalación de Internet",
+  internetInstallationInstallmentCount: "Cantidad de cuotas de la financiación de instalación",
+  internetInstallationInstallmentPrice: "Valor de cada cuota de la financiación de instalación",
   siteName: "Nombre público del sitio y de la organización",
   footerTagline: "Texto institucional breve mostrado en el pie del sitio",
   selfServiceUrl: "URL pública de acceso al portal de Autogestión",
@@ -42,6 +48,15 @@ type SettingRow = { key: string; value: unknown };
 function applyRows(rows: SettingRow[]): SiteConfiguration {
   const values = new Map(rows.map((row) => [row.key, row.value]));
   const numberValue = values.get(SITE_SETTING_KEYS.internetInstallationPrice);
+  const optionalNumberValue = (
+    field: "internetInstallationInstallmentCount" | "internetInstallationInstallmentPrice",
+    validate: (value: number) => boolean,
+  ) => {
+    const value = values.get(SITE_SETTING_KEYS[field]);
+    return typeof value === "number" && Number.isFinite(value) && validate(value)
+      ? value
+      : null;
+  };
   const textValue = (field: keyof SiteConfiguration) => {
     const value = values.get(SITE_SETTING_KEYS[field]);
     return typeof value === "string" && value.trim()
@@ -55,6 +70,14 @@ function applyRows(rows: SettingRow[]): SiteConfiguration {
         ? numberValue
         : SITE_CONFIGURATION_DEFAULTS.internetInstallationPrice,
     internetInstallationBenefitsText: textValue("internetInstallationBenefitsText") as string,
+    internetInstallationInstallmentCount: optionalNumberValue(
+      "internetInstallationInstallmentCount",
+      (value) => Number.isInteger(value) && value > 0,
+    ),
+    internetInstallationInstallmentPrice: optionalNumberValue(
+      "internetInstallationInstallmentPrice",
+      (value) => value >= 0,
+    ),
     siteName: textValue("siteName") as string,
     footerTagline: textValue("footerTagline") as string,
     selfServiceUrl: textValue("selfServiceUrl") as string,
@@ -102,5 +125,7 @@ export async function getPublicInstallationConfiguration() {
     price: result.installationPriceAvailable
       ? result.configuration.internetInstallationPrice
       : null,
+    installmentCount: result.configuration.internetInstallationInstallmentCount,
+    installmentPrice: result.configuration.internetInstallationInstallmentPrice,
   };
 }

@@ -1,6 +1,8 @@
 export type SiteConfiguration = {
   internetInstallationPrice: number;
   internetInstallationBenefitsText: string;
+  internetInstallationInstallmentCount: number | null;
+  internetInstallationInstallmentPrice: number | null;
   siteName: string;
   footerTagline: string;
   selfServiceUrl: string;

@@ -23,10 +23,18 @@ function requiredText(
 
 export function parseInternetSettings(
   formData: FormData,
-): ParsedSettings<Pick<SiteConfiguration, "internetInstallationPrice" | "internetInstallationBenefitsText">> {
+): ParsedSettings<Pick<SiteConfiguration, "internetInstallationPrice" | "internetInstallationBenefitsText" | "internetInstallationInstallmentCount" | "internetInstallationInstallmentPrice">> {
   const fieldErrors: Record<string, string> = {};
   const rawPrice = text(formData, "internet_installation_price");
   const internetInstallationPrice = Number(rawPrice);
+  const rawInstallmentCount = text(formData, "internet_installation_installment_count");
+  const rawInstallmentPrice = text(formData, "internet_installation_installment_price");
+  const internetInstallationInstallmentCount = rawInstallmentCount
+    ? Number(rawInstallmentCount)
+    : null;
+  const internetInstallationInstallmentPrice = rawInstallmentPrice
+    ? Number(rawInstallmentPrice)
+    : null;
   const internetInstallationBenefitsText = requiredText(
     formData,
     "internet_installation_benefits_text",
@@ -38,8 +46,33 @@ export function parseInternetSettings(
   if (!rawPrice || !Number.isFinite(internetInstallationPrice) || internetInstallationPrice < 0) {
     fieldErrors.internet_installation_price = "Ingresá un precio mayor o igual a 0.";
   }
+  if (
+    internetInstallationInstallmentCount !== null &&
+    (!Number.isInteger(internetInstallationInstallmentCount) || internetInstallationInstallmentCount <= 0)
+  ) {
+    fieldErrors.internet_installation_installment_count = "Ingresá un entero mayor que cero.";
+  }
+  if (
+    internetInstallationInstallmentPrice !== null &&
+    (!Number.isFinite(internetInstallationInstallmentPrice) || internetInstallationInstallmentPrice < 0)
+  ) {
+    fieldErrors.internet_installation_installment_price = "Ingresá un precio mayor o igual a 0.";
+  }
+  if (Boolean(rawInstallmentCount) !== Boolean(rawInstallmentPrice)) {
+    const message = "Completá la cantidad de cuotas y el valor de cada cuota.";
+    fieldErrors.internet_installation_installment_count ??= message;
+    fieldErrors.internet_installation_installment_price ??= message;
+  }
   if (Object.keys(fieldErrors).length) return { fieldErrors };
-  return { fieldErrors, values: { internetInstallationPrice, internetInstallationBenefitsText } };
+  return {
+    fieldErrors,
+    values: {
+      internetInstallationPrice,
+      internetInstallationBenefitsText,
+      internetInstallationInstallmentCount,
+      internetInstallationInstallmentPrice,
+    },
+  };
 }
 
 export function parseIdentitySettings(

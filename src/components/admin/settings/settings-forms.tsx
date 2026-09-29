@@ -36,6 +36,36 @@ export function InternetSettingsForm({ configuration }: ConfigurationProps) {
             <span className={helpClassName}>Importe en pesos argentinos, sin símbolo de moneda.</span>
             <FieldError>{errors.internet_installation_price}</FieldError>
           </label>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className={labelClassName} htmlFor="internet_installation_installment_count">
+              Cantidad de cuotas
+              <input
+                className={settingsFieldClassName}
+                defaultValue={configuration.internetInstallationInstallmentCount ?? ""}
+                id="internet_installation_installment_count"
+                min="1"
+                name="internet_installation_installment_count"
+                step="1"
+                type="number"
+              />
+              <span className={helpClassName}>Opcional. Completá ambos campos para mostrar la financiación de la instalación.</span>
+              <FieldError>{errors.internet_installation_installment_count}</FieldError>
+            </label>
+            <label className={labelClassName} htmlFor="internet_installation_installment_price">
+              Valor de cada cuota
+              <input
+                className={settingsFieldClassName}
+                defaultValue={configuration.internetInstallationInstallmentPrice ?? ""}
+                id="internet_installation_installment_price"
+                min="0"
+                name="internet_installation_installment_price"
+                step="0.01"
+                type="number"
+              />
+              <span className={helpClassName}>Importe de cada cuota en pesos argentinos.</span>
+              <FieldError>{errors.internet_installation_installment_price}</FieldError>
+            </label>
+          </div>
           <label className={labelClassName} htmlFor="internet_installation_benefits_text">
             Texto de beneficios de instalación *
             <textarea

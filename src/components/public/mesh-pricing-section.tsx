@@ -40,7 +40,7 @@ export async function MeshPricingSection() {
               <div className="min-w-0 rounded-2xl border border-home-border bg-white p-4 shadow-sm sm:p-5" key={item.id}>
                 <p className="font-bold text-brand-navy">{item.equipment_count} {item.equipment_count === 1 ? "equipo" : "equipos"}</p>
                 <p className="mt-3 break-words text-2xl font-black tracking-tight text-brand-navy-deep sm:text-3xl">{item.price_label || priceFormatter.format(item.price)}</p>
-                <p className="mt-1 text-sm font-semibold text-slate-500">/ mes</p>
+                <p className="mt-1 text-sm font-semibold text-slate-500">por mes</p>
               </div>
             ))}
           </div>

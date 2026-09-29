@@ -223,7 +223,7 @@ export default async function ConectarPlayPage() {
                         <RentalPrice label="1 Stick" value={settings.onn_rental_price} />
                       )}
                       {settings.onn_rental_two_price != null && (
-                        <RentalPrice label="2 Stick" value={settings.onn_rental_two_price} />
+                        <RentalPrice label="2 Sticks" value={settings.onn_rental_two_price} />
                       )}
                     </div>
                   </div>
@@ -384,7 +384,7 @@ function Price({
 
       <p className="mt-3 text-sm font-bold text-slate-600">{label}</p>
 
-      <p className="mt-1 text-2xl font-black">{money(value)}</p>
+      <p className="mt-1 text-2xl font-black whitespace-nowrap">{stickMoney(value)}</p>
 
       <p className="text-sm text-slate-600">por equipo</p>
     </div>
@@ -395,9 +395,10 @@ function RentalPrice({ label, value }: { label: string; value: number }) {
   return (
     <div className="min-w-0 border-slate-200 first:border-0 min-[390px]:border-l min-[390px]:pl-4">
       <p className="text-sm font-bold text-slate-600">{label}</p>
-      <p className="mt-1 text-xl font-black break-words sm:text-2xl">
-        {money(value)} <span className="text-sm font-bold text-slate-600">/ mes</span>
+      <p className="mt-1 text-xl font-black whitespace-nowrap sm:text-2xl">
+        {stickMoney(value)}
       </p>
+      <p className="text-sm font-bold text-slate-600">por mes</p>
     </div>
   );
 }
@@ -406,5 +407,13 @@ const money = (value: number) =>
   new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
+    maximumFractionDigits: 2,
+  }).format(value);
+
+const stickMoney = (value: number) =>
+  new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(value);

@@ -11,6 +11,7 @@ import {
   Share2,
   Users,
   Wifi,
+  Router,
   type LucideIcon,
 } from "lucide-react";
 
@@ -32,6 +33,7 @@ export const ADMIN_NAVIGATION: readonly AdminNavigationItem[] = [
   { label: "Planes", href: "/admin/plans", section: "Contenido", roles: CONTENT_ROLES, icon: Wifi },
   { label: "Conectar Play", href: "/admin/conectar-play", section: "Contenido", roles: CONTENT_ROLES, icon: PlaySquare },
   { label: "Noticias / Comunicados", href: "/admin/news", section: "Contenido", roles: CONTENT_ROLES, icon: Newspaper },
+  { label: "WiFi Power Mesh", href: "/admin/mesh", section: "Contenido", roles: CONTENT_ROLES, icon: Router },
   { label: "Eventos", href: "/admin/events", section: "Contenido", roles: CONTENT_ROLES, icon: CalendarDays },
   { label: "Promociones", href: "/admin/promotions", section: "Contenido", roles: CONTENT_ROLES, icon: Megaphone },
   { label: "Preguntas frecuentes", href: "/admin/faqs", section: "Contenido", roles: CONTENT_ROLES, icon: CircleHelp },

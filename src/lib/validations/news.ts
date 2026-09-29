@@ -1,4 +1,4 @@
-import { NEWS_CATEGORIES, NEWS_STATUSES, type NewsFormValues } from "@/types/news";
+import { NEWS_CATEGORIES, NEWS_CONTENT_MODULES, NEWS_STATUSES, type NewsFormValues } from "@/types/news";
 import { parseArgentinaDateTimeLocal } from "@/lib/utils/news-dates";
 
 export const NEWS_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -25,6 +25,7 @@ export function parseNewsForm(formData: FormData): { data?: NewsFormValues; erro
   const status = String(formData.get("status") ?? "draft");
   const rawDate = String(formData.get("published_at") ?? "").trim();
   const rawAlertEndsAt = String(formData.get("alert_ends_at") ?? "").trim();
+  const contentModule = String(formData.get("content_module") ?? "").trim() || null;
   const errors: Record<string, string> = {};
   if (!title) errors.title = "Ingresá un título.";
   if (!slug) errors.slug = "Ingresá un slug.";
@@ -32,6 +33,7 @@ export function parseNewsForm(formData: FormData): { data?: NewsFormValues; erro
   if (!content) errors.content = "Ingresá el contenido.";
   if (!NEWS_CATEGORIES.includes(category as (typeof NEWS_CATEGORIES)[number])) errors.category = "Elegí una categoría válida.";
   if (!NEWS_STATUSES.includes(status as (typeof NEWS_STATUSES)[number])) errors.status = "Elegí un estado válido.";
+  if (contentModule && !NEWS_CONTENT_MODULES.includes(contentModule as (typeof NEWS_CONTENT_MODULES)[number])) errors.content_module = "Elegí un módulo válido.";
   let publishedAt: string | null = null;
   if (rawDate) {
     publishedAt = parseArgentinaDateTimeLocal(rawDate);
@@ -46,5 +48,5 @@ export function parseNewsForm(formData: FormData): { data?: NewsFormValues; erro
     errors.alert_ends_at = "La finalización debe ser posterior a la fecha de publicación.";
   }
   if (Object.keys(errors).length) return { errors };
-  return { errors, data: { title, slug, excerpt, content, cover_image: null, category, status: status as NewsFormValues["status"], featured: formData.get("featured") === "on", published_at: publishedAt, alert_ends_at: alertEndsAt } };
+  return { errors, data: { title, slug, excerpt, content, cover_image: null, category, status: status as NewsFormValues["status"], featured: formData.get("featured") === "on", published_at: publishedAt, alert_ends_at: alertEndsAt, content_module: contentModule as NewsFormValues["content_module"] } };
 }

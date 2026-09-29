@@ -40,7 +40,7 @@ export default async function ConectarPlayPage() {
     : null;
   const hasStickRental = Boolean(
     settings &&
-      (settings.onn_rental_price !== null || settings.onn_rental_two_price !== null),
+      (settings.onn_rental_price != null || settings.onn_rental_two_price != null),
   );
 
   return (
@@ -219,10 +219,10 @@ export default async function ConectarPlayPage() {
                   <div className="rounded-2xl border border-white/20 bg-white p-5 text-slate-950 shadow-lg shadow-slate-950/15">
                     <p className="text-xs font-black tracking-[.16em] text-brand-orange uppercase">Alquiler</p>
                     <div className="mt-3 grid gap-4 min-[390px]:grid-cols-2">
-                      {settings.onn_rental_price !== null && (
+                      {settings.onn_rental_price != null && (
                         <RentalPrice label="1 Stick" value={settings.onn_rental_price} />
                       )}
-                      {settings.onn_rental_two_price !== null && (
+                      {settings.onn_rental_two_price != null && (
                         <RentalPrice label="2 Stick" value={settings.onn_rental_two_price} />
                       )}
                     </div>
@@ -233,7 +233,7 @@ export default async function ConectarPlayPage() {
                 </div>
               )}
 
-              {settings.onn_sale_price !== null && (
+              {settings.onn_sale_price != null && (
                 <Price
                   label="Stick Conectar Play"
                   value={settings.onn_sale_price}

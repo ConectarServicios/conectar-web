@@ -25,6 +25,7 @@ export function CorporateConnectivitySection() {
         <div className="mt-8 grid gap-4 md:grid-cols-2 lg:mt-10 lg:grid-cols-3 lg:gap-5">
           {services.map((service) => (
             <CorporateServiceCard
+              accent="connectivity"
               key={service.slug}
               service={service}
               tone="slate"

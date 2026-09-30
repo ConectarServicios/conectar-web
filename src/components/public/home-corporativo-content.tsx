@@ -71,20 +71,20 @@ export function HomeCorporativoContent() {
             </ul>
           </div>
 
-          <div className="overflow-hidden rounded-3xl border border-corporate-accent/25 bg-[#071A2F] px-5 py-6 shadow-xl shadow-slate-950/10 sm:px-7 sm:py-7">
-            <h3 className="text-xs font-black tracking-[0.2em] text-[#8ABFFF] uppercase">
+          <div className="overflow-hidden rounded-3xl border border-corporate-accent/25 bg-brand-navy-deep px-5 py-6 shadow-xl shadow-slate-950/10 sm:px-7 sm:py-7">
+            <h3 className="text-xs font-black tracking-[0.2em] text-corporate-accent-soft uppercase">
               Tu IT, en un solo equipo
             </h3>
             <div className="relative mt-6 sm:mt-7">
-              <span className="absolute top-6 bottom-6 left-[1.375rem] w-px bg-gradient-to-b from-[#2F6BFF]/20 via-[#2F6BFF]/80 to-[#2F6BFF]/20" aria-hidden="true" />
+              <span className="absolute top-6 bottom-6 left-[1.375rem] w-px bg-gradient-to-b from-corporate-accent/20 via-corporate-accent/80 to-corporate-accent/20" aria-hidden="true" />
               <ol className="space-y-6 sm:space-y-7">
                 {layers.map(({ title, description, icon: Icon }, index) => (
                   <li className="relative grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] gap-x-4" key={title}>
-                    <span className="z-10 row-span-2 flex size-11 items-center justify-center rounded-xl border border-[#8ABFFF]/25 bg-[#2F6BFF]/15 text-[#8ABFFF] shadow-[0_0_0_4px_#071A2F]" aria-hidden="true">
+                    <span className="z-10 row-span-2 flex size-11 items-center justify-center rounded-xl border border-corporate-accent-soft/25 bg-corporate-accent/15 text-corporate-accent-soft ring-4 ring-brand-navy-deep" aria-hidden="true">
                       <Icon size={21} strokeWidth={2} />
                     </span>
                     <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <span className="font-mono text-xs font-bold tracking-[0.12em] text-[#8ABFFF]">0{index + 1}</span>
+                      <span className="font-mono text-xs font-bold tracking-[0.12em] text-corporate-accent-soft">0{index + 1}</span>
                       <h4 className="font-display text-sm font-bold tracking-[0.08em] text-white uppercase sm:text-base">{title}</h4>
                     </div>
                     <p className="mt-1 text-sm leading-6 text-slate-300">{description}</p>
@@ -93,7 +93,7 @@ export function HomeCorporativoContent() {
               </ol>
             </div>
             <div className="mt-7 flex items-center gap-2.5 border-t border-white/10 pt-5 text-sm font-semibold text-slate-100">
-              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#2F6BFF]/20 text-[#8ABFFF]" aria-hidden="true">
+              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-corporate-accent/20 text-corporate-accent-soft" aria-hidden="true">
                 <Check size={12} strokeWidth={3} />
               </span>
               Una sola gestión técnica

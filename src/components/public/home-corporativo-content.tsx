@@ -59,11 +59,11 @@ export function HomeCorporativoContent() {
               La mayoría de las empresas arma su tecnología con un proveedor de internet, otro de servidores y otro de seguridad. Nosotros lo resolvemos en una sola relación, con una única puerta de entrada para todo.
             </p>
 
-            <ul className="mt-8 grid list-none gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+            <ul className="mt-8 flex list-none flex-wrap gap-2.5">
               {benefits.map((benefit) => (
-                <li className="flex items-center gap-3 text-sm font-bold text-brand-navy" key={benefit}>
-                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-corporate-accent/10 text-corporate-accent-strong" aria-hidden="true">
-                    <Check size={15} strokeWidth={3} />
+                <li className="flex min-h-9 items-center gap-2 rounded-full border border-corporate-accent/15 bg-corporate-accent/[0.07] px-3 py-1.5 text-sm font-bold text-brand-navy" key={benefit}>
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-corporate-accent/10 text-corporate-accent-strong" aria-hidden="true">
+                    <Check size={12} strokeWidth={3} />
                   </span>
                   {benefit}
                 </li>
@@ -71,24 +71,27 @@ export function HomeCorporativoContent() {
             </ul>
           </div>
 
-          <div className="rounded-3xl border border-corporate-border bg-white p-5 shadow-xl shadow-slate-950/[0.07] sm:p-7">
-            <h3 className="font-display text-xl font-bold tracking-[-0.02em] text-brand-navy sm:text-2xl">
-              Las tres capas, un mismo equipo
+          <div className="overflow-hidden rounded-3xl border border-corporate-accent/25 bg-brand-navy-deep px-5 py-6 shadow-xl shadow-slate-950/10 sm:px-7 sm:py-7">
+            <h3 className="text-center text-xs font-black tracking-[0.2em] text-corporate-accent-soft uppercase">
+              Tu IT, en un solo equipo
             </h3>
-            <ol className="mt-6 space-y-3">
-              {layers.map(({ title, description, icon: Icon }, index) => (
-                <li className="group grid grid-cols-[auto_1fr] gap-x-4 rounded-2xl border border-corporate-border bg-corporate-surface-soft p-4 transition-colors hover:border-corporate-accent/40 sm:p-5" key={title}>
-                  <span className="row-span-2 flex size-11 items-center justify-center rounded-xl border border-corporate-accent/20 bg-white text-corporate-accent-strong" aria-hidden="true">
+            <ol className="mt-6 space-y-6 sm:mt-7 sm:space-y-7">
+              {layers.map(({ title, description, icon: Icon }) => (
+                <li className="grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] gap-x-4" key={title}>
+                  <span className="row-span-2 flex size-11 items-center justify-center rounded-xl border border-corporate-accent-soft/25 bg-corporate-accent/15 text-corporate-accent-soft" aria-hidden="true">
                     <Icon size={21} strokeWidth={2} />
                   </span>
-                  <div className="flex items-baseline justify-between gap-4">
-                    <h4 className="font-display font-bold text-brand-navy">{title}</h4>
-                    <span className="font-mono text-xs font-bold text-corporate-accent-strong">0{index + 1}</span>
-                  </div>
-                  <p className="mt-1 text-sm leading-6 text-slate-600">{description}</p>
+                  <h4 className="font-display text-sm font-bold tracking-[0.08em] text-white uppercase sm:text-base">{title}</h4>
+                  <p className="mt-1 text-sm leading-6 text-slate-300">{description}</p>
                 </li>
               ))}
             </ol>
+            <div className="mt-7 flex items-center gap-2.5 text-sm font-semibold text-slate-100">
+              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-corporate-accent/20 text-corporate-accent-soft" aria-hidden="true">
+                <Check size={12} strokeWidth={3} />
+              </span>
+              Una sola gestión técnica
+            </div>
           </div>
         </div>
       </section>

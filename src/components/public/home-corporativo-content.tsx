@@ -76,15 +76,12 @@ export function HomeCorporativoContent() {
               Tu IT, en un solo equipo
             </h3>
             <ol className="mt-6 space-y-6 sm:mt-7 sm:space-y-7">
-              {layers.map(({ title, description, icon: Icon }, index) => (
+              {layers.map(({ title, description, icon: Icon }) => (
                 <li className="grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)] gap-x-4" key={title}>
                   <span className="row-span-2 flex size-11 items-center justify-center rounded-xl border border-corporate-accent-soft/25 bg-corporate-accent/15 text-corporate-accent-soft" aria-hidden="true">
                     <Icon size={21} strokeWidth={2} />
                   </span>
-                  <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <span className="font-mono text-xs font-bold tracking-[0.12em] text-corporate-accent-soft">0{index + 1}</span>
-                    <h4 className="font-display text-sm font-bold tracking-[0.08em] text-white uppercase sm:text-base">{title}</h4>
-                  </div>
+                  <h4 className="font-display text-sm font-bold tracking-[0.08em] text-white uppercase sm:text-base">{title}</h4>
                   <p className="mt-1 text-sm leading-6 text-slate-300">{description}</p>
                 </li>
               ))}

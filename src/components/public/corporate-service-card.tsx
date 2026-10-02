@@ -16,7 +16,7 @@ export function CorporateServiceCard({
 
   return (
     <article
-      className={`group flex h-full flex-col rounded-2xl border border-slate-200 p-5 shadow-sm shadow-slate-950/5 transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-950/10 sm:p-6 ${
+      className={`group h-full rounded-2xl border border-slate-200 p-5 shadow-sm shadow-slate-950/5 transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-950/10 sm:p-6 ${
         hasCorporateAccent
           ? "relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-corporate-accent before:transition-colors before:duration-200 hover:border-corporate-accent/50 hover:before:bg-corporate-accent-strong"
           : "hover:border-corporate-accent/30"
@@ -37,15 +37,9 @@ export function CorporateServiceCard({
       <h3 className="font-display mt-4 text-lg font-bold tracking-[-0.025em] text-brand-navy sm:text-xl">
         {service.title}
       </h3>
-      <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">
+      <p className="mt-2 text-sm leading-6 text-slate-600">
         {service.shortDescription}
       </p>
-      <a
-        className="mt-4 inline-flex min-h-11 w-fit max-w-full items-center justify-center gap-2 rounded-xl border border-corporate-accent bg-corporate-surface-soft px-4 py-2 text-sm font-bold text-corporate-accent-strong transition-colors hover:bg-corporate-accent hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corporate-accent"
-        href={service.href ?? "#contacto"}
-      >
-        {service.hasDetailPage ? "Conocer más" : "Consultar"}
-      </a>
     </article>
   );
 }

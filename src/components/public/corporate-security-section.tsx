@@ -1,4 +1,5 @@
 import { CorporateServiceCard } from "@/components/public/corporate-service-card";
+import { CorporateServicesCta } from "@/components/public/corporate-services-cta";
 import { getCorporateServicesByGroup } from "@/data/services/queries";
 
 const services = getCorporateServicesByGroup("seguridad-gestionada");
@@ -32,6 +33,8 @@ export function CorporateSecuritySection() {
             />
           ))}
         </div>
+
+        <CorporateServicesCta headingId="corporate-security-cta-title" />
       </div>
     </section>
   );

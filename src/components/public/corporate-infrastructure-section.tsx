@@ -1,4 +1,5 @@
 import { CorporateServiceCard } from "@/components/public/corporate-service-card";
+import { CorporateServicesCta } from "@/components/public/corporate-services-cta";
 import { getCorporateServicesByGroup } from "@/data/services/queries";
 
 const services = getCorporateServicesByGroup("infraestructura");
@@ -31,6 +32,8 @@ export function CorporateInfrastructureSection() {
             />
           ))}
         </div>
+
+        <CorporateServicesCta headingId="corporate-infrastructure-cta-title" />
       </div>
     </section>
   );

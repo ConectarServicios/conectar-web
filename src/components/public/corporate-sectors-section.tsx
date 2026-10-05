@@ -3,11 +3,26 @@ import Image from "next/image";
 import styles from "@/components/public/technology-marquee.module.css";
 
 const sectors = [
-  { name: "Agroindustria y lácteo", iconSrc: "/brand/corporate-sectors/agro.svg" },
-  { name: "Comercio y PyME", iconSrc: "/brand/corporate-sectors/commerce.svg" },
-  { name: "Cooperativas y mutuales", iconSrc: "/brand/corporate-sectors/cooperatives.svg" },
-  { name: "Salud", iconSrc: "/brand/corporate-sectors/health.svg" },
-  { name: "Estudios y profesionales", iconSrc: "/brand/corporate-sectors/professionals.svg" },
+  {
+    name: "Agroindustria y lácteo",
+    iconSrc: "/brand/corporate-sectors/agro.svg",
+  },
+  {
+    name: "Comercio y PyME",
+    iconSrc: "/brand/corporate-sectors/commerce.svg",
+  },
+  {
+    name: "Cooperativas y mutuales",
+    iconSrc: "/brand/corporate-sectors/cooperatives.svg",
+  },
+  {
+    name: "Salud",
+    iconSrc: "/brand/corporate-sectors/health.svg",
+  },
+  {
+    name: "Estudios y profesionales",
+    iconSrc: "/brand/corporate-sectors/professionals.svg",
+  },
 ] as const;
 
 const technologies = [
@@ -41,6 +56,26 @@ const technologies = [
     logoSrc: "/brand/technology/hikvision.svg",
     logoClassName: "h-7 w-24 sm:h-8 sm:w-28",
   },
+{
+  name: "Datacom",
+  logoSrc: "/brand/technology/datacom.png",
+  logoClassName: "h-7 w-24 sm:h-8 sm:w-28",
+},
+  {
+    name: "ZTE",
+    logoSrc: "/brand/technology/zte.svg",
+    logoClassName: "h-7 w-16 sm:h-8 sm:w-20",
+  },
+  {
+    name: "Huawei",
+    logoSrc: "/brand/technology/huawei.svg",
+    logoClassName: "h-7 w-20 sm:h-8 sm:w-24",
+  },
+  {
+  name: "Zhone",
+  logoSrc: "/brand/technology/zhone.svg",
+  logoClassName: "h-7 w-20 sm:h-8 sm:w-24",
+},
 ] as const;
 
 const technologyPillClassName =

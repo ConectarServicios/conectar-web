@@ -327,7 +327,7 @@ export default async function ConectarPlayPage() {
 
             <Link
               className="public-button-primary mt-7"
-              href="/hogar#contacto"
+              href="/#contacto"
             >
               Ir a contacto
             </Link>

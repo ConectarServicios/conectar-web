@@ -69,13 +69,13 @@ export function getIndexableServicePaths(): readonly string[] {
 
 export function getServiceContactHref(
   segment: ServiceSegment,
-): "/hogar#contacto" | "/corporativo#contacto" {
-  return segment === "corporativo" ? "/corporativo#contacto" : "/hogar#contacto";
+): "/#contacto" | "/corporativo#contacto" {
+  return segment === "corporativo" ? "/corporativo#contacto" : "/#contacto";
 }
 
 export function getServiceDefinitionContactHref(
   service: Pick<ServiceDefinition, "segments">,
-): "/hogar#contacto" | "/corporativo#contacto" {
+): "/#contacto" | "/corporativo#contacto" {
   return getServiceContactHref(
     service.segments.includes("hogar") ? "hogar" : "corporativo",
   );

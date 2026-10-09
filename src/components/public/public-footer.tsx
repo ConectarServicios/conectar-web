@@ -10,7 +10,7 @@ const footerGroups = [
   {
     title: "Experiencias",
     items: [
-      { href: "/hogar", label: "Hogar" },
+      { href: "/", label: "Hogar" },
       { href: "/corporativo", label: "Corporativo" },
       { href: "/servicios", label: "Servicios" },
       { href: "/conectar-play", label: "Conectar Play" },
@@ -28,7 +28,7 @@ const footerGroups = [
     title: "Ayuda",
     items: [
       { href: "/preguntas-frecuentes", label: "Preguntas frecuentes" },
-      { href: "/hogar#contacto", label: "Contacto" },
+      { href: "/#contacto", label: "Contacto" },
     ],
   },
 ] as const;

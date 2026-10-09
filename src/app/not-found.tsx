@@ -8,7 +8,7 @@ export default function NotFound() {
         <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">Página no encontrada</h1>
         <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-300">La dirección que ingresaste no existe o ya no está disponible.</p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link className="public-button-primary" href="/hogar">Ir a Hogar</Link>
+          <Link className="public-button-primary" href="/">Ir a Hogar</Link>
           <Link className="public-button-secondary-dark" href="/servicios">Ver servicios</Link>
         </div>
       </section>

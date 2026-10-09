@@ -1,9 +1,9 @@
 const LEGACY_PUBLIC_DESTINATIONS: Readonly<Record<string, string>> = {
-  "/": "/hogar",
-  "/#inicio": "/hogar#inicio",
-  "/#planes": "/hogar#planes",
-  "/#contacto": "/hogar#contacto",
-  "#contacto": "/hogar#contacto",
+  "/hogar": "/",
+  "/hogar#inicio": "/#inicio",
+  "/hogar#planes": "/#planes",
+  "/hogar#contacto": "/#contacto",
+  "#contacto": "/#contacto",
 };
 
 /** Resolve administrable legacy destinations against their canonical public page. */

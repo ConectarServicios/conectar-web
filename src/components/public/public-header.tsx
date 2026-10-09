@@ -46,7 +46,7 @@ export function PublicHeader({
         <div className="flex shrink-0 items-center gap-4">
           <Link
             className="group flex shrink-0 items-center gap-2.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-            href="/hogar"
+            href="/"
             aria-label={`${configuration.siteName}, ir a Hogar`}
           >
             <span

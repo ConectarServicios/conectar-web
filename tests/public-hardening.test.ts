@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { getContactHref } from "../src/components/public/public-navigation.ts";
 import { isExternalPublicUrl, normalizePublicNavigationUrl } from "../src/lib/utils/public-navigation-url.ts";
 import { isAllowedContactNumber } from "../src/lib/validations/contact-information.ts";
 import { buildCoverageWhatsAppUrl, checkCoverage } from "../src/lib/coverage/service.ts";
@@ -12,7 +13,11 @@ import { geometryContainsPoint, type CoverageFeatureCollection, type CoverageGeo
 import { createCoveragePostHandler } from "../src/lib/coverage/route-handler.ts";
 
 test("normalizes legacy public destinations without breaking internal URLs", () => {
-  assert.equal(normalizePublicNavigationUrl("#contacto"), "/hogar#contacto");
+  assert.equal(normalizePublicNavigationUrl("#contacto"), "/#contacto");
+  for (const fragment of ["", "#inicio", "#planes", "#contacto"]) {
+    assert.equal(normalizePublicNavigationUrl(`/hogar${fragment}`), `/${fragment}`);
+    assert.equal(normalizePublicNavigationUrl(`/${fragment}`), `/${fragment}`);
+  }
   assert.equal(normalizePublicNavigationUrl("/corporativo#contacto"), "/corporativo#contacto");
   assert.equal(normalizePublicNavigationUrl("not a url"), "#");
 });
@@ -22,6 +27,13 @@ test("detects external HTTP URLs case-insensitively and rejects unsafe protocols
   assert.equal(isExternalPublicUrl(external), true);
   assert.equal(normalizePublicNavigationUrl("javascript:alert(1)"), "#");
   assert.equal(isExternalPublicUrl("/servicios"), false);
+});
+
+test("contact links preserve the home and corporate destinations", () => {
+  assert.equal(getContactHref("/"), "/#contacto");
+  assert.equal(getContactHref("/servicios"), "/#contacto");
+  assert.equal(getContactHref("/corporativo"), "/corporativo#contacto");
+  assert.equal(getContactHref("/corporativo/soluciones"), "/corporativo#contacto");
 });
 
 test("accepts plausible Argentine contact numbers and rejects malformed values", () => {
@@ -131,7 +143,7 @@ test("client coverage component never references the server geocoding key", asyn
 
 test("home self-service CTA reuses the public site configuration URL", async () => {
   const { readFile } = await import("node:fs/promises");
-  const pageSource = await readFile("src/app/(public)/hogar/page.tsx", "utf8");
+  const pageSource = await readFile("src/app/(public)/page.tsx", "utf8");
   const sectionSource = await readFile(
     "src/components/public/self-service-section.tsx",
     "utf8",

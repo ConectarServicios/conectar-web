@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const segments = [
-  { href: "/hogar", label: "Hogar", value: "hogar" },
+  { href: "/", label: "Hogar", value: "hogar" },
   { href: "/corporativo", label: "Corporativo", value: "corporativo" },
 ] as const;
 

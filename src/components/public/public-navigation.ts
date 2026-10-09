@@ -32,8 +32,8 @@ export function isNavigationItemActive(
   );
 }
 
-export function getContactHref(pathname: string): "/hogar#contacto" | "/corporativo#contacto" {
+export function getContactHref(pathname: string): "/#contacto" | "/corporativo#contacto" {
   return pathname === "/corporativo" || pathname.startsWith("/corporativo/")
     ? "/corporativo#contacto"
-    : "/hogar#contacto";
+    : "/#contacto";
 }

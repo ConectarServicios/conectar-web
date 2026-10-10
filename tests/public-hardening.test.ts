@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
 import ts from "typescript";
 
@@ -27,10 +27,23 @@ test("only the homepage overrides the inherited noindex policy", async () => {
     const exports: { metadata?: { robots: { index: boolean; follow: boolean }; alternates?: { canonical: string } } } = {};
     runInNewContext(outputText, { exports, getSiteUrl });
     assert.equal(exports.metadata?.robots.index, path === "src/app/(public)/page.tsx", path);
-    assert.equal(exports.metadata?.robots.follow, true, path);
+    assert.equal(exports.metadata?.robots.follow, !path.startsWith("src/app/admin/") && !path.startsWith("src/app/auth/"), path);
     if (path === "src/app/(public)/page.tsx") {
-      assert.equal(exports.metadata?.alternates?.canonical, "/");
+      assert.equal(exports.metadata?.alternates?.canonical, "https://conectarservicios.com.ar/");
     }
+  }
+  // Catch overrides in other layouts or dynamic generateMetadata functions.
+  for (const file of await readdir("src/app", { recursive: true })) {
+    const path = `src/app/${file}`;
+    if (!/\.tsx?$/.test(file) || files.includes(path)) continue;
+    const source = ts.createSourceFile(path, await readFile(path, "utf8"), ts.ScriptTarget.Latest, true);
+    function check(node: ts.Node) {
+      if (ts.isPropertyAssignment(node)) {
+        assert.notEqual(node.name.getText(source), "robots", `Unexpected robots override in ${path}`);
+      }
+      ts.forEachChild(node, check);
+    }
+    check(source);
   }
 });
 
@@ -53,7 +66,7 @@ async function loadSeoRoute(path: string): Promise<() => unknown> {
   return exports.default;
 }
 
-test("sitemap and robots allow crawling while listing only the homepage", async () => {
+test("sitemap lists only the homepage while robots preserves private route restrictions", async () => {
   const sitemap = await loadSeoRoute("src/app/sitemap.ts");
   const robots = await loadSeoRoute("src/app/robots.ts");
   const original = process.env.NEXT_PUBLIC_SITE_URL;
@@ -64,24 +77,34 @@ test("sitemap and robots allow crawling while listing only the homepage", async 
       { url: "https://conectarservicios.com.ar/" },
     ]);
     assert.deepEqual(JSON.parse(JSON.stringify(robots())), {
-      rules: { userAgent: "*", allow: "/" },
+      rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/admin/", "/auth", "/auth/"] },
+    });
+    process.env.NEXT_PUBLIC_SITE_URL = "https://conectarservicios.com.ar/";
+    assert.deepEqual(JSON.parse(JSON.stringify(robots())), {
+      rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/admin/", "/auth", "/auth/"] },
       sitemap: "https://conectarservicios.com.ar/sitemap.xml",
     });
+    process.env.NEXT_PUBLIC_SITE_URL = "https://staging.example.com/";
+    assert.deepEqual(JSON.parse(JSON.stringify(sitemap())), [
+      { url: "https://conectarservicios.com.ar/" },
+    ]);
   } finally {
     if (original === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
     else process.env.NEXT_PUBLIC_SITE_URL = original;
   }
 });
 
-test("SEO URLs default to the production origin and normalize configured URLs", () => {
+test("shared site URL remains unset without configuration and preserves other environments", () => {
   const original = process.env.NEXT_PUBLIC_SITE_URL;
   try {
     delete process.env.NEXT_PUBLIC_SITE_URL;
-    assert.equal(getSiteUrl()?.href, "https://conectarservicios.com.ar/");
+    assert.equal(getSiteUrl(), null);
     process.env.NEXT_PUBLIC_SITE_URL = "   ";
-    assert.equal(getSiteUrl()?.href, "https://conectarservicios.com.ar/");
+    assert.equal(getSiteUrl(), null);
     process.env.NEXT_PUBLIC_SITE_URL = "https://conectarservicios.com.ar/interna?query=1#fragment";
     assert.equal(getSiteUrl()?.href, "https://conectarservicios.com.ar/");
+    process.env.NEXT_PUBLIC_SITE_URL = "https://staging.example.com/auth?query=1#fragment";
+    assert.equal(getSiteUrl()?.href, "https://staging.example.com/");
     process.env.NEXT_PUBLIC_SITE_URL = "invalid";
     assert.equal(getSiteUrl(), null);
   } finally {

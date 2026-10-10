@@ -102,25 +102,25 @@ test("sitemap contains only the canonical home", async () => {
   assert.deepEqual(urls, ["https://conectarservicios.com.ar/"]);
 });
 
-test("robots.txt allows crawlers to read noindex on every internal page", async () => {
+test("robots.txt allows public crawling and preserves admin and auth restrictions", async () => {
   const response = await request("/robots.txt");
   assert.equal(response.status, 200);
   const text = await response.text();
   assert.match(text, /User-Agent: \*/);
   assert.match(text, /Allow: \/(?:\r?\n|$)/);
-  assert.doesNotMatch(text, /^Disallow:\s*\S+/m);
-  assert.match(text, /Sitemap: https:\/\/conectarservicios\.com\.ar\/sitemap\.xml/);
+  const blocked = [...text.matchAll(/^Disallow: (.+)$/gm)].map((match) => match[1].trim());
+  assert.deepEqual(blocked, ["/admin", "/admin/", "/auth", "/auth/"]);
 });
 
 for (const path of ["/auth/login", "/auth/unauthorized", "/auth/set-password", "/admin", "/admin/news/__seo-test__/edit"]) {
-  test(`${path} remains noindex, follow including after an access redirect`, async () => {
+  test(`${path} preserves noindex, nofollow including after an access redirect`, async () => {
     const response = await request(path);
     assert.equal(response.status, 200);
     const directives = robotsDirectives(await response.text());
     assert.ok(directives.includes("noindex"));
-    assert.ok(directives.includes("follow"));
+    assert.ok(directives.includes("nofollow"));
     assert.ok(!directives.includes("index"));
-    assert.ok(!directives.includes("nofollow"));
+    assert.ok(!directives.includes("follow"));
   });
 }
 

@@ -9,7 +9,7 @@ import { isAdminRole } from "@/types/admin";
 
 export const metadata: Metadata = {
   title: "Administración",
-  robots: { index: false, follow: true },
+  robots: { index: false, follow: false },
 };
 
 type AdminLayoutProps = Readonly<{

@@ -9,7 +9,6 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/admin", "/admin/", "/auth", "/auth/"],
     },
     ...(siteUrl ? { sitemap: new URL("/sitemap.xml", siteUrl).toString() } : {}),
   };

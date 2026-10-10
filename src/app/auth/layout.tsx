@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Acceso",
-  robots: { index: false, follow: false },
+  robots: { index: false, follow: true },
 };
 
 type AuthLayoutProps = Readonly<{

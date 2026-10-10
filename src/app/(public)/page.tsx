@@ -31,6 +31,7 @@ export const metadata: Metadata = {
   title: "Internet para hogares | Conectar Servicios",
   description: "Fibra óptica estable y rápida, televisión con Conectar Play y alarmas y cámaras para cuidar tu casa.",
   alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
 };
 
 type PublicData<T> = {

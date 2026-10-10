@@ -1,6 +1,5 @@
 export function getSiteUrl(): URL | null {
-  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (!configuredUrl) return null;
+  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://conectarservicios.com.ar/";
 
   try {
     const url = new URL(configuredUrl);

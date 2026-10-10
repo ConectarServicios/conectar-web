@@ -7,6 +7,12 @@ async function request(path, redirect = "follow") {
   return fetch(new URL(path, baseUrl), { redirect });
 }
 
+function robotsDirectives(html) {
+  const metas = [...html.matchAll(/<meta name="(?:robots|googlebot)" content="([^"]+)"/g)];
+  assert.ok(metas.length, "Missing robots metadata");
+  return metas.flatMap((match) => match[1].split(/,\s*/));
+}
+
 test("legacy Hogar permanently redirects to the root", async () => {
   const response = await request("/hogar", "manual");
   assert.equal(response.status, 308);
@@ -32,7 +38,14 @@ for (const path of [
   "/preguntas-frecuentes",
 ]) {
   test(`${path} responds successfully`, async () => {
-    assert.equal((await request(path)).status, 200);
+    const response = await request(path);
+    assert.equal(response.status, 200);
+    const directives = robotsDirectives(await response.text());
+    assert.ok(directives.includes(path === "/" ? "index" : "noindex"));
+    assert.ok(directives.includes("follow"));
+    assert.ok(!directives.includes(path === "/" ? "noindex" : "index"));
+    assert.ok(!directives.includes("nofollow"));
+    if (path === "/") assert.equal(response.headers.get("x-robots-tag"), null);
   });
 }
 
@@ -75,15 +88,73 @@ test("home and corporate canonicals use their canonical paths", async () => {
     const canonical = html.match(/<link rel="canonical" href="([^"]+)"/);
     assert.ok(canonical, `Missing canonical for ${path}`);
     assert.equal(new URL(canonical[1]).pathname, path);
+    if (path === "/") {
+      assert.equal(canonical[1], "https://conectarservicios.com.ar/");
+    }
   }
 });
 
-test("sitemap includes the root and excludes legacy Hogar", async () => {
+test("sitemap contains only the canonical home", async () => {
   const response = await request("/sitemap.xml");
   assert.equal(response.status, 200);
   const urls = [...(await response.text()).matchAll(/<loc>([^<]+)<\/loc>/g)]
-    .map((match) => new URL(match[1]));
-  assert.ok(urls.some((url) => url.pathname === "/"));
-  assert.ok(urls.some((url) => url.pathname === "/corporativo"));
-  assert.ok(urls.every((url) => url.pathname !== "/hogar"));
+    .map((match) => match[1]);
+  assert.deepEqual(urls, ["https://conectarservicios.com.ar/"]);
 });
+
+test("robots.txt allows crawlers to read noindex on every internal page", async () => {
+  const response = await request("/robots.txt");
+  assert.equal(response.status, 200);
+  const text = await response.text();
+  assert.match(text, /User-Agent: \*/);
+  assert.match(text, /Allow: \/(?:\r?\n|$)/);
+  assert.doesNotMatch(text, /^Disallow:\s*\S+/m);
+  assert.match(text, /Sitemap: https:\/\/conectarservicios\.com\.ar\/sitemap\.xml/);
+});
+
+for (const path of ["/auth/login", "/auth/unauthorized", "/auth/set-password", "/admin", "/admin/news/__seo-test__/edit"]) {
+  test(`${path} remains noindex, follow including after an access redirect`, async () => {
+    const response = await request(path);
+    assert.equal(response.status, 200);
+    const directives = robotsDirectives(await response.text());
+    assert.ok(directives.includes("noindex"));
+    assert.ok(directives.includes("follow"));
+    assert.ok(!directives.includes("index"));
+    assert.ok(!directives.includes("nofollow"));
+  });
+}
+
+for (const path of ["/author/admin", "/software", "/Software", "/servicios/software", "/servicios/software-tecnologia/__inexistente__"]) {
+  test(`${path} returns HTTP 404 without redirecting`, async () => {
+    const response = await request(path, "manual");
+    assert.equal(response.status, 404);
+    assert.equal(response.headers.get("location"), null);
+    assert.match(await response.text(), /Página no encontrada/);
+  });
+}
+
+test("the existing Software compatibility route keeps its permanent redirect", async () => {
+  const response = await request("/servicios/software-tecnologia", "manual");
+  assert.equal(response.status, 308);
+  const target = new URL(response.headers.get("location"), baseUrl);
+  assert.equal(target.pathname, "/servicios");
+  assert.equal(target.hash, "#seguridad-gestionada");
+});
+
+for (const section of ["noticias", "eventos", "promociones"]) {
+  test(`published dynamic ${section} pages inherit noindex, follow`, async (t) => {
+    const listing = await request(`/${section}`);
+    assert.equal(listing.status, 200);
+    const paths = new Set([...((await listing.text()).matchAll(new RegExp(`href="(/${section}/[^"#?]+)"`, "g")))].map((match) => match[1]));
+    if (!paths.size) return t.skip(`No published ${section} available`);
+    for (const path of paths) {
+      const response = await request(path);
+      assert.equal(response.status, 200);
+      const directives = robotsDirectives(await response.text());
+      assert.ok(directives.includes("noindex"), path);
+      assert.ok(directives.includes("follow"), path);
+      assert.ok(!directives.includes("index"), path);
+      assert.ok(!directives.includes("nofollow"), path);
+    }
+  });
+}

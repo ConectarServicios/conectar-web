@@ -89,7 +89,7 @@ test("home and corporate canonicals use their canonical paths", async () => {
     assert.ok(canonical, `Missing canonical for ${path}`);
     assert.equal(new URL(canonical[1]).pathname, path);
     if (path === "/") {
-      assert.equal(canonical[1], "https://conectarservicios.com.ar/");
+      assert.equal(new URL(canonical[1]).href, "https://conectarservicios.com.ar/");
     }
   }
 });

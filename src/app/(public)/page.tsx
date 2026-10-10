@@ -30,7 +30,8 @@ import { SelfServiceSection } from "@/components/public/self-service-section";
 export const metadata: Metadata = {
   title: "Internet para hogares | Conectar Servicios",
   description: "Fibra óptica estable y rápida, televisión con Conectar Play y alarmas y cámaras para cuidar tu casa.",
-  alternates: { canonical: "/" },
+  alternates: { canonical: "https://conectarservicios.com.ar/" },
+  robots: { index: true, follow: true },
 };
 
 type PublicData<T> = {

@@ -22,6 +22,8 @@ export const metadata: Metadata = {
     template: "%s | Conectar Servicios",
   },
   description: "Sitio web oficial de Conectar Servicios.",
+  // Internal pages, including dynamic routes, inherit this unless explicitly overridden.
+  robots: { index: false, follow: true },
 };
 
 export const viewport: Viewport = {

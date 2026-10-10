@@ -1,5 +1,117 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile, readdir } from "node:fs/promises";
+import { runInNewContext } from "node:vm";
+import ts from "typescript";
+
+import { getSiteUrl } from "../src/lib/utils/site-url.ts";
+
+test("only the homepage overrides the inherited noindex policy", async () => {
+  const files = [
+    "src/app/layout.tsx",
+    "src/app/(public)/page.tsx",
+    "src/app/admin/layout.tsx",
+    "src/app/auth/layout.tsx",
+  ];
+  for (const path of files) {
+    const source = ts.createSourceFile(path, await readFile(path, "utf8"), ts.ScriptTarget.Latest, true);
+    const declaration = source.statements
+      .filter(ts.isVariableStatement)
+      .flatMap((statement) => [...statement.declarationList.declarations])
+      .find((node) => node.name.getText(source) === "metadata");
+    assert.ok(declaration?.initializer, `Missing metadata in ${path}`);
+    const { outputText } = ts.transpileModule(
+      `exports.metadata = ${declaration.initializer.getText(source)};`,
+      { compilerOptions: { module: ts.ModuleKind.CommonJS } },
+    );
+    const exports: { metadata?: { robots: { index: boolean; follow: boolean }; alternates?: { canonical: string } } } = {};
+    runInNewContext(outputText, { exports, getSiteUrl });
+    assert.equal(exports.metadata?.robots.index, path === "src/app/(public)/page.tsx", path);
+    assert.equal(exports.metadata?.robots.follow, !path.startsWith("src/app/admin/") && !path.startsWith("src/app/auth/"), path);
+    if (path === "src/app/(public)/page.tsx") {
+      assert.equal(exports.metadata?.alternates?.canonical, "https://conectarservicios.com.ar/");
+    }
+  }
+  // Catch overrides in other layouts or dynamic generateMetadata functions.
+  for (const file of await readdir("src/app", { recursive: true })) {
+    const path = `src/app/${file}`;
+    if (!/\.tsx?$/.test(file) || files.includes(path)) continue;
+    const source = ts.createSourceFile(path, await readFile(path, "utf8"), ts.ScriptTarget.Latest, true);
+    function check(node: ts.Node) {
+      if (ts.isPropertyAssignment(node)) {
+        assert.notEqual(node.name.getText(source), "robots", `Unexpected robots override in ${path}`);
+      }
+      ts.forEachChild(node, check);
+    }
+    check(source);
+  }
+});
+
+// Execute the metadata routes without importing the application or needing Supabase.
+async function loadSeoRoute(path: string): Promise<() => unknown> {
+  const source = await readFile(path, "utf8");
+  const { outputText } = ts.transpileModule(source, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS },
+  });
+  const exports: { default?: () => unknown } = {};
+  runInNewContext(outputText, {
+    exports,
+    URL,
+    require(name: string) {
+      assert.equal(name, "@/lib/utils/site-url", "SEO routes must not depend on content queries");
+      return { getSiteUrl };
+    },
+  });
+  assert.ok(exports.default);
+  return exports.default;
+}
+
+test("sitemap lists only the homepage while robots preserves private route restrictions", async () => {
+  const sitemap = await loadSeoRoute("src/app/sitemap.ts");
+  const robots = await loadSeoRoute("src/app/robots.ts");
+  const original = process.env.NEXT_PUBLIC_SITE_URL;
+  try {
+    delete process.env.NEXT_PUBLIC_SITE_URL;
+    // Normalize objects returned from the isolated JavaScript context.
+    assert.deepEqual(JSON.parse(JSON.stringify(sitemap())), [
+      { url: "https://conectarservicios.com.ar/" },
+    ]);
+    assert.deepEqual(JSON.parse(JSON.stringify(robots())), {
+      rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/admin/", "/auth", "/auth/"] },
+    });
+    process.env.NEXT_PUBLIC_SITE_URL = "https://conectarservicios.com.ar/";
+    assert.deepEqual(JSON.parse(JSON.stringify(robots())), {
+      rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/admin/", "/auth", "/auth/"] },
+      sitemap: "https://conectarservicios.com.ar/sitemap.xml",
+    });
+    process.env.NEXT_PUBLIC_SITE_URL = "https://staging.example.com/";
+    assert.deepEqual(JSON.parse(JSON.stringify(sitemap())), [
+      { url: "https://conectarservicios.com.ar/" },
+    ]);
+  } finally {
+    if (original === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
+    else process.env.NEXT_PUBLIC_SITE_URL = original;
+  }
+});
+
+test("shared site URL remains unset without configuration and preserves other environments", () => {
+  const original = process.env.NEXT_PUBLIC_SITE_URL;
+  try {
+    delete process.env.NEXT_PUBLIC_SITE_URL;
+    assert.equal(getSiteUrl(), null);
+    process.env.NEXT_PUBLIC_SITE_URL = "   ";
+    assert.equal(getSiteUrl(), null);
+    process.env.NEXT_PUBLIC_SITE_URL = "https://conectarservicios.com.ar/interna?query=1#fragment";
+    assert.equal(getSiteUrl()?.href, "https://conectarservicios.com.ar/");
+    process.env.NEXT_PUBLIC_SITE_URL = "https://staging.example.com/auth?query=1#fragment";
+    assert.equal(getSiteUrl()?.href, "https://staging.example.com/");
+    process.env.NEXT_PUBLIC_SITE_URL = "invalid";
+    assert.equal(getSiteUrl(), null);
+  } finally {
+    if (original === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
+    else process.env.NEXT_PUBLIC_SITE_URL = original;
+  }
+});
 
 import { getContactHref } from "../src/components/public/public-navigation.ts";
 import { isExternalPublicUrl, normalizePublicNavigationUrl } from "../src/lib/utils/public-navigation-url.ts";

@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 
 import { HomeHighlights } from "@/components/public/home-highlights";
@@ -72,7 +73,11 @@ export function HeroSection({
         </div>
 
         <div
-          className={`public-container ${hasHomeAlert ? "pt-8 pb-10 sm:pt-10" : "py-10"} sm:pb-12 lg:py-14`}
+          className={`public-container ${
+            hasHomeAlert
+              ? "pt-8 pb-10 sm:pt-10"
+              : "py-10"
+          } sm:pb-12 lg:py-14`}
         >
           {alert ? <ImportantNewsBanner item={alert} /> : null}
 
@@ -133,16 +138,19 @@ export function HeroSection({
               className="relative h-44 min-w-0 overflow-hidden rounded-2xl sm:h-60 lg:h-full lg:min-h-[420px] lg:rounded-3xl"
               aria-hidden="true"
             >
-              {/* TODO: Replace these explicitly marked placeholders with licensed local photographs.
-                  See public/images/heroes/README.md for the pending resources. */}
               <Image
-                src={isHome ? "/images/heroes/hogar-pending.svg" : "/images/heroes/corporativo-pending.svg"}
+                src={
+                  isHome
+                    ? "/images/heroes/hogar.png"
+                    : "/images/heroes/corporativo.png"
+                }
                 alt=""
                 fill
                 sizes="(min-width: 1280px) 540px, (min-width: 1024px) 44vw, 100vw"
                 className="object-cover"
                 loading="eager"
               />
+
               <div className="absolute inset-0 bg-[linear-gradient(90deg,#071a2f_0%,rgba(7,26,47,.45)_22%,transparent_55%),linear-gradient(0deg,rgba(7,26,47,.65),transparent_45%)]" />
             </div>
           </div>

@@ -1,3 +1,6 @@
+
+import Image from "next/image";
+
 import { HomeHighlights } from "@/components/public/home-highlights";
 import { ImportantNewsBanner } from "@/components/public/important-news-banner";
 import type { NewsItem } from "@/types/news";
@@ -57,7 +60,7 @@ export function HeroSection({
       >
         <div className="absolute inset-0 -z-10" aria-hidden="true">
           <div
-            className={`absolute inset-0 transition-opacity duration-500 ${
+            className={`absolute inset-0 ${
               isHome
                 ? "bg-[radial-gradient(circle_at_78%_38%,rgba(242,138,46,.22),transparent_32%)]"
                 : "bg-[radial-gradient(circle_at_78%_38%,rgba(47,107,255,.3),transparent_34%)]"
@@ -70,16 +73,16 @@ export function HeroSection({
         </div>
 
         <div
-          className={`public-container flex items-start sm:min-h-[520px] lg:min-h-[560px] ${
+          className={`public-container ${
             hasHomeAlert
-              ? "pt-8 pb-10 sm:items-start sm:pt-10 sm:pb-20 lg:pt-12 lg:pb-24"
-              : "py-10 sm:items-center sm:py-20 lg:py-24"
-          }`}
+              ? "pt-8 pb-10 sm:pt-10"
+              : "py-10"
+          } sm:pb-12 lg:py-14`}
         >
-          <div className="w-full">
-            {alert ? <ImportantNewsBanner item={alert} /> : null}
+          {alert ? <ImportantNewsBanner item={alert} /> : null}
 
-            <div className="max-w-[820px]">
+          <div className="grid items-center gap-6 sm:gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-10">
+            <div className="min-w-0">
               <p
                 className={`mb-6 inline-flex max-w-full items-center gap-2.5 rounded-full border px-4 py-2 text-xs leading-5 font-bold sm:text-sm ${
                   isHome
@@ -100,17 +103,17 @@ export function HeroSection({
               </p>
 
               <h1
-                className="font-display text-[clamp(2.5rem,5vw,3.7rem)] leading-[1.08] font-bold tracking-[-0.04em] text-balance"
+                className="font-display text-[clamp(2.25rem,4vw,3.5rem)] leading-[1.08] font-bold tracking-[-0.04em] text-balance"
                 id="public-hero-title"
               >
                 {current.title}
               </h1>
 
-              <p className="mt-7 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
+              <p className="mt-6 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
                 {current.description}
               </p>
 
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a
                   className={`inline-flex min-h-14 items-center justify-center gap-2 rounded-xl px-8 text-base font-black transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transform-none ${
                     isHome
@@ -129,6 +132,26 @@ export function HeroSection({
                   {current.secondary.label}
                 </a>
               </div>
+            </div>
+
+            <div
+              className="relative h-44 min-w-0 overflow-hidden rounded-2xl sm:h-60 lg:h-full lg:min-h-[420px] lg:rounded-3xl"
+              aria-hidden="true"
+            >
+              <Image
+                src={
+                  isHome
+                    ? "/images/heroes/hogar.png"
+                    : "/images/heroes/corporativo.png"
+                }
+                alt=""
+                fill
+                sizes="(min-width: 1280px) 540px, (min-width: 1024px) 44vw, 100vw"
+                className="object-cover"
+                loading="eager"
+              />
+
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,#071a2f_0%,rgba(7,26,47,.45)_22%,transparent_55%),linear-gradient(0deg,rgba(7,26,47,.65),transparent_45%)]" />
             </div>
           </div>
         </div>

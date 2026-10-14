@@ -23,7 +23,7 @@ export function PlansSection({ installationBenefitsText, installationInstallment
     Number.isFinite(installationInstallmentPrice) &&
     installationInstallmentPrice >= 0;
   return (
-    <section className="scroll-mt-20 bg-home-surface-soft py-20 sm:py-28" id="planes" aria-labelledby="plans-title">
+    <section className="scroll-mt-20 bg-home-surface-soft py-16 sm:py-20" id="planes" aria-labelledby="plans-title">
       <div className="public-container">
         <div className="max-w-3xl">
           <p className="text-xs font-black tracking-[0.18em] text-home-accent-strong uppercase">Planes de Internet</p>
@@ -31,9 +31,9 @@ export function PlansSection({ installationBenefitsText, installationInstallment
           <p className="mt-5 text-lg leading-8 text-slate-600">Elegí la velocidad que acompaña tus actividades.</p>
         </div>
         {unavailable ? (
-          <p className="public-empty-state" role="status">Los planes no están disponibles temporalmente.</p>
+          <p className="public-empty-state mt-8 p-5 sm:p-6" role="status">Los planes no están disponibles temporalmente.</p>
         ) : plans.length === 0 ? (
-          <p className="public-empty-state">Estamos actualizando nuestros planes disponibles.</p>
+          <p className="public-empty-state mt-8 p-5 sm:p-6">Estamos actualizando nuestros planes disponibles.</p>
         ) : (
           <PlansCarousel now={now.toISOString()} plans={plans} whatsapp={whatsapp} />
         )}

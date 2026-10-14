@@ -6,13 +6,13 @@ import type { Promotion } from "@/types/promotions";
 export function PromotionsSection({ items, imageUrls }: Readonly<{ items: Promotion[]; imageUrls: Record<string, string | null> }>) {
   if (!items.length) return null;
   return (
-    <section className="bg-gradient-to-b from-orange-50 to-white py-20 sm:py-24" aria-labelledby="promotions-home-title">
+    <section className="bg-gradient-to-b from-orange-50 to-white py-16 sm:py-20" aria-labelledby="promotions-home-title">
       <div className="public-container">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div><p className="public-eyebrow">Promociones</p><h2 className="public-heading mt-3" id="promotions-home-title">Beneficios para vos</h2></div>
           <Link className="font-black text-orange-700" href="/promociones">Ver todas las promociones →</Link>
         </div>
-        <div className="mt-10 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => <PromotionCard imageUrl={imageUrls[item.id]} item={item} key={item.id} />)}
         </div>
       </div>

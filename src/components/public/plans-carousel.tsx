@@ -73,7 +73,7 @@ export function PlansCarousel({ now, plans, whatsapp }: PlansCarouselProps) {
   };
 
   return (
-    <div className="mt-12">
+    <div className="mt-8 sm:mt-10">
       <div
         aria-label="Planes de Internet"
         className="-mx-5 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto overscroll-x-contain px-5 pt-3 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pt-0 md:pb-0 xl:grid-cols-4 xl:gap-7"
@@ -94,7 +94,7 @@ export function PlansCarousel({ now, plans, whatsapp }: PlansCarouselProps) {
         ))}
       </div>
 
-      <div className="mt-6 flex items-center justify-center gap-4 md:hidden">
+      <div className="mt-4 flex items-center justify-center gap-4 md:hidden">
         <button
           aria-label="Ver plan anterior"
           className="grid size-9 place-items-center rounded-full border border-home-border bg-white text-brand-navy-deep transition hover:border-home-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-home-accent disabled:cursor-not-allowed disabled:opacity-40"

@@ -111,5 +111,5 @@ export default async function HogarPage() {
 }
 
 function UnavailableSection({ children }: Readonly<{ children: string }>) {
-  return <section className="bg-slate-50 py-8"><div className="public-container"><p className="public-empty-state" role="status">{children}</p></div></section>;
+  return <section className="bg-slate-50 py-8"><div className="public-container"><p className="public-empty-state mt-0 p-5 sm:p-6" role="status">{children}</p></div></section>;
 }

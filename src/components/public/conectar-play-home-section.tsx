@@ -21,7 +21,7 @@ export function ConectarPlayHomeSection({
 
   return (
     <section
-      className="scroll-mt-24 overflow-hidden bg-white py-20 sm:py-24"
+      className="scroll-mt-24 overflow-hidden bg-white py-16 sm:py-20"
       id="conectar-play"
       aria-labelledby="home-play-title"
     >
@@ -124,7 +124,7 @@ export function ConectarPlayHomeSection({
         )}
 
         {unavailable && plans.length === 0 && (
-          <p className="public-empty-state">
+          <p className="public-empty-state mt-8 p-5 sm:p-6">
             La información no está disponible temporalmente.
           </p>
         )}

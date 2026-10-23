@@ -10,7 +10,7 @@ export function EventsHomeSection({
   if (!items.length) return null;
 
   return (
-    <section className="bg-white py-20 sm:py-24">
+    <section className="bg-white py-16 sm:py-20">
       <div className="public-container">
         <p className="public-eyebrow">Agenda</p>
         <div className="mt-3 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
@@ -24,7 +24,7 @@ export function EventsHomeSection({
             Ver todos los eventos
           </Link>
         </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
             <EventCard imageUrl={imageUrls[item.id]} item={item} key={item.id} />
           ))}

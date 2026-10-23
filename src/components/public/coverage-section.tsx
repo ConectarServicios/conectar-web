@@ -11,7 +11,7 @@ import type { CoverageResult, CoverageStatus } from "@/types/coverage";
 const statusContent: Record<CoverageStatus, { title: string; description: string }> = {
   available: {
     title: "Tenemos cobertura en tu zona.",
-    description: "Contactanos paraplaceholder:text-slate-400 conocer los planes disponibles para tu domicilio.",
+    description: "Contactanos para conocer los planes disponibles para tu domicilio.",
   },
   unavailable: {
     title: "Por el momento no contamos con cobertura en ese domicilio.",

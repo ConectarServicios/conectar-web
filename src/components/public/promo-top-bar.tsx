@@ -25,7 +25,7 @@ export async function PromoTopBar() {
       aria-label="Promoción vigente"
     >
       <div className="public-container">
-        <div className="flex h-14 items-center justify-center gap-2 text-center text-xs sm:min-h-12 sm:h-auto sm:gap-4 sm:py-2 sm:text-sm">
+        <div className="flex flex-col items-center justify-center gap-2 py-3 text-center text-xs sm:min-h-12 sm:flex-row sm:flex-wrap sm:gap-4 sm:py-2 sm:text-sm">
           <span
             className="hidden shrink-0 text-base sm:inline"
             aria-hidden="true"
@@ -33,12 +33,12 @@ export async function PromoTopBar() {
             🔥
           </span>
 
-          <p className="min-w-0 font-extrabold leading-4 sm:leading-5">
+          <p className="min-w-0 max-w-full font-extrabold leading-4 [overflow-wrap:anywhere] sm:leading-5">
             {item.title}
           </p>
 
           <Link
-            className="inline-flex min-h-8 shrink-0 items-center gap-1 rounded-full bg-brand-navy-deep px-3 py-1 font-extrabold whitespace-nowrap text-white transition hover:bg-brand-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-deep sm:gap-1.5 sm:px-4 sm:py-1.5"
+            className="inline-flex min-h-8 max-w-full shrink-0 items-center justify-center gap-1 rounded-full bg-brand-navy-deep px-3 py-1 font-extrabold whitespace-normal text-white [overflow-wrap:anywhere] transition hover:bg-brand-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-deep sm:gap-1.5 sm:px-4 sm:py-1.5"
             href={href}
             {...(external
               ? {

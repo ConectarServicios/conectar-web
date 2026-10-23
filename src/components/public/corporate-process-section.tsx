@@ -35,7 +35,7 @@ export function CorporateProcessSection() {
               <span className="font-display flex size-11 items-center justify-center rounded-xl bg-corporate-accent text-lg font-bold text-white" aria-hidden="true">
                 {index + 1}
               </span>
-              <h3 className="font-display mt-5 text-xl font-bold tracking-[-0.02em] text-brand-navy">{step.title}</h3>
+              <h3 className="font-display mt-5 text-xl font-bold tracking-[-0.02em] text-brand-navy lg:min-h-14 xl:min-h-0">{step.title}</h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">{step.description}</p>
             </li>
           ))}

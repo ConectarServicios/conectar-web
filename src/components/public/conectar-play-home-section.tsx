@@ -51,7 +51,7 @@ export function ConectarPlayHomeSection({
 
         {settings && (
           <ul
-            className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+            className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
             aria-label="Beneficios de Conectar Play"
           >
             <Benefit
@@ -86,7 +86,7 @@ export function ConectarPlayHomeSection({
         )}
 
         {plans.length > 0 && (
-          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             <ConectarPlayPlans
               className="contents"
               plans={plans}
@@ -96,7 +96,7 @@ export function ConectarPlayHomeSection({
 
         {settings?.onn_enabled && (
           <aside
-            className="mt-6 flex flex-col gap-5 rounded-2xl border border-home-border bg-home-surface/70 px-5 py-5 sm:px-6 md:flex-row md:items-center md:justify-between"
+            className="mt-6 flex flex-col gap-4 rounded-2xl border border-home-border bg-home-surface/70 px-5 py-4 sm:px-6 md:flex-row md:items-center md:justify-between"
             aria-labelledby="home-play-stick-title"
           >
             <div className="max-w-2xl">
@@ -147,7 +147,7 @@ function Benefit({
   title: string;
 }) {
   return (
-    <li className="relative min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <li className="relative min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
       <span
         aria-hidden="true"
         className={`absolute inset-x-0 top-0 h-1 ${accentClassName}`}
@@ -157,10 +157,10 @@ function Benefit({
       >
         <Icon aria-hidden="true" className="size-5" strokeWidth={2} />
       </span>
-      <h3 className="mt-4 text-base font-black leading-6 text-brand-navy-deep">
+      <h3 className="mt-3 text-base font-black leading-6 text-brand-navy-deep">
         {title}
       </h3>
-      <p className="mt-2 text-sm leading-6 text-slate-600">
+      <p className="mt-1.5 text-sm leading-6 text-slate-600">
         {description}
       </p>
     </li>

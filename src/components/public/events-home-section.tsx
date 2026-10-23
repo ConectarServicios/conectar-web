@@ -24,7 +24,7 @@ export function EventsHomeSection({
             Ver todos los eventos
           </Link>
         </div>
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
+        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
             <EventCard imageUrl={imageUrls[item.id]} item={item} key={item.id} />
           ))}

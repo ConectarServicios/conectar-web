@@ -78,65 +78,64 @@ export function CoverageSection({ whatsapp }: Readonly<{ whatsapp: string | null
   const ResultIcon = result?.status === "available" ? CheckCircle2 : CircleAlert;
 
   return (
-    <section className="bg-white py-14 sm:py-18" aria-labelledby="coverage-title" id="cobertura">
-      <div className="public-container">
-        <div className="relative overflow-hidden rounded-3xl bg-brand-navy-deep px-5 py-8 text-white shadow-xl sm:px-10 sm:py-10 lg:grid lg:grid-cols-[minmax(0,0.9fr)_minmax(420px,1.1fr)] lg:items-center lg:gap-12 lg:px-14">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_15%,rgba(242,138,46,.2),transparent_35%)]" aria-hidden="true" />
-          <div className="relative">
-            <p className="text-xs font-black tracking-[0.2em] text-home-yellow uppercase">Cobertura</p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-balance sm:text-4xl" id="coverage-title">¿Conectar llega a tu domicilio?</h2>
-            <p className="mt-4 max-w-xl leading-7 text-slate-300">Ingresá tu dirección y verificá la disponibilidad del servicio en tu zona.</p>
+    <article
+      className="relative flex h-full min-w-0 flex-col overflow-hidden rounded-3xl bg-brand-navy-deep p-5 text-white shadow-sm sm:p-7"
+      aria-labelledby="coverage-title"
+    >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_15%,rgba(242,138,46,.16),transparent_45%)]" aria-hidden="true" />
+      <div className="relative flex h-full min-w-0 flex-col">
+        <span className="grid size-12 place-items-center rounded-xl bg-white/10 text-home-yellow" aria-hidden="true">
+          <MapPin className="size-6" />
+        </span>
+        <h3 className="mt-4 text-2xl font-bold tracking-tight text-balance" id="coverage-title">Consultá nuestra cobertura</h3>
+        <p className="mt-3 max-w-lg leading-7 text-slate-300">Descubrí si la fibra óptica de Conectar llega a tu domicilio</p>
+
+        <form className="mt-auto pt-6" noValidate onSubmit={handleSubmit}>
+          <label className="text-sm font-bold text-white" htmlFor="coverage-address">Dirección</label>
+          <div className="mt-2 flex flex-col gap-3">
+            <div className="relative min-w-0 flex-1">
+              <MapPin className="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+              <input
+                aria-describedby={error ? "coverage-error" : "coverage-help"}
+                aria-invalid={Boolean(error)}
+                className="min-h-12 w-full rounded-xl border border-slate-300 bg-white py-3 pr-4 pl-11 text-base text-slate-950 outline-none transition placeholder:text-sm placeholder:text-slate-400 focus:border-home-accent focus:ring-2 focus:ring-home-accent/25"
+                id="coverage-address"
+                maxLength={COVERAGE_ADDRESS_MAX_LENGTH}
+                minLength={COVERAGE_ADDRESS_MIN_LENGTH}
+                name="address"
+                placeholder="Ej. F. Dentesano 11, Sunchales"
+                required
+                type="text"
+              />
+            </div>
+            <button className="home-gradient inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl px-5 py-3 text-center font-extrabold text-brand-navy-deep transition hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-home-accent disabled:cursor-wait disabled:opacity-70" disabled={isLoading} type="submit">
+              <Search className="size-4 shrink-0" aria-hidden="true" /> {isLoading ? "Consultando..." : "Consultar cobertura"}
+            </button>
           </div>
+          <p className="sr-only" id="coverage-help">Ingresá una dirección de entre {COVERAGE_ADDRESS_MIN_LENGTH} y {COVERAGE_ADDRESS_MAX_LENGTH} caracteres.</p>
+          {error && <p className="mt-3 text-sm font-semibold text-red-200" id="coverage-error" role="alert">{error}</p>}
+        </form>
 
-          <div className="relative mt-7 lg:mt-0">
-            <form className="rounded-2xl bg-white p-4 shadow-lg sm:p-5" noValidate onSubmit={handleSubmit}>
-              <label className="text-sm font-bold text-brand-navy-deep" htmlFor="coverage-address">Dirección</label>
-              <div className="mt-2 flex flex-col gap-3 sm:flex-row">
-                <div className="relative min-w-0 flex-1">
-                  <MapPin className="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
-                  <input
-                    aria-describedby={error ? "coverage-error" : "coverage-help"}
-                    aria-invalid={Boolean(error)}
-                    className="min-h-12 w-full rounded-xl border border-slate-300 bg-white py-3 pr-4 pl-11 text-base text-slate-950 outline-none transition placeholder:text-sm placeholder:text-slate-400 focus:border-home-accent focus:ring-2 focus:ring-home-accent/25"
-                    id="coverage-address"
-                    maxLength={COVERAGE_ADDRESS_MAX_LENGTH}
-                    minLength={COVERAGE_ADDRESS_MIN_LENGTH}
-                    name="address"
-                    placeholder="Ej. F. Dentesano 11, Sunchales"
-                    required
-                    type="text"
-                  />
-                </div>
-                <button className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-home-accent px-5 font-extrabold text-brand-navy-deep transition hover:bg-home-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-home-accent disabled:cursor-wait disabled:opacity-70" disabled={isLoading} type="submit">
-                  <Search className="size-4" aria-hidden="true" /> {isLoading ? "Consultando..." : "Consultar cobertura"}
-                </button>
+        {result && content && (
+          <div className="mt-4 rounded-2xl border border-white/15 bg-white/[0.08] p-5" aria-live="polite" role="status">
+            <div className="flex items-start gap-3">
+              <ResultIcon className="mt-0.5 size-5 shrink-0 text-home-yellow" aria-hidden="true" />
+              <div className="min-w-0">
+                <h4 className="font-bold text-white">{content.title}</h4>
+                <p className="mt-1 text-sm leading-6 text-slate-300">{content.description}</p>
               </div>
-              <p className="sr-only" id="coverage-help">Ingresá una dirección de entre {COVERAGE_ADDRESS_MIN_LENGTH} y {COVERAGE_ADDRESS_MAX_LENGTH} caracteres.</p>
-              {error && <p className="mt-3 text-sm font-semibold text-red-700" id="coverage-error" role="alert">{error}</p>}
-            </form>
-
-            {result && content && (
-              <div className="mt-3 rounded-2xl border border-white/15 bg-white/[0.08] p-5" aria-live="polite" role="status">
-                <div className="flex items-start gap-3">
-                  <ResultIcon className="mt-0.5 size-5 shrink-0 text-home-yellow" aria-hidden="true" />
-                  <div>
-                    <h3 className="font-bold text-white">{content.title}</h3>
-                    <p className="mt-1 text-sm leading-6 text-slate-300">{content.description}</p>
-                  </div>
-                </div>
-                {whatsappUrl ? (
-                  <a aria-label="Consultar por WhatsApp" className="mt-4 inline-flex min-h-12 w-full min-w-0 max-w-full items-center justify-center gap-2 rounded-xl bg-whatsapp px-4 py-3 text-center font-extrabold text-brand-navy-deep transition-colors hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-whatsapp sm:w-auto sm:px-5" href={whatsappUrl} rel="noopener noreferrer" target="_blank">
-                    <WhatsAppIcon className="size-6 shrink-0" />
-                    <span>Consultar por WhatsApp</span>
-                  </a>
-                ) : (
-                  <p className="mt-4 text-sm text-slate-300">La consulta por WhatsApp no está disponible en este momento.</p>
-                )}
-              </div>
+            </div>
+            {whatsappUrl ? (
+              <a aria-label="Consultar por WhatsApp" className="mt-4 inline-flex min-h-12 w-full min-w-0 max-w-full items-center justify-center gap-2 rounded-xl bg-whatsapp px-4 py-3 text-center font-extrabold text-brand-navy-deep transition-colors hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-whatsapp sm:w-auto sm:px-5" href={whatsappUrl} rel="noopener noreferrer" target="_blank">
+                <WhatsAppIcon className="size-6 shrink-0" />
+                <span>Consultar por WhatsApp</span>
+              </a>
+            ) : (
+              <p className="mt-4 text-sm text-slate-300">La consulta por WhatsApp no está disponible en este momento.</p>
             )}
           </div>
-        </div>
+        )}
       </div>
-    </section>
+    </article>
   );
 }

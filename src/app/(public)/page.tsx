@@ -24,7 +24,7 @@ import {
   getPublicSiteConfiguration,
 } from "@/lib/supabase/site-settings";
 import { FaqHomeSection } from "@/components/public/faq-home-section";
-import { CoverageSection } from "@/components/public/coverage-section";
+import { ConnectionToolsSection } from "@/components/public/connection-tools-section";
 import { SelfServiceSection } from "@/components/public/self-service-section";
 
 export const metadata: Metadata = {
@@ -85,7 +85,7 @@ export default async function HogarPage() {
   return (
     <main>
       <HeroSection alert={alert.data} segment="hogar" />
-      <CoverageSection whatsapp={contact.data?.whatsapp ?? null} />
+      <ConnectionToolsSection whatsapp={contact.data?.whatsapp ?? null} />
       {promotions.unavailable ? <UnavailableSection>Las promociones no están disponibles temporalmente.</UnavailableSection> : <PromotionsSection imageUrls={promotionImages} items={promotions.data} />}
       <PlansSection
         installationBenefitsText={installation.benefitsText}

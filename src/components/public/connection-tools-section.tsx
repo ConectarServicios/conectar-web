@@ -18,24 +18,24 @@ export function ConnectionToolsSection({ whatsapp }: Readonly<{ whatsapp: string
         <div className="mt-8 grid items-stretch gap-6 lg:grid-cols-2">
           <CoverageSection whatsapp={whatsapp} />
 
-          <article className="flex h-full min-w-0 flex-col rounded-3xl border border-home-border bg-home-surface-soft p-5 shadow-sm sm:p-7" aria-labelledby="speedtest-title">
-            <span className="grid size-12 place-items-center rounded-xl bg-home-accent/10 text-home-accent-strong" aria-hidden="true">
-              <Gauge className="size-6" />
+          <article className="flex h-full min-w-0 flex-col rounded-3xl bg-brand-navy-deep bg-[radial-gradient(circle_at_85%_15%,rgba(56,189,248,.16),transparent_45%)] p-5 text-white shadow-sm sm:p-7" aria-labelledby="speedtest-title">
+            <span className="grid size-12 place-items-center rounded-xl bg-black/25 text-sky-400 ring-1 ring-white/10" aria-hidden="true">
+              <Gauge className="size-8" strokeWidth={1.75} />
             </span>
-            <h3 className="mt-4 text-2xl font-bold tracking-tight text-brand-navy-deep text-balance" id="speedtest-title">Medí tu velocidad</h3>
-            <p className="mt-3 max-w-lg leading-7 text-slate-600">Comprobá el rendimiento de tu Internet con el Speedtest recomendado por Conectar</p>
+            <h3 className="mt-4 text-2xl font-bold tracking-tight text-white text-balance" id="speedtest-title">Medí tu velocidad</h3>
+            <p className="mt-3 max-w-lg leading-7 text-white">Comprobá el rendimiento de tu Internet con el Speedtest recomendado por Conectar</p>
 
-            <ul className="mt-6 grid grid-cols-3 gap-2 rounded-2xl border border-home-border bg-white p-3 sm:gap-3 sm:p-4" aria-label="Qué podés medir con Speedtest">
+            <ul className="mt-6 grid grid-cols-3 gap-2 rounded-2xl border border-slate-200 bg-white p-3 sm:gap-3 sm:p-4 lg:divide-x lg:divide-slate-200" aria-label="Qué podés medir con Speedtest">
               <li className="flex min-w-0 flex-col items-center gap-2 text-center text-xs font-bold text-brand-navy sm:text-sm">
-                <ArrowDown className="size-5 text-home-accent-strong" aria-hidden="true" />
+                <ArrowDown className="size-7 text-sky-600" aria-hidden="true" />
                 Descarga
               </li>
               <li className="flex min-w-0 flex-col items-center gap-2 text-center text-xs font-bold text-brand-navy sm:text-sm">
-                <ArrowUp className="size-5 text-home-accent-strong" aria-hidden="true" />
+                <ArrowUp className="size-7 text-sky-600" aria-hidden="true" />
                 Subida
               </li>
               <li className="flex min-w-0 flex-col items-center gap-2 text-center text-xs font-bold text-brand-navy sm:text-sm">
-                <Timer className="size-5 text-home-accent-strong" aria-hidden="true" />
+                <Timer className="size-7 text-sky-600" aria-hidden="true" />
                 Latencia
               </li>
             </ul>

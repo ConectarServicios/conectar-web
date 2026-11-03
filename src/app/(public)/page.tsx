@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { HeroSection } from "@/components/public/hero-section";
 import { ConectarPlayHomeSection } from "@/components/public/conectar-play-home-section";
 import { PlansSection } from "@/components/public/plans-section";
-import { HomeSecuritySection } from "@/components/public/home-security-section";
 import { HomeServicesSection } from "@/components/public/home-services-section";
 import { HomeSocialProofSection } from "@/components/public/home-social-proof-section";
 import { ContactSection } from "@/components/public/contact-section";
@@ -24,7 +23,7 @@ import {
   getPublicSiteConfiguration,
 } from "@/lib/supabase/site-settings";
 import { FaqHomeSection } from "@/components/public/faq-home-section";
-import { CoverageSection } from "@/components/public/coverage-section";
+import { ConnectionToolsSection } from "@/components/public/connection-tools-section";
 import { SelfServiceSection } from "@/components/public/self-service-section";
 
 export const metadata: Metadata = {
@@ -85,7 +84,7 @@ export default async function HogarPage() {
   return (
     <main>
       <HeroSection alert={alert.data} segment="hogar" />
-      <CoverageSection whatsapp={contact.data?.whatsapp ?? null} />
+      <ConnectionToolsSection whatsapp={contact.data?.whatsapp ?? null} />
       {promotions.unavailable ? <UnavailableSection>Las promociones no están disponibles temporalmente.</UnavailableSection> : <PromotionsSection imageUrls={promotionImages} items={promotions.data} />}
       <PlansSection
         installationBenefitsText={installation.benefitsText}
@@ -98,10 +97,9 @@ export default async function HogarPage() {
       />
       <ContextualPromotions exclude={promotions.data.map((item) => item.id)} placement="plans" />
       <ConectarPlayHomeSection settings={playSettings.data} plans={playPlans.data} unavailable={playSettings.unavailable || playPlans.unavailable} />
-      <HomeSecuritySection />
+      {news.unavailable ? <UnavailableSection>Las noticias no están disponibles temporalmente.</UnavailableSection> : <NewsHomeSection imageUrls={newsImages} items={news.data} />}
       <SelfServiceSection href={configuration.selfServiceUrl} />
       {events.unavailable ? <UnavailableSection>Los eventos no están disponibles temporalmente.</UnavailableSection> : <EventsHomeSection imageUrls={eventImages} items={events.data} />}
-      {news.unavailable ? <UnavailableSection>Las noticias no están disponibles temporalmente.</UnavailableSection> : <NewsHomeSection imageUrls={newsImages} items={news.data} />}
       <HomeServicesSection />
       <HomeSocialProofSection />
       {featuredFaqs.unavailable ? <UnavailableSection>Las preguntas frecuentes no están disponibles temporalmente.</UnavailableSection> : <FaqHomeSection items={featuredFaqs.data} />}

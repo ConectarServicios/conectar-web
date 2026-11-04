@@ -76,7 +76,7 @@ export function PlansCarousel({ now, plans, whatsapp }: PlansCarouselProps) {
     <div className="mt-8 sm:mt-10">
       <div
         aria-label="Planes de Internet"
-        className="-mx-5 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto overscroll-x-contain px-5 pt-3 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pt-0 md:pb-0 xl:grid-cols-4 xl:gap-7"
+        className="relative flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto overscroll-x-contain pt-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pt-0 md:pb-0 xl:grid-cols-4 xl:gap-7"
         onKeyDown={handleKeyDown}
         ref={carouselRef}
         role="region"
@@ -85,7 +85,7 @@ export function PlansCarousel({ now, plans, whatsapp }: PlansCarouselProps) {
         {plans.map((plan, index) => (
           <div
             aria-label={`${index + 1} de ${plans.length}: ${plan.name}`}
-            className="w-[calc(100%-2.5rem)] shrink-0 snap-center md:w-auto"
+            className="w-full shrink-0 snap-center px-1 md:w-auto md:px-0"
             key={plan.id}
             role="group"
           >

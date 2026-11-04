@@ -33,11 +33,15 @@ export function ConectarPlayPlans({
   plans,
   className,
   showActions = false,
+  variant = "default",
 }: {
   plans: ConectarPlayPlan[];
   className?: string;
   showActions?: boolean;
+  variant?: "default" | "home";
 }) {
+  const isHome = variant === "home";
+
   return (
     <div className={className ?? "grid gap-5 md:grid-cols-2 xl:grid-cols-3"}>
       {plans.map((plan) => {
@@ -54,11 +58,11 @@ export function ConectarPlayPlans({
 
         return (
           <article
-            className={`relative flex min-w-0 flex-col rounded-3xl bg-white p-6 shadow-sm sm:p-7 ${plan.featured ? "border-2 border-home-accent ring-4 ring-home-surface/70" : "border border-home-border"}`}
+            className={`relative flex min-w-0 flex-col rounded-3xl bg-white shadow-sm ${isHome ? `border p-5 sm:p-6 ${plan.featured ? "border-[#FF9400] ring-1 ring-[#FF9400]/25" : "border-[#B9CCE0]"}` : `p-6 sm:p-7 ${plan.featured ? "border-2 border-home-accent ring-4 ring-home-surface/70" : "border border-home-border"}`}`}
             key={plan.id}
           >
             {plan.featured && (
-              <p className="absolute -top-3 left-6 rounded-full bg-home-accent-strong px-3 py-1 text-xs font-black tracking-wider text-white uppercase shadow-sm">
+              <p className={isHome ? "absolute top-0 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FF9400] px-3 py-1 text-xs font-black tracking-wide whitespace-nowrap text-[#1E3250] uppercase shadow-sm" : "absolute -top-3 left-6 rounded-full bg-home-accent-strong px-3 py-1 text-xs font-black tracking-wider text-white uppercase shadow-sm"}>
                 Más elegido
               </p>
             )}
@@ -69,9 +73,9 @@ export function ConectarPlayPlans({
               </p>
             )}
             {descriptionLines.length > 1 && (
-              <ul className="mt-4 space-y-2 text-slate-600">
+              <ul className={isHome ? "mt-3 space-y-1.5 text-slate-600" : "mt-4 space-y-2 text-slate-600"}>
                 {descriptionLines.map((line, index) => (
-                  <li className="flex gap-2 leading-7" key={`${line}-${index}`}>
+                  <li className={`flex gap-2 ${isHome ? "leading-6" : "leading-7"}`} key={`${line}-${index}`}>
                     <span
                       className="font-black text-home-accent-strong"
                       aria-hidden="true"
@@ -83,14 +87,14 @@ export function ConectarPlayPlans({
                 ))}
               </ul>
             )}
-            <p className="mt-5 break-words text-3xl font-black tracking-tight text-brand-navy">
+            <p className={`${isHome ? "mt-auto pt-4" : "mt-5"} break-words text-3xl font-black tracking-tight text-brand-navy`}>
               {money(Number(plan.promotional_price))}
               <span className="text-sm font-semibold text-slate-500">
                 {" "}/ mes
               </span>
             </p>
             {promotion && promotionText && (
-              <div className="mt-4 rounded-xl bg-home-surface p-3 text-sm font-bold text-brand-navy">
+              <div className={`${isHome ? "mt-3 bg-[#EDF3FA]" : "mt-4 bg-home-surface"} rounded-xl p-3 text-sm font-bold text-brand-navy`}>
                 <p>{promotionText}</p>
               </div>
             )}

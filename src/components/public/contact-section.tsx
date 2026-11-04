@@ -24,20 +24,21 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
   const phone = validPhone && phoneDigits !== whatsappDigits ? validPhone : null;
   const mapUrl = contact?.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}` : null;
   const variant: ContactVariant = homeCorporativo ? "corporativo" : homeHogar ? "hogar" : "default";
-  const dark = variant !== "default";
-  const accent = variant === "corporativo" ? "text-corporate-accent-soft" : variant === "hogar" ? "text-home-yellow" : "public-eyebrow";
-  const focusAccent = variant === "corporativo" ? "focus-visible:outline-corporate-accent-soft" : variant === "hogar" ? "focus-visible:outline-home-yellow" : "focus-visible:outline-home-accent";
-  const surface = dark ? "border-white/10 bg-white/[0.055]" : "border-slate-200 bg-white shadow-sm";
-  const muted = dark ? "text-slate-300" : "text-slate-600";
-  const heading = dark ? "text-white" : "text-slate-950";
+  const isHome = variant === "hogar";
+  const dark = variant === "corporativo";
+  const accent = variant === "corporativo" ? "text-corporate-accent-soft" : isHome ? "text-xs font-black tracking-[0.18em] uppercase text-[#315C88]" : "public-eyebrow";
+  const focusAccent = variant === "corporativo" ? "focus-visible:outline-corporate-accent-soft" : isHome ? "focus-visible:outline-[#315C88]" : "focus-visible:outline-home-accent";
+  const surface = isHome ? "border-[#D7E4F2] bg-white shadow-sm" : dark ? "border-white/10 bg-white/[0.055]" : "border-slate-200 bg-white shadow-sm";
+  const muted = isHome ? "text-[#071C31]" : dark ? "text-slate-300" : "text-slate-600";
+  const heading = isHome ? "text-[#071C31]" : dark ? "text-white" : "text-slate-950";
   const guardNote = variant === "corporativo"
     ? "text-[#9bb7ff]"
     : variant === "hogar"
-      ? "text-home-yellow"
+      ? "text-[#315C88]"
       : "text-orange-800";
 
   return (
-    <section className={`scroll-mt-24 ${dark ? "bg-[#06182c] py-14 text-white sm:py-18" : "border-t border-slate-200 bg-slate-50 py-16 sm:py-20"}`} id="contacto" aria-labelledby="contact-title">
+    <section className={`scroll-mt-24 ${isHome ? "bg-[#EAF2FA] py-16 sm:py-20" : dark ? "bg-[#06182c] py-14 text-white sm:py-18" : "border-t border-slate-200 bg-slate-50 py-16 sm:py-20"}`} id="contacto" aria-labelledby="contact-title" data-contact-variant={variant}>
       <div className="public-container min-w-0">
         <div className="min-w-0 max-w-3xl">
           <p className={accent}>Contacto</p>
@@ -46,9 +47,9 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
         </div>
 
         {unavailable ? <p className="public-empty-state" role="status">Los datos de contacto no están disponibles en este momento.</p> : contact ? (
-          <div className={`mt-8 box-border w-full min-w-0 max-w-full overflow-hidden rounded-3xl border ${surface}`}>
-            <div className="grid w-full min-w-0 max-w-full gap-7 p-5 sm:p-7 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10 lg:p-9">
-              <div className="min-w-0 max-w-full">
+          <div className={isHome ? "mt-8 grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]" : `mt-8 box-border w-full min-w-0 max-w-full overflow-hidden rounded-3xl border ${surface}`}>
+            <div className={isHome ? "contents" : "grid w-full min-w-0 max-w-full gap-7 p-5 sm:p-7 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10 lg:p-9"}>
+              <div className={isHome ? `min-w-0 max-w-full rounded-2xl border p-5 sm:p-7 ${surface}` : "min-w-0 max-w-full"}>
                 <div className="flex min-w-0 max-w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
                   {whatsapp && (
                     <a className="inline-flex min-h-12 w-full min-w-0 max-w-full items-center justify-center gap-2 rounded-xl bg-whatsapp px-4 py-3 text-center font-extrabold text-brand-navy-deep transition hover:bg-whatsapp-strong hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-whatsapp sm:w-auto sm:px-5" href={`https://wa.me/${whatsappDigits}`} rel="noopener noreferrer" target="_blank">
@@ -62,16 +63,16 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
                   )}
                 </div>
 
-                <dl className={`mt-7 flex flex-col gap-5 border-t pt-6 ${dark ? "border-white/10" : "border-slate-200"}`}>
+                <dl className={`mt-7 flex flex-col gap-5 border-t pt-6 ${isHome ? "border-[#D7E4F2]" : dark ? "border-white/10" : "border-slate-200"}`}>
                   {contact.commercial_email && (
                     <div className="min-w-0">
-                      <dt className={`flex items-center gap-2 text-xs font-black tracking-[0.14em] uppercase ${dark ? "text-slate-400" : "text-slate-500"}`}><Mail className="size-4" aria-hidden="true" /> Email comercial</dt>
+                      <dt className={`flex items-center gap-2 text-xs font-black tracking-[0.14em] uppercase ${isHome ? "text-[#315C88]" : dark ? "text-slate-400" : "text-slate-500"}`}><Mail className="size-4" aria-hidden="true" /> Email comercial</dt>
                       <dd className="mt-2 min-w-0 max-w-full"><a className={`block max-w-full [overflow-wrap:anywhere] font-bold underline-offset-4 hover:underline ${dark ? "text-white" : "text-brand-navy-deep"} ${focusAccent}`} href={`mailto:${contact.commercial_email}`}>{contact.commercial_email}</a></dd>
                     </div>
                   )}
                   {contact.address && mapUrl && (
                     <div className="min-w-0">
-                      <dt className={`flex items-center gap-2 text-xs font-black tracking-[0.14em] uppercase ${dark ? "text-slate-400" : "text-slate-500"}`}><MapPin className="size-4" aria-hidden="true" /> Dirección</dt>
+                      <dt className={`flex items-center gap-2 text-xs font-black tracking-[0.14em] uppercase ${isHome ? "text-[#315C88]" : dark ? "text-slate-400" : "text-slate-500"}`}><MapPin className="size-4" aria-hidden="true" /> Dirección</dt>
                       <dd className="mt-2"><a className={`break-words font-bold underline-offset-4 hover:underline ${dark ? "text-white" : "text-brand-navy-deep"} ${focusAccent}`} href={mapUrl} rel="noopener noreferrer" target="_blank">{contact.address}</a></dd>
                     </div>
                   )}
@@ -79,7 +80,7 @@ export function ContactSection({ contact, unavailable, homeCorporativo = false, 
               </div>
 
               {(contact.business_hours || contact.guard_hours) && (
-                <div className={`min-w-0 max-w-full divide-y rounded-2xl border ${dark ? "divide-white/10 border-white/10 bg-black/10" : "divide-slate-200 border-slate-200 bg-slate-50"}`}>
+                <div className={`min-w-0 max-w-full divide-y rounded-2xl border ${isHome ? "divide-[#D7E4F2] border-[#D7E4F2] bg-white shadow-sm" : dark ? "divide-white/10 border-white/10 bg-black/10" : "divide-slate-200 border-slate-200 bg-slate-50"}`}>
                   {contact.business_hours && (
                     <div className="min-w-0 p-5 sm:p-6">
                       <h3 className={`flex items-center gap-2 font-bold ${heading}`}><Clock3 className={`size-5 ${accent}`} aria-hidden="true" /> Atención habitual</h3>

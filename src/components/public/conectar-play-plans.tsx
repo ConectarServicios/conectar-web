@@ -47,11 +47,16 @@ export function ConectarPlayPlans({
       {plans.map((plan) => {
         const descriptionLines = getDescriptionLines(plan.description);
         const promotion = promotionIsCurrent(plan);
-        const promotionText =
-          plan.promotion_label ||
-          (plan.promotion_discount_percent !== null
+        const standardPromotionText =
+          plan.promotion_discount_percent !== null
             ? `${Number(plan.promotion_discount_percent).toLocaleString("es-AR")}% de descuento${plan.promotion_duration_months !== null ? ` por ${plan.promotion_duration_months} meses` : ""}`
-            : null);
+            : null;
+        const promotionText = plan.promotion_label || standardPromotionText;
+        const showDiscountOffer =
+          isHome &&
+          Number(plan.promotion_discount_percent) === 50 &&
+          Number(plan.promotion_duration_months) === 6 &&
+          (!plan.promotion_label || plan.promotion_label.trim() === standardPromotionText);
         const showFootballLabel =
           plan.includes_football &&
           !descriptionIncludesFootballChannels(descriptionLines);
@@ -67,38 +72,71 @@ export function ConectarPlayPlans({
               </p>
             )}
             <h3 className="text-xl font-black text-slate-950">{plan.name}</h3>
-            {descriptionLines.length === 1 && (
+            {isHome && descriptionLines.length > 0 && (
+              <ul className="mt-3 flex flex-wrap items-start gap-2">
+                {descriptionLines.map((line, index) => (
+                  <li className="max-w-full rounded-full bg-[#EAF2FA] px-3 py-1.5 text-sm leading-5 font-semibold break-words text-[#24476D]" key={`${line}-${index}`}>
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {!isHome && descriptionLines.length === 1 && (
               <p className="mt-2 leading-7 text-slate-600">
                 {descriptionLines[0]}
               </p>
             )}
-            {descriptionLines.length > 1 && (
-              <ul className={isHome ? "mt-3 space-y-1.5 text-slate-600" : "mt-4 space-y-2 text-slate-600"}>
+            {!isHome && descriptionLines.length > 1 && (
+              <ul className="mt-4 space-y-2 text-slate-600">
                 {descriptionLines.map((line, index) => (
-                  <li className={`flex gap-2 ${isHome ? "leading-6" : "leading-7"}`} key={`${line}-${index}`}>
-                    <span
-                      className="font-black text-home-accent-strong"
-                      aria-hidden="true"
-                    >
-                      ✓
-                    </span>
+                  <li className="flex gap-2 leading-7" key={`${line}-${index}`}>
+                    <span className="font-black text-home-accent-strong" aria-hidden="true">✓</span>
                     <span>{line}</span>
                   </li>
                 ))}
               </ul>
             )}
-            <p className={`${isHome ? "mt-auto pt-4" : "mt-5"} break-words text-3xl font-black tracking-tight text-brand-navy`}>
+            {isHome && showFootballLabel && (
+              <p className="mt-2">
+                <span className="inline-block max-w-full rounded-full bg-[#EAF2FA] px-3 py-1.5 text-sm leading-5 font-semibold break-words text-[#24476D]">
+                  Incluye Pack Fútbol
+                </span>
+              </p>
+            )}
+            <p className={`${isHome ? "mt-auto pt-6" : "mt-5"} break-words text-3xl font-black tracking-tight text-brand-navy`}>
               {money(Number(plan.promotional_price))}
               <span className="text-sm font-semibold text-slate-500">
                 {" "}/ mes
               </span>
             </p>
             {promotion && promotionText && (
-              <div className={`${isHome ? "mt-3 bg-[#EDF3FA]" : "mt-4 bg-home-surface"} rounded-xl p-3 text-sm font-bold text-brand-navy`}>
-                <p>{promotionText}</p>
-              </div>
+              isHome ? (
+                <div className="mt-4 border-t border-[#D7E4F2] pt-4">
+                  <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#D7E4F2] bg-[#F7F9FC] p-3 text-sm text-brand-navy">
+                    {showDiscountOffer ? (
+                      <>
+                        <span className="shrink-0 rounded-lg bg-[#FFE8D5] px-3 py-2 text-base font-black text-[#9A4500]">
+                          {Number(plan.promotion_discount_percent).toLocaleString("es-AR")}% OFF
+                        </span>
+                        <div className="min-w-0">
+                          <p className="font-extrabold">Promoción especial</p>
+                          <p className="mt-0.5 leading-5 text-slate-600">
+                            Durante los primeros {plan.promotion_duration_months} meses
+                          </p>
+                        </div>
+                      </>
+                    ) : (
+                      <p className="font-bold break-words">{promotionText}</p>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-4 rounded-xl bg-home-surface p-3 text-sm font-bold text-brand-navy">
+                  <p>{promotionText}</p>
+                </div>
+              )
             )}
-            {showFootballLabel && (
+            {!isHome && showFootballLabel && (
               <p className="mt-4 flex items-center gap-2 font-bold text-slate-800">
                 <span className="text-home-accent" aria-hidden="true">✓</span>
                 Incluye Pack Fútbol

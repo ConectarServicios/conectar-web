@@ -73,6 +73,7 @@ export function PlanCard({ plan, now, whatsapp }: Readonly<{ plan: Plan; now: Da
         )}
         <a
           className={`mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl px-5 py-3 text-center font-extrabold transition duration-150 hover:brightness-105 motion-safe:hover:-translate-y-px motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-4 ${plan.featured ? "home-gradient text-[#1E3250] focus-visible:outline-home-accent" : "border border-[#1E3250] bg-[linear-gradient(135deg,#1E3250_0%,#293F5F_100%)] text-white focus-visible:outline-brand-navy"}`}
+          data-home-action="commercial"
           href={whatsappUrl ?? "#contacto"}
           rel={whatsappUrl ? "noopener noreferrer" : undefined}
           target={whatsappUrl ? "_blank" : undefined}

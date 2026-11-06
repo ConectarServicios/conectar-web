@@ -1,0 +1,77 @@
+.home {
+  --home-secondary: #315c88;
+
+  & [data-home-action="commercial"] {
+    border-color: transparent;
+    background-image: var(--gradient-home);
+    color: var(--color-brand-navy-deep, #071a2f);
+  }
+
+  & :global(.home-gradient),
+  & :global(.public-button-primary) {
+    color: var(--color-brand-navy-deep, #071a2f);
+  }
+
+  & [data-home-action="secondary"] {
+    border: 1px solid #b9cce0;
+    background: var(--home-secondary);
+    color: white;
+    box-shadow: none;
+    transition: filter 150ms, transform 150ms, border-color 150ms;
+  }
+
+  & [data-home-action="secondary"]:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+
+  & [data-home-action="secondary"]:focus-visible,
+  & [data-home-action="card-link"]:focus-visible {
+    outline: 2px solid var(--home-secondary);
+    outline-offset: 4px;
+  }
+
+  & [data-home-focus="light"]:focus-visible {
+    outline-color: #eaf2fa;
+  }
+
+  & [data-home-action="card-link"] {
+    border-color: transparent;
+    background: transparent;
+    color: var(--home-secondary);
+    box-shadow: none;
+  }
+
+  & [data-home-action="card-link"]:hover {
+    color: var(--home-secondary);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    filter: none;
+  }
+
+  & [data-home-action="card-link"] svg {
+    transition: color 150ms;
+  }
+
+  & [data-home-action="card-link"]:hover svg {
+    color: var(--color-home-accent-strong, #c94f28);
+  }
+
+  & [data-home-eyebrow="informational"] {
+    color: var(--home-secondary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & [data-home-action] {
+      transition: none;
+    }
+
+    & [data-home-action]:hover {
+      transform: none;
+    }
+
+    & [data-home-action="card-link"] svg {
+      transition: none;
+    }
+  }
+}

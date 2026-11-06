@@ -42,6 +42,7 @@ export function ConectarPlayHomeSection({
 
             <Link
               className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl home-gradient px-6 py-3 text-center font-extrabold text-[#03221b] transition hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-home-accent motion-reduce:transform-none sm:w-fit"
+              data-home-action="secondary"
               href="/conectar-play"
             >
               Conocer Conectar Play

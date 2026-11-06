@@ -18,6 +18,7 @@ export function FaqHomeSection({ items }: Readonly<{ items: FaqItem[] }>) {
           </p>
           <Link
             className="public-button-primary mt-7 text-center"
+            data-home-action="secondary"
             href="/preguntas-frecuentes"
           >
             Ver todas las preguntas frecuentes

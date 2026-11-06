@@ -10,7 +10,7 @@ export function ConnectionToolsSection({ whatsapp }: Readonly<{ whatsapp: string
     <section className="scroll-mt-24 bg-white py-14 sm:py-18" aria-labelledby="connection-tools-title" id="cobertura">
       <div className="public-container">
         <div className="max-w-3xl">
-          <p className="public-eyebrow">Herramientas para tu conexión</p>
+          <p className="public-eyebrow" data-home-eyebrow="informational">Herramientas para tu conexión</p>
           <h2 className="public-heading mt-3" id="connection-tools-title">Todo lo que necesitás para estar conectado</h2>
           <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg">Consultá la disponibilidad de fibra óptica en tu domicilio y comprobá la velocidad de tu conexión.</p>
         </div>
@@ -41,7 +41,7 @@ export function ConnectionToolsSection({ whatsapp }: Readonly<{ whatsapp: string
             </ul>
 
             <div className="mt-auto pt-6">
-              <a className="public-button-primary w-full text-center" href={SPEEDTEST_URL} target="_blank" rel="noopener noreferrer">
+              <a data-home-action="secondary" data-home-focus="light" className="public-button-primary w-full text-center" href={SPEEDTEST_URL} target="_blank" rel="noopener noreferrer">
                 Realizar Speedtest
                 <ExternalLink className="size-4 shrink-0" aria-hidden="true" />
                 <span className="sr-only">(abre en una pestaña nueva)</span>

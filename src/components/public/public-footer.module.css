@@ -1,5 +1,5 @@
-/* Contacto identifica la variante de Hogar incluso cuando no hay datos disponibles. */
-:global(body:has([data-contact-variant="hogar"])) .footer {
+/* Marcas de página explícitas: conservar el footer original en las demás rutas. */
+:global(body:has([data-contact-variant="hogar"], [data-public-page="conectar-play"])) .footer {
   border-top: 1px solid #315c88;
   background-color: #071c31;
   padding-block: 2rem;

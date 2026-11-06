@@ -22,6 +22,7 @@ export function HomeServiceCard({ service }: HomeServiceCardProps) {
       </p>
       <a
         className="mt-4 inline-flex min-h-11 w-fit max-w-full items-center justify-center gap-2 rounded-xl border border-[#315C88] bg-[#315C88] px-4 py-2 text-sm font-bold text-white transition hover:brightness-110 motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#315C88]"
+        data-home-action="card-link"
         href={service.href ?? "#contacto"}
       >
         {service.cta?.label ?? "Conocer más"}

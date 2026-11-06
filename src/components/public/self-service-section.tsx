@@ -48,6 +48,7 @@ export function SelfServiceSection({ href }: SelfServiceSectionProps) {
           </p>
           <a
             className="home-gradient mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl px-6 py-3 text-center font-extrabold text-brand-navy-deep transition hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#315C88] motion-reduce:transform-none sm:w-fit"
+            data-home-action="secondary"
             href={href}
           >
             Ingresar a Autogestión

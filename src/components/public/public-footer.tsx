@@ -1,4 +1,5 @@
 import Link from "next/link";
+import styles from "./public-footer.module.css";
 import { unstable_rethrow } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
@@ -67,33 +68,33 @@ type PublicFooterProps = Readonly<{
 export async function PublicFooter({ configuration }: PublicFooterProps) {
   const socialLinks = await getSocialLinks();
   return (
-    <footer className="bg-brand-navy-deep py-12 text-slate-300">
-      <div className="public-container grid gap-10 lg:grid-cols-[1.1fr_2fr]">
+    <footer className={`${styles.footer} bg-brand-navy-deep py-12 text-slate-300`}>
+      <div className={`${styles.main} public-container grid gap-10 lg:grid-cols-[1.1fr_2fr]`}>
         <div>
           <p className="text-lg font-bold text-white">{configuration.siteName}</p>
           <p className="mt-2 text-sm">{configuration.footerTagline}</p>
         </div>
-        <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
+        <div className={`${styles.groups} grid gap-8 sm:grid-cols-2 xl:grid-cols-4`}>
           {footerGroups.map((group) => (
             <nav aria-label={group.title} key={group.title}>
               <p className="text-sm font-bold text-white">{group.title}</p>
-              <ul className="mt-4 space-y-3 text-sm">
-                {group.items.map((item) => <li key={item.href}><Link className="rounded-sm hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" href={item.href}>{item.label}</Link></li>)}
-                {group.title === "Ayuda" && <li><a className="rounded-sm hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" href={configuration.selfServiceUrl}>Autogestión</a></li>}
+              <ul className={`${styles.list} mt-4 space-y-3 text-sm`}>
+                {group.items.map((item) => <li key={item.href}><Link className={`${styles.navLink} rounded-sm hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400`} href={item.href}>{item.label}</Link></li>)}
+                {group.title === "Ayuda" && <li><a className={`${styles.navLink} rounded-sm hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400`} href={configuration.selfServiceUrl}>Autogestión</a></li>}
               </ul>
             </nav>
           ))}
           <div>
             <p className="text-sm font-bold text-white">Institucional</p>
-            <Link className="mt-4 inline-block rounded-sm text-sm hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" href="/quienes-somos">Quiénes somos</Link>
-            {socialLinks.length > 0 && <nav className="mt-4 flex flex-wrap gap-2" aria-label="Redes sociales">
-              {socialLinks.map((socialLink) => <a className="flex items-center gap-2 rounded-lg border border-slate-700 p-2 text-sm font-semibold transition hover:border-slate-500 hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400" href={socialLink.url} key={socialLink.id} target="_blank" rel="noopener noreferrer" aria-label={`Visitar ${socialLink.platform} de ${configuration.siteName} (abre en una pestaña nueva)`}><SocialIcon platform={socialLink.platform} /><span className="sr-only">{socialLink.platform}</span></a>)}
+            <Link className={`${styles.institutional} ${styles.navLink} mt-4 inline-block rounded-sm text-sm hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400`} href="/quienes-somos">Quiénes somos</Link>
+            {socialLinks.length > 0 && <nav className={`${styles.social} mt-4 flex flex-wrap gap-2`} aria-label="Redes sociales">
+              {socialLinks.map((socialLink) => <a className={`${styles.socialLink} flex items-center gap-2 rounded-lg border border-slate-700 p-2 text-sm font-semibold transition hover:border-slate-500 hover:text-white focus-visible:outline-2 focus-visible:outline-orange-400`} href={socialLink.url} key={socialLink.id} target="_blank" rel="noopener noreferrer" aria-label={`Visitar ${socialLink.platform} de ${configuration.siteName} (abre en una pestaña nueva)`}><SocialIcon platform={socialLink.platform} /><span className="sr-only">{socialLink.platform}</span></a>)}
             </nav>}
           </div>
         </div>
       </div>
-      <div className="public-container mt-10 border-t border-white/10 pt-5">
-        <p className="text-xs text-slate-400">© {new Date().getFullYear()} {configuration.siteName}</p>
+      <div className={`${styles.legal} public-container mt-10 border-t border-white/10 pt-5`}>
+        <p className={`${styles.legalText} text-xs text-slate-400`}>© {new Date().getFullYear()} {configuration.siteName}</p>
       </div>
     </footer>
   );

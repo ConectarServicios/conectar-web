@@ -1,5 +1,8 @@
 
+import { Database, MapPin, MonitorCheck, Network } from "lucide-react";
 import Image from "next/image";
+
+import { HeroBenefits } from "@/components/public/hero-benefits";
 
 import { HomeHighlights } from "@/components/public/home-highlights";
 import { ImportantNewsBanner } from "@/components/public/important-news-banner";
@@ -37,10 +40,10 @@ const content = {
 >;
 
 const corporateTrustItems = [
-  { title: "Un solo proveedor", detail: "Red + infra + seguridad" },
-  { title: "Datos en Argentina", detail: "Control total de tu información" },
-  { title: "Monitoreo 24/7", detail: "Con guardia de soporte" },
-  { title: "Respuesta local", detail: "Cercana y directa" },
+  { title: "Un solo proveedor", detail: "Red + infra + seguridad", icon: Network },
+  { title: "Datos en Argentina", detail: "Control total de tu información", icon: Database },
+  { title: "Monitoreo 24/7", detail: "Con guardia de soporte", icon: MonitorCheck },
+  { title: "Respuesta local", detail: "Cercana y directa", icon: MapPin },
 ];
 
 export function HeroSection({
@@ -69,7 +72,7 @@ export function HeroSection({
 
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_85%,rgba(31,112,184,.14),transparent_30%)]" />
 
-          <div className="public-grid-pattern absolute inset-0 opacity-70" />
+          <div className={`public-grid-pattern absolute inset-0 ${isHome ? "opacity-55" : "opacity-70"}`} />
         </div>
 
         <div
@@ -86,7 +89,7 @@ export function HeroSection({
               <p
                 className={`mb-6 inline-flex max-w-full items-center gap-2.5 rounded-full border px-4 py-2 text-xs leading-5 font-bold sm:text-sm ${
                   isHome
-                    ? "border-home-accent/40 bg-home-accent/10 text-home-yellow"
+                    ? "border-home-accent/30 bg-brand-navy-deep/70 text-[#F6AD70]"
                     : "border-corporate-accent/40 bg-corporate-accent/12 text-[#9bb7ff]"
                 }`}
               >
@@ -115,10 +118,10 @@ export function HeroSection({
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a
-                  className={`inline-flex min-h-14 items-center justify-center gap-2 rounded-xl px-8 text-base font-black transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transform-none ${
+                  className={`inline-flex min-h-14 items-center justify-center gap-2 rounded-xl px-8 text-base font-black transition focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white ${
                     isHome
-                      ? "home-gradient text-brand-navy shadow-[0_14px_30px_-16px_rgba(242,138,46,.9)] hover:brightness-105"
-                      : "bg-corporate-accent text-white shadow-[0_14px_30px_-16px_rgba(47,107,255,.65)] hover:bg-[#477dff]"
+                      ? "home-gradient text-brand-navy shadow-[0_14px_30px_-16px_rgba(242,138,46,.9)] duration-150 hover:brightness-105 motion-safe:hover:-translate-y-px motion-reduce:transition-none"
+                      : "bg-corporate-accent text-white shadow-[0_14px_30px_-16px_rgba(47,107,255,.65)] hover:bg-[#477dff] hover:-translate-y-0.5 motion-reduce:transform-none"
                   }`}
                   href={current.primary.href}
                 >
@@ -126,7 +129,11 @@ export function HeroSection({
                 </a>
 
                 <a
-                  className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/15 bg-transparent px-6 font-semibold text-slate-200 transition hover:border-white/30 hover:bg-white/[0.06] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:self-center"
+                  className={`inline-flex items-center justify-center border transition focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:self-center ${
+                    isHome
+                      ? "min-h-14 rounded-xl border-[#6E95BC]/60 bg-[linear-gradient(135deg,#315C88_0%,#183A62_100%)] px-8 text-base font-bold text-white duration-150 hover:border-[#6E95BC] hover:brightness-105 motion-safe:hover:-translate-y-px motion-reduce:transition-none"
+                      : "min-h-12 rounded-lg border-white/15 bg-transparent px-6 font-semibold text-slate-200 hover:border-white/30 hover:bg-white/[0.06] hover:text-white"
+                  }`}
                   href={current.secondary.href}
                 >
                   {current.secondary.label}
@@ -160,27 +167,7 @@ export function HeroSection({
       {isHome ? (
         <HomeHighlights />
       ) : (
-        <aside
-          className="border-b border-corporate-accent/35 bg-[#102d49] py-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.035)] sm:py-5"
-          aria-label="Razones para elegir Conectar Servicios"
-        >
-          <ul className="public-container grid list-none grid-cols-1 gap-3 min-[440px]:grid-cols-2 lg:grid-cols-4 lg:gap-4">
-            {corporateTrustItems.map(({ title, detail }) => (
-              <li
-                className="rounded-xl border border-white/10 bg-white/[0.055] px-4 py-4 shadow-sm shadow-slate-950/10 sm:px-5 sm:py-5"
-                key={title}
-              >
-                <strong className="font-display block text-sm font-bold text-white sm:text-[0.9375rem]">
-                  {title}
-                </strong>
-
-                <span className="mt-1.5 block text-xs leading-5 text-[#b8cbdb]">
-                  {detail}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </aside>
+        <HeroBenefits items={corporateTrustItems} />
       )}
     </>
   );

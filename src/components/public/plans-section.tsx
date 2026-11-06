@@ -23,7 +23,7 @@ export function PlansSection({ installationBenefitsText, installationInstallment
     Number.isFinite(installationInstallmentPrice) &&
     installationInstallmentPrice >= 0;
   return (
-    <section className="scroll-mt-20 bg-home-surface-soft py-16 sm:py-20" id="planes" aria-labelledby="plans-title">
+    <section className="scroll-mt-20 bg-[linear-gradient(135deg,#EDF3FA_0%,#D5E2F0_65%,#B9CCE0_100%)] py-16 sm:py-20" id="planes" aria-labelledby="plans-title">
       <div className="public-container">
         <div className="max-w-3xl">
           <p className="text-xs font-black tracking-[0.18em] text-home-accent-strong uppercase">Planes de Internet</p>
@@ -40,13 +40,13 @@ export function PlansSection({ installationBenefitsText, installationInstallment
         {(installationPrice !== null || installationBenefitsText) && (
           <div className="mt-5 text-sm leading-6 text-slate-600 sm:text-base">
             {installationPrice !== null && (
-              <div className="max-w-xl rounded-2xl border border-orange-200 bg-white p-4 sm:p-5">
-                <p className="text-xs font-black tracking-[0.18em] text-home-accent-strong uppercase">Instalación</p>
-                <p className="mt-1 text-3xl font-black tracking-tight text-brand-navy-deep sm:text-4xl">
+              <div className="max-w-xl rounded-2xl border border-[#B9CCE0] bg-white p-4 sm:p-5">
+                <p className="text-xs font-black tracking-[0.18em] text-[#1E3250] uppercase">Instalación</p>
+                <p className="mt-1 text-3xl font-black tracking-tight text-[#1E3250] sm:text-4xl">
                   {currency.format(installationPrice)}
                 </p>
                 {hasInstallments && (
-                  <p className="mt-3 inline-flex rounded-full bg-home-surface-soft px-3 py-1.5 text-sm font-bold text-slate-700 sm:text-base">
+                  <p className="mt-3 inline-flex rounded-full bg-[#EDF3FA] px-3 py-1.5 text-sm font-bold text-[#1E3250] sm:text-base">
                     También disponible en {installationInstallmentCount} cuotas de {currency.format(installationInstallmentPrice)}
                   </p>
                 )}

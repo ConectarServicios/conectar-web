@@ -1,0 +1,17 @@
+.card:hover {
+  border-color: color-mix(in srgb, var(--color-home-accent, #f28a2e) 40%, #d7e4f2);
+}
+
+.link svg {
+  transition: color 150ms;
+}
+
+.link:hover svg {
+  color: var(--color-home-accent-strong, #c94f28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link svg {
+    transition: none;
+  }
+}

@@ -1,17 +1,16 @@
-import { ChevronDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { ServiceCatalogIcon } from "@/components/public/service-catalog-icon";
+import { ServiceCatalogSwitcher } from "@/components/public/service-catalog-switcher";
 import {
   getPublicServiceGroupsBySegment,
   getServicesByGroup,
+  getServiceContactHref,
 } from "@/data/services/queries";
-import type {
-  ServiceGroupDefinition,
-  ServiceSegment,
-} from "@/data/services/types";
-import { getServiceContactHref } from "@/data/services/queries";
+import type { ServiceGroupDefinition, ServiceSegment } from "@/data/services/types";
 
 export const metadata: Metadata = {
   title: "Servicios | Conectar Servicios",
@@ -39,130 +38,89 @@ const segments: readonly {
   },
 ];
 
-function ServiceGroupDisclosure({
+
+function ServiceGroupCard({
   group,
   segment,
-}: Readonly<{
-  group: ServiceGroupDefinition;
-  segment: ServiceSegment;
-}>) {
+}: Readonly<{ group: ServiceGroupDefinition; segment: ServiceSegment }>) {
   const services = getServicesByGroup(group.slug);
-  const accentClasses = segment === "hogar"
-    ? "bg-home-surface text-home-accent-strong"
-    : "bg-blue-50 text-corporate-accent-strong";
+  const wide = segment === "corporativo" && services.length > 6;
 
   return (
-    <details
-      className="group scroll-mt-24 rounded-2xl border border-home-border bg-white shadow-sm shadow-slate-950/5 open:shadow-md"
+    <article
+      className={`min-w-0 scroll-mt-24 rounded-2xl border border-[#D7E4F2] bg-white p-5 shadow-sm sm:p-6 ${wide ? "lg:col-span-2" : ""}`}
       id={group.slug}
+      aria-labelledby={`${group.slug}-title`}
     >
-      <summary className="flex cursor-pointer list-none items-center gap-4 rounded-2xl p-5 outline-none marker:hidden focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 sm:p-6 [&::-webkit-details-marker]:hidden">
-        <span
-          aria-hidden="true"
-          className={`grid size-11 shrink-0 place-items-center rounded-xl ${accentClasses}`}
-        >
+      <div className="flex items-start gap-3">
+        <span aria-hidden="true" className="grid size-11 shrink-0 place-items-center rounded-xl bg-[#EAF2FA] text-[#315C88] ring-1 ring-[#B9CCE0]/50">
           <ServiceCatalogIcon icon={group.icon} />
         </span>
-        <span className="min-w-0 flex-1">
-          <span className="font-display block text-lg font-bold tracking-[-0.025em] text-brand-navy sm:text-xl">
-            {group.title}
-          </span>
-          <span className="mt-1 block text-sm leading-6 text-slate-600">
-            {group.shortDescription}
-          </span>
-        </span>
-        <ChevronDown
-          aria-hidden="true"
-          className="size-5 shrink-0 text-slate-500 transition-transform group-open:rotate-180"
-          strokeWidth={2.25}
-        />
-      </summary>
-
-      <ul className="border-t border-home-border/60 px-5 py-2 sm:px-6">
+        <div className="min-w-0">
+          <h3 className="text-lg leading-6 font-black text-[#071C31] sm:text-xl sm:leading-7" id={`${group.slug}-title`}>{group.title}</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">{group.shortDescription}</p>
+        </div>
+      </div>
+      <ul className={`mt-6 grid gap-4 ${wide ? "sm:grid-cols-2 xl:grid-cols-3" : segment === "corporativo" ? "sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2" : ""}`}>
         {services.map((service) => {
-          const hasOwnDestination = Boolean(
-            service.href && service.href !== "#contacto",
-          );
-          const href = service.hasDetailPage
-            ? `/servicios/${group.slug}/${service.slug}`
-            : hasOwnDestination
-              ? service.href!
-              : getServiceContactHref(segment);
+          const hasOwnDestination = Boolean(service.href && service.href !== "#contacto");
+          const href = service.slug === "wifi-power-mesh"
+            ? "/noticias/wifi-power-mesh-mas-cobertura-wi-fi-para-tu-hogar"
+            : service.hasDetailPage
+              ? `/servicios/${group.slug}/${service.slug}`
+              : hasOwnDestination
+                ? service.href!
+                : getServiceContactHref(segment);
 
           return (
-            <li
-              className="flex flex-col gap-3 border-b border-home-border/60 py-5 last:border-b-0 sm:flex-row sm:items-center sm:justify-between"
-              key={service.slug}
-            >
-              <span className="min-w-0 sm:pr-6">
-                <span className="block font-bold text-slate-950">
-                  {service.title}
-                </span>
-                <span className="mt-1 block text-sm leading-6 text-slate-600">
-                  {service.shortDescription}
-                </span>
-              </span>
+            <li className="flex min-w-0 flex-col rounded-xl bg-[#F7F9FC] p-4" key={service.slug}>
+              <h4 className="font-bold leading-6 break-words text-[#071C31]">{service.title}</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{service.shortDescription}</p>
               <Link
-                className="inline-flex w-fit shrink-0 rounded-sm text-sm font-bold text-blue-800 underline decoration-orange-500 decoration-2 underline-offset-4 outline-none hover:text-blue-950 focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-4"
+                className="group/link mt-auto inline-flex min-h-11 w-fit max-w-full items-center gap-2 rounded-sm pt-3 text-sm font-bold text-[#315C88] underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#315C88]"
                 href={href}
+                aria-label={`${hasOwnDestination ? service.cta?.label ?? "Conocer más" : "Consultar"}: ${service.title}`}
               >
                 {hasOwnDestination ? service.cta?.label ?? "Conocer más" : "Consultar"}
+                <ArrowRight aria-hidden="true" className="size-4 shrink-0 transition-colors duration-150 group-hover/link:text-home-accent-strong motion-reduce:transition-none" strokeWidth={1.75} />
               </Link>
             </li>
           );
         })}
       </ul>
-    </details>
+    </article>
   );
 }
 
 export default function ServicesCatalogPage() {
+  const panels = segments.map((segment) => {
+    const groups = getPublicServiceGroupsBySegment(segment.slug);
+    return {
+      slug: segment.slug,
+      title: segment.title,
+      description: segment.description,
+      groupIds: groups.map((group) => group.slug),
+      content: (
+        <div className={`mt-7 grid items-start gap-5 ${segment.slug === "hogar" ? "lg:grid-cols-3" : "lg:grid-cols-2"}`}>
+          {groups.map((group) => <ServiceGroupCard group={group} key={group.slug} segment={segment.slug} />)}
+        </div>
+      ),
+    };
+  });
+
   return (
-    <main className="bg-home-surface-soft">
-      <section className="bg-brand-navy py-20 text-white sm:py-28">
+    <main className="bg-[#F7F9FC]">
+      <section className="bg-[#071C31] py-8 text-white sm:py-10">
         <div className="public-container">
-          <p className="text-sm font-bold tracking-[.22em] text-orange-400 uppercase">
-            Servicios
-          </p>
-          <h1 className="mt-4 max-w-4xl text-4xl font-black tracking-tight sm:text-6xl">
-            Soluciones para hogares, empresas y organizaciones
-          </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-blue-100">
-            Explorá nuestro catálogo y encontrá la solución adecuada para cada
-            necesidad.
-          </p>
+          <p className="text-xs font-black tracking-[.18em] text-[#FFAD52] uppercase">Servicios Conectar</p>
+          <h1 className="mt-3 text-3xl leading-tight font-black tracking-tight text-balance sm:text-4xl">Soluciones para cada necesidad</h1>
+          <p className="mt-3 max-w-3xl text-base leading-7 text-[#D7E4F2]">Descubrí nuestros servicios de conectividad, entretenimiento, seguridad e infraestructura</p>
         </div>
       </section>
-
-      <div className="public-container space-y-16 py-16 sm:space-y-20 sm:py-24">
-        {segments.map((segment) => {
-          const groups = getPublicServiceGroupsBySegment(segment.slug);
-
-          return (
-            <section aria-labelledby={`${segment.slug}-title`} key={segment.slug}>
-              <div className="max-w-3xl">
-                <h2
-                  className="font-display text-3xl font-bold tracking-[-0.035em] text-brand-navy sm:text-4xl"
-                  id={`${segment.slug}-title`}
-                >
-                  {segment.title}
-                </h2>
-                <p className="mt-3 leading-7 text-slate-600">
-                  {segment.description}
-                </p>
-              </div>
-              <div className="mt-8 grid items-start gap-5 lg:grid-cols-2">
-                {groups.map((group) => (
-                  <ServiceGroupDisclosure
-                    group={group}
-                    key={group.slug}
-                    segment={segment.slug}
-                  />
-                ))}
-              </div>
-            </section>
-          );
-        })}
+      <div className="public-container py-8 sm:py-10">
+        <Suspense fallback={<p className="text-slate-600" role="status">Cargando catálogo de servicios…</p>}>
+          <ServiceCatalogSwitcher panels={panels} />
+        </Suspense>
       </div>
     </main>
   );

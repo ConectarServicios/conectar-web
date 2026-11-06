@@ -21,7 +21,7 @@ export function ConectarPlayHomeSection({
 
   return (
     <section
-      className="scroll-mt-24 overflow-hidden bg-white py-16 sm:py-20"
+      className="scroll-mt-24 overflow-hidden bg-[linear-gradient(135deg,#EAF2FA_0%,#D7E4F2_100%)] py-16 sm:py-20"
       id="conectar-play"
       aria-labelledby="home-play-title"
     >
@@ -42,6 +42,7 @@ export function ConectarPlayHomeSection({
 
             <Link
               className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl home-gradient px-6 py-3 text-center font-extrabold text-[#03221b] transition hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-home-accent motion-reduce:transform-none sm:w-fit"
+              data-home-action="secondary"
               href="/conectar-play"
             >
               Conocer Conectar Play
@@ -55,52 +56,45 @@ export function ConectarPlayHomeSection({
             aria-label="Beneficios de Conectar Play"
           >
             <Benefit
-              accentClassName="bg-brand-orange"
               description="Cambios de canal sin demoras."
               icon={Gauge}
-              iconClassName="bg-brand-orange/10 text-brand-orange"
               title="Zapping instantáneo"
             />
             <Benefit
-              accentClassName="bg-brand-coral"
               description="Contenido nacional y señales de tu zona."
               icon={MapPin}
-              iconClassName="bg-brand-coral/10 text-brand-coral"
               title="Canales locales y regionales"
             />
             <Benefit
-              accentClassName="bg-brand-yellow"
               description="Usalo en varios equipos al mismo tiempo."
               icon={MonitorSmartphone}
-              iconClassName="bg-brand-yellow/20 text-brand-navy-deep"
               title={`Hasta ${settings.simultaneous_devices} dispositivos`}
             />
             <Benefit
-              accentClassName="bg-brand-navy"
               description="Miralo también desde tu navegador."
               icon={Globe2}
-              iconClassName="bg-brand-navy/10 text-brand-navy"
               title="Acceso web"
             />
           </ul>
         )}
 
         {plans.length > 0 && (
-          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
             <ConectarPlayPlans
               className="contents"
               plans={plans}
+              variant="home"
             />
           </div>
         )}
 
         {settings?.onn_enabled && (
           <aside
-            className="mt-6 flex flex-col gap-4 rounded-2xl border border-home-border bg-home-surface/70 px-5 py-4 sm:px-6 md:flex-row md:items-center md:justify-between"
+            className="mt-6 flex flex-col gap-4 rounded-2xl border border-[#B9CCE0] bg-[#EDF3FA] px-5 py-4 sm:px-6 md:flex-row md:items-center md:justify-between"
             aria-labelledby="home-play-stick-title"
           >
             <div className="max-w-2xl">
-              <p className="text-xs font-black tracking-[.16em] text-home-accent-strong uppercase">
+              <p className="text-xs font-black tracking-[.16em] text-brand-navy uppercase">
                 Stick Conectar Play
               </p>
               <h3
@@ -115,7 +109,7 @@ export function ConectarPlayHomeSection({
             </div>
 
             <Link
-              className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 self-start rounded-xl border border-home-accent-strong bg-white px-5 py-2.5 text-sm font-extrabold text-home-accent-strong transition hover:border-home-accent-strong hover:bg-home-surface focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-home-accent md:self-auto"
+              className="inline-flex min-h-12 w-full shrink-0 items-center justify-center gap-2 self-start rounded-xl border border-[#6E95BC]/60 bg-[linear-gradient(135deg,#315C88_0%,#183A62_100%)] px-5 py-3 text-center text-sm font-bold text-white transition duration-150 hover:border-[#6E95BC] hover:brightness-105 motion-safe:hover:-translate-y-px motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-navy sm:w-fit md:self-auto"
               href="/conectar-play#stick"
             >
               Ver opciones del Stick
@@ -134,30 +128,20 @@ export function ConectarPlayHomeSection({
 }
 
 function Benefit({
-  accentClassName,
   description,
   icon: Icon,
-  iconClassName,
   title,
 }: {
-  accentClassName: string;
   description: string;
   icon: LucideIcon;
-  iconClassName: string;
   title: string;
 }) {
   return (
-    <li className="relative min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-      <span
-        aria-hidden="true"
-        className={`absolute inset-x-0 top-0 h-1 ${accentClassName}`}
-      />
-      <span
-        className={`grid size-11 place-items-center rounded-xl ${iconClassName}`}
-      >
+    <li className="min-w-0 rounded-2xl border border-[#B9CCE0] bg-white p-4 shadow-sm sm:p-5">
+      <span className="grid size-11 place-items-center rounded-xl bg-[#EDF3FA] text-[#315C88] ring-1 ring-[#B9CCE0]/60">
         <Icon aria-hidden="true" className="size-5" strokeWidth={2} />
       </span>
-      <h3 className="mt-3 text-base font-black leading-6 text-brand-navy-deep">
+      <h3 className="mt-3 text-base font-black leading-6 text-brand-navy-deep sm:min-h-12">
         {title}
       </h3>
       <p className="mt-1.5 text-sm leading-6 text-slate-600">

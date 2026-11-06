@@ -1,0 +1,74 @@
+/* Marcas de página explícitas: conservar el footer original en las demás rutas. */
+:global(body:has([data-contact-variant="hogar"], [data-public-page="conectar-play"])) .footer {
+  border-top: 1px solid #315c88;
+  background-color: #071c31;
+  padding-block: 2rem;
+  color: #d7e4f2;
+
+  & .main {
+    gap: 1.5rem;
+  }
+
+  & .groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  & .list,
+  & .institutional,
+  & .social {
+    margin-top: 0.75rem;
+  }
+
+  & .list > li + li {
+    margin-top: 0.5rem;
+  }
+
+  & .navLink,
+  & .socialLink {
+    transition: color 150ms, background-color 150ms, border-color 150ms;
+  }
+
+  & .navLink:hover,
+  & .socialLink:hover {
+    color: white;
+  }
+
+  & .navLink:focus-visible,
+  & .socialLink:focus-visible {
+    outline-color: #d7e4f2;
+    outline-offset: 3px;
+  }
+
+  & .socialLink {
+    border-color: #315c88;
+  }
+
+  & .socialLink:hover {
+    border-color: #d7e4f2;
+    background-color: #315c88;
+  }
+
+  & .legal {
+    margin-top: 1.5rem;
+    border-color: #315c88;
+    padding-top: 1rem;
+  }
+
+  & .legalText {
+    color: rgb(215 228 242 / 0.8);
+  }
+
+  @media (min-width: 80rem) {
+    & .groups {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & .navLink,
+    & .socialLink {
+      transition: none;
+    }
+  }
+}

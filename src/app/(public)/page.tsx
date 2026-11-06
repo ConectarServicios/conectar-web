@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
+import styles from "./home-identity.module.css";
 
 import { HeroSection } from "@/components/public/hero-section";
 import { ConectarPlayHomeSection } from "@/components/public/conectar-play-home-section";
 import { PlansSection } from "@/components/public/plans-section";
-import { HomeServicesSection } from "@/components/public/home-services-section";
 import { HomeSocialProofSection } from "@/components/public/home-social-proof-section";
 import { ContactSection } from "@/components/public/contact-section";
 import { createClient } from "@/lib/supabase/server";
@@ -82,7 +82,7 @@ export default async function HogarPage() {
   const eventImages = Object.fromEntries(events.data.map((item) => [item.id, eventImageUrl(supabase, item.image_path)]));
 
   return (
-    <main>
+    <main className={styles.home}>
       <HeroSection alert={alert.data} segment="hogar" />
       <ConnectionToolsSection whatsapp={contact.data?.whatsapp ?? null} />
       {promotions.unavailable ? <UnavailableSection>Las promociones no están disponibles temporalmente.</UnavailableSection> : <PromotionsSection imageUrls={promotionImages} items={promotions.data} />}
@@ -100,7 +100,6 @@ export default async function HogarPage() {
       {news.unavailable ? <UnavailableSection>Las noticias no están disponibles temporalmente.</UnavailableSection> : <NewsHomeSection imageUrls={newsImages} items={news.data} />}
       <SelfServiceSection href={configuration.selfServiceUrl} />
       {events.unavailable ? <UnavailableSection>Los eventos no están disponibles temporalmente.</UnavailableSection> : <EventsHomeSection imageUrls={eventImages} items={events.data} />}
-      <HomeServicesSection />
       <HomeSocialProofSection />
       {featuredFaqs.unavailable ? <UnavailableSection>Las preguntas frecuentes no están disponibles temporalmente.</UnavailableSection> : <FaqHomeSection items={featuredFaqs.data} />}
       <ContactSection contact={contact.data} homeHogar unavailable={contact.unavailable} />

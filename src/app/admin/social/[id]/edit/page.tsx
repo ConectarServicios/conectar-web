@@ -1,3 +1,4 @@
+import { AdminReadError } from "@/components/admin/admin-operation-notice";
 import { notFound } from "next/navigation";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
@@ -10,7 +11,7 @@ export default async function EditSocialLinkPage({ params }: Readonly<{ params: 
   const supabase = await createClient();
   const { data, error } = await supabase.from("social_links").select("id, platform, url, active, display_order").eq("id", id).maybeSingle();
   if (error) console.error("Unable to load social link for editing", error);
-  if (!data || error) notFound();
+  if (error) return <AdminReadError />; if (!data) notFound();
   const socialLink = data as SocialLink;
   const { id: socialLinkId, ...initialValues } = socialLink;
   return <><AdminPageHeader description={`Actualizá el enlace oficial de ${socialLink.platform}.`} title="Editar red social" /><SocialLinkForm id={socialLinkId} initialValues={initialValues} /></>;

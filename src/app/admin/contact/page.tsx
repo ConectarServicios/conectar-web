@@ -1,6 +1,7 @@
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { ContactInformationForm } from "@/components/admin/contact/contact-information-form";
 import { createClient } from "@/lib/supabase/server";
+import { AdminReadError } from "@/components/admin/admin-operation-notice";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -11,6 +12,7 @@ export default async function Page() {
   ]);
   if (profileError) console.error("Unable to verify contact authorization", profileError);
   if (contactError) console.error("Unable to load contact information", contactError);
+  if (profileError || contactError) return <AdminReadError />;
   const canManage = Boolean(profile?.active && ["admin", "super_admin"].includes(profile.role));
 
   return (

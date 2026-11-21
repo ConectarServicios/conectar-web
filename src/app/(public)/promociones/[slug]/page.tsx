@@ -1,3 +1,4 @@
+import { ContentUnavailable } from "@/components/public/content-unavailable";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,7 +6,7 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 
 import { getPublicPromotion, promotionImageUrl } from "@/lib/supabase/promotions";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { isExternalPublicUrl, normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 import { argentinaDateFormatter } from "@/lib/utils/news-dates";
 
@@ -15,10 +16,10 @@ const loadPromotion = cache(getPublicPromotion);
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const result = await loadPromotion(slug);
-  if (result.unavailable) throw new Error("Public promotion detail is temporarily unavailable");
+  if (result.unavailable) return { title: "Promociones | Conectar Servicios", alternates: { canonical: `/promociones/${slug}` } };
   const item = result.data;
   if (!item) return {};
-  const supabase = await createClient();
+  const supabase = await createPublicClient();
   const image = promotionImageUrl(supabase, item.image_path);
   return {
     title: `${item.title} | Conectar Servicios`,
@@ -31,10 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PromotionDetail({ params }: Props) {
   const { slug } = await params;
   const result = await loadPromotion(slug);
-  if (result.unavailable) throw new Error("Public promotion detail is temporarily unavailable");
+  if (result.unavailable) return <ContentUnavailable backHref="/promociones" backLabel="Volver a Promociones" />;
   const item = result.data;
   if (!item) notFound();
-  const supabase = await createClient();
+  const supabase = await createPublicClient();
   const image = promotionImageUrl(supabase, item.image_path);
   const href = item.button_url ? normalizePublicNavigationUrl(item.button_url) : null;
 

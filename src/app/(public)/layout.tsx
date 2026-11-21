@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Suspense } from "react";
 
 import { PublicFooter } from "@/components/public/public-footer";
 import { PublicHeader } from "@/components/public/public-header";
@@ -41,18 +42,24 @@ type PublicLayoutProps = Readonly<{
   children: ReactNode;
 }>;
 
-export default async function PublicLayout({ children }: PublicLayoutProps) {
+// Content must be checked on each request; outage fallbacks are not a snapshot.
+export const dynamic = "force-dynamic";
+
+async function PublicNavigation() {
   const [configuration, contact] = await Promise.all([
     getPublicSiteConfiguration(),
     getPublicContactInformation(),
   ]);
+  return <PublicHeader configuration={configuration} whatsapp={contact.data?.whatsapp ?? null} />;
+}
 
+export default function PublicLayout({ children }: PublicLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col bg-white text-slate-950">
-        <PromoTopBar />
-        <PublicHeader configuration={configuration} whatsapp={contact.data?.whatsapp ?? null} />
+        <Suspense fallback={null}><PromoTopBar /></Suspense>
+        <Suspense fallback={<nav aria-label="Cargando navegación" className="min-h-20 bg-brand-navy-deep" />}><PublicNavigation /></Suspense>
         <div className="flex-1">{children}</div>
-        <PublicFooter configuration={configuration} />
+        <Suspense fallback={null}><PublicFooter configuration={getPublicSiteConfiguration()} /></Suspense>
     </div>
   );
 }

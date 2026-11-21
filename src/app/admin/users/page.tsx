@@ -1,3 +1,4 @@
+import { AdminOperationNotice } from "@/components/admin/admin-operation-notice";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -16,12 +17,14 @@ const tableHeadings = [
   "Acciones",
 ];
 
-export default async function UsersPage() {
+export default async function UsersPage({ searchParams }: Readonly<{ searchParams: Promise<{ error?: string }> }>) {
+  const { error } = await searchParams;
   const result = await getAdminUsers();
   if (!result) redirect("/auth/unauthorized");
 
   return (
     <div className="@container">
+      <AdminOperationNotice code={error} />
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
         <AdminPageHeader
           description="Gestioná los perfiles y accesos del equipo administrativo."

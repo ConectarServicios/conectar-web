@@ -1,5 +1,7 @@
+import { publicRead } from "@/lib/supabase/public-read";
+import { PUBLIC_CACHE_POLICY } from "@/lib/supabase/public-cache";
+import { createPublicClient } from "@/lib/supabase/public";
 import { cache } from "react";
-import { unstable_rethrow } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import type { SiteConfiguration } from "@/types/site-settings";
@@ -89,9 +91,11 @@ function applyRows(rows: SettingRow[]): SiteConfiguration {
 const loadPublicSiteConfiguration = cache(async (): Promise<{
   configuration: SiteConfiguration;
   installationPriceAvailable: boolean;
+  unavailable: boolean;
 }> => {
-  try {
-    const supabase = await createClient();
+  return publicRead("getPublicSiteConfiguration", { configuration: SITE_CONFIGURATION_DEFAULTS, installationPriceAvailable: false, unavailable: true }, async () => {
+
+  const supabase = await createPublicClient();
     const { data, error } = await supabase
       .from("site_settings")
       .select("key, value")
@@ -100,22 +104,29 @@ const loadPublicSiteConfiguration = cache(async (): Promise<{
 
     if (error) {
       console.error("Unable to load public site configuration", error);
-      return { configuration: SITE_CONFIGURATION_DEFAULTS, installationPriceAvailable: false };
+      return { configuration: SITE_CONFIGURATION_DEFAULTS, installationPriceAvailable: false, unavailable: true };
     }
 
     const rows = data ?? [];
     const priceRow = rows.find((row) => row.key === SITE_SETTING_KEYS.internetInstallationPrice);
     const installationPriceAvailable = typeof priceRow?.value === "number" && Number.isFinite(priceRow.value) && priceRow.value >= 0;
-    return { configuration: applyRows(rows), installationPriceAvailable };
-  } catch (error) {
-    unstable_rethrow(error);
-    console.error("Unable to initialize public site configuration query", error);
-    return { configuration: SITE_CONFIGURATION_DEFAULTS, installationPriceAvailable: false };
-  }
+    return { configuration: applyRows(rows), installationPriceAvailable, unavailable: false };
+
+  }, { domain: "settings", key: "public", policy: PUBLIC_CACHE_POLICY.live, valid: value => !value.unavailable });
 });
 
 export async function getPublicSiteConfiguration(): Promise<SiteConfiguration> {
   return (await loadPublicSiteConfiguration()).configuration;
+}
+
+// Admin reads must never reuse the public outage fallback or its shorter budget.
+export async function getAdminSiteConfiguration() {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("site_settings").select("key, value")
+    .in("key", Object.values(SITE_SETTING_KEYS)).eq("is_public", true);
+  return error
+    ? { data: null, unavailable: true as const }
+    : { data: applyRows(data ?? []), unavailable: false as const };
 }
 
 export async function getPublicInstallationConfiguration() {

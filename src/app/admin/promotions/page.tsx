@@ -1,3 +1,4 @@
+import { AdminOperationNotice } from "@/components/admin/admin-operation-notice";
 import Link from "next/link";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
@@ -23,12 +24,13 @@ export default async function PromotionsPage({ searchParams }: Readonly<{
   const items = (data ?? []) as Promotion[];
 
   return <>
+      <AdminOperationNotice code={params.error} />
     <div className="flex flex-col items-start gap-4 sm:flex-row sm:justify-between">
       <AdminPageHeader description="Programá beneficios y elegí dónde se muestran." title="Promociones" />
       <Link className="rounded-xl bg-orange-600 px-5 py-3 font-bold text-white" href="/admin/promotions/new">Nueva promoción</Link>
     </div>
     {params.success && <p className="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800" role="status">La acción se completó correctamente.</p>}
-    {params.error && <p className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800" role="alert">
+    {params.error && params.error !== "uncertain" && params.error !== "unavailable" && <p className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800" role="alert">
       {params.error === "image-cleanup" ? "El registro se guardó, pero no se pudo limpiar la imagen anterior." : "No se pudo completar la acción."}
     </p>}
     {error ? <p className="rounded-2xl border bg-white p-8">No pudimos cargar las promociones.</p>

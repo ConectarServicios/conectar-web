@@ -1,3 +1,4 @@
+import { AdminReadError } from "@/components/admin/admin-operation-notice";
 import { notFound } from "next/navigation";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
@@ -17,7 +18,7 @@ export default async function EditEventPage({
     .eq("id", id)
     .maybeSingle();
 
-  if (error || !data) notFound();
+  if (error) return <AdminReadError />; if (!data) notFound();
 
   const item = data as EventItem;
   const { id: itemId, created_at: createdAt, updated_at: updatedAt, ...values } = item;

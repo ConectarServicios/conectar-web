@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { EventCard } from "@/components/public/event-card";
 import { eventImageUrl, getPublicEvents } from "@/lib/supabase/events";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { eventTemporalStatus } from "@/lib/utils/event-dates";
 import type { EventItem } from "@/types/events";
 
@@ -22,9 +22,9 @@ export default async function EventsPage() {
     (event) => eventTemporalStatus(event) === "unscheduled",
   );
   const past = events.filter((event) => eventTemporalStatus(event) === "finished");
-  const supabase = await createClient();
+  const supabase = result.data.length ? await createPublicClient() : null;
   const images = Object.fromEntries(
-    events.map((event) => [event.id, eventImageUrl(supabase, event.image_path)]),
+    events.map((event) => [event.id, eventImageUrl(supabase!, event.image_path)]),
   );
 
   return (

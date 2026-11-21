@@ -1,5 +1,9 @@
 "use server";
 
+import { invalidateAfterConfirmedMutation } from "@/lib/supabase/public-cache";
+
+import { administrativeRead, operationErrorState } from "@/lib/supabase/operation-error";
+
 import { revalidatePath } from "next/cache";
 
 import {
@@ -18,14 +22,14 @@ async function getAuthorizedClient() {
   const supabase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await administrativeRead(supabase.auth.getUser());
   if (!user) return null;
 
-  const { data: profile, error } = await supabase
+  const { data: profile, error } = await administrativeRead(supabase
     .from("profiles")
     .select("active, role")
     .eq("id", user.id)
-    .maybeSingle();
+    .maybeSingle());
 
   if (error) console.error("Unable to authorize site settings update", error);
   if (!profile?.active || !["admin", "super_admin"].includes(profile.role)) return null;
@@ -50,10 +54,10 @@ async function persistSettings(values: Partial<SiteConfiguration>): Promise<Sett
     .map(([field]) => SITE_SETTING_KEYS[field]);
   const [{ error: upsertError }, { error: deleteError }] = await Promise.all([
     rows.length
-      ? supabase.from("site_settings").upsert(rows, { onConflict: "key" })
+      ? invalidateAfterConfirmedMutation("settings", supabase.from("site_settings").upsert(rows, { onConflict: "key" }))
       : Promise.resolve({ error: null }),
     keysToRemove.length
-      ? supabase.from("site_settings").delete().in("key", keysToRemove)
+      ? invalidateAfterConfirmedMutation("settings", supabase.from("site_settings").delete().in("key", keysToRemove))
       : Promise.resolve({ error: null }),
   ]);
   const error = upsertError ?? deleteError;
@@ -80,31 +84,43 @@ export async function saveInternetSettings(
   _previous: SettingsActionState,
   formData: FormData,
 ): Promise<SettingsActionState> {
-  const parsed = parseInternetSettings(formData);
-  if (!parsed.values) return invalidState(parsed.fieldErrors);
-  const state = await persistSettings(parsed.values);
-  if (state.success) revalidatePublicLayout();
-  return state;
+  try {
+    const parsed = parseInternetSettings(formData);
+    if (!parsed.values) return invalidState(parsed.fieldErrors);
+    const state = await persistSettings(parsed.values);
+    if (state.success) revalidatePublicLayout();
+    return state;
+  } catch (error) {
+    return operationErrorState(error);
+  }
 }
 
 export async function saveIdentitySettings(
   _previous: SettingsActionState,
   formData: FormData,
 ): Promise<SettingsActionState> {
-  const parsed = parseIdentitySettings(formData);
-  if (!parsed.values) return invalidState(parsed.fieldErrors);
-  const state = await persistSettings(parsed.values);
-  if (state.success) revalidatePublicLayout();
-  return state;
+  try {
+    const parsed = parseIdentitySettings(formData);
+    if (!parsed.values) return invalidState(parsed.fieldErrors);
+    const state = await persistSettings(parsed.values);
+    if (state.success) revalidatePublicLayout();
+    return state;
+  } catch (error) {
+    return operationErrorState(error);
+  }
 }
 
 export async function saveSeoSettings(
   _previous: SettingsActionState,
   formData: FormData,
 ): Promise<SettingsActionState> {
-  const parsed = parseSeoSettings(formData);
-  if (!parsed.values) return invalidState(parsed.fieldErrors);
-  const state = await persistSettings(parsed.values);
-  if (state.success) revalidatePublicLayout();
-  return state;
+  try {
+    const parsed = parseSeoSettings(formData);
+    if (!parsed.values) return invalidState(parsed.fieldErrors);
+    const state = await persistSettings(parsed.values);
+    if (state.success) revalidatePublicLayout();
+    return state;
+  } catch (error) {
+    return operationErrorState(error);
+  }
 }

@@ -1,3 +1,4 @@
+import { AdminOperationNotice } from "@/components/admin/admin-operation-notice";
 import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { FaqActionsMenu } from "@/components/admin/faqs/faq-actions-menu";
@@ -31,6 +32,7 @@ export default async function FaqsAdminPage({
   const faqs = (data ?? []) as FaqItem[];
   return (
     <>
+      <AdminOperationNotice code={params.error} />
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:justify-between">
         <AdminPageHeader
           description="Administrá las respuestas a las consultas más habituales."
@@ -48,7 +50,7 @@ export default async function FaqsAdminPage({
           {successMessages[params.success]}
         </p>
       )}
-      {params.error && (
+      {params.error && params.error !== "uncertain" && params.error !== "unavailable" && (
         <p className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
           No pudimos completar la acción o no tenés permiso.
         </p>

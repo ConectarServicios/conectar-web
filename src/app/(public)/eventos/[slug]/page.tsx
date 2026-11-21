@@ -4,40 +4,28 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
-import { EVENT_SELECT, eventImageUrl } from "@/lib/supabase/events";
-import { createClient } from "@/lib/supabase/server";
+import { getPublicEvent, eventImageUrl } from "@/lib/supabase/events";
+import { createPublicClient } from "@/lib/supabase/public";
 import {
   eventDateFormatter,
   eventsOccurOnSameArgentinaDay,
   eventTimeFormatter,
 } from "@/lib/utils/event-dates";
 import { isExternalPublicUrl, normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
-import type { EventItem } from "@/types/events";
+import { ContentUnavailable } from "@/components/public/content-unavailable";
 
-const loadEvent = cache(async (slug: string) => {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("events")
-    .select(EVENT_SELECT)
-    .eq("slug", slug)
-    .eq("status", "published")
-    .maybeSingle();
-
-  if (error) {
-    console.error("Unable to load event detail", error);
-    throw new Error("Public event detail is temporarily unavailable");
-  }
-  return data as EventItem | null;
-});
+const loadEvent = cache(getPublicEvent);
 
 export async function generateMetadata({
   params,
 }: Readonly<{ params: Promise<{ slug: string }> }>): Promise<Metadata> {
   const { slug } = await params;
-  const item = await loadEvent(slug);
+  const result = await loadEvent(slug);
+  const item = result.data;
+  if (result.unavailable) return { title: "Eventos | Conectar Servicios", alternates: { canonical: `/eventos/${slug}` } };
   if (!item) return { title: "Evento no encontrado" };
 
-  const supabase = await createClient();
+  const supabase = await createPublicClient();
   const image = eventImageUrl(supabase, item.image_path);
   return {
     title: `${item.title} | Conectar Servicios`,
@@ -56,10 +44,12 @@ export default async function EventDetail({
   params,
 }: Readonly<{ params: Promise<{ slug: string }> }>) {
   const { slug } = await params;
-  const item = await loadEvent(slug);
+  const result = await loadEvent(slug);
+  const item = result.data;
+  if (result.unavailable) return <ContentUnavailable backHref="/eventos" backLabel="Volver a Eventos" />;
   if (!item) notFound();
 
-  const supabase = await createClient();
+  const supabase = await createPublicClient();
   const image = eventImageUrl(supabase, item.image_path);
   const start = item.starts_at ? new Date(item.starts_at) : null;
   const end = item.ends_at ? new Date(item.ends_at) : null;

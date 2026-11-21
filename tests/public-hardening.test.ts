@@ -34,7 +34,7 @@ test("only the homepage overrides the inherited noindex policy", async () => {
   }
   // Catch overrides in other layouts or dynamic generateMetadata functions.
   for (const file of await readdir("src/app", { recursive: true })) {
-    const path = `src/app/${file}`;
+    const path = `src/app/${file.replaceAll("\\", "/")}`;
     if (!/\.tsx?$/.test(file) || files.includes(path)) continue;
     const source = ts.createSourceFile(path, await readFile(path, "utf8"), ts.ScriptTarget.Latest, true);
     function check(node: ts.Node) {

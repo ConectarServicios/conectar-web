@@ -1,3 +1,4 @@
+import { AdminOperationNotice } from "@/components/admin/admin-operation-notice";
 import Link from "next/link";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
@@ -23,12 +24,13 @@ export default async function PlansPage({ searchParams }: Readonly<{ searchParam
 
   return (
     <div className="@container">
+      <AdminOperationNotice code={query.error} />
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <AdminPageHeader description="Gestioná los planes de internet, precios, velocidades y promociones." title="Planes" />
         <Link className="shrink-0 rounded-xl bg-orange-600 px-5 py-3 text-center font-bold text-white shadow-sm hover:bg-orange-700" href="/admin/plans/new">Nuevo plan</Link>
       </div>
       {query.success && feedback[query.success] && <p className="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status">{feedback[query.success]}</p>}
-      {query.error && <p className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{query.error === "permission" ? "No tenés permiso para realizar esa acción." : "No pudimos completar la acción. Intentá nuevamente."}</p>}
+      {query.error && query.error !== "uncertain" && query.error !== "unavailable" && <p className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{query.error === "permission" ? "No tenés permiso para realizar esa acción." : "No pudimos completar la acción. Intentá nuevamente."}</p>}
       {error ? (
         <div className="rounded-2xl border border-red-200 bg-white p-8 text-center"><h2 className="font-bold text-slate-950">No pudimos cargar los planes</h2><p className="mt-2 text-slate-600">Intentá nuevamente en unos minutos.</p></div>
       ) : plans.length === 0 ? (

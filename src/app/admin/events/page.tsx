@@ -1,3 +1,4 @@
+import { AdminOperationNotice } from "@/components/admin/admin-operation-notice";
 import Link from "next/link";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
@@ -39,6 +40,7 @@ export default async function EventsAdminPage({
 
   return (
     <>
+      <AdminOperationNotice code={params.error} />
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:justify-between">
         <AdminPageHeader
           description="Administrá la agenda institucional y su publicación."
@@ -56,7 +58,7 @@ export default async function EventsAdminPage({
           {successMessages[params.success]}
         </p>
       )}
-      {params.error && (
+      {params.error && params.error !== "uncertain" && params.error !== "unavailable" && (
         <p className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
           {params.error === "image-cleanup"
             ? "El evento se guardó, pero no pudimos limpiar la imagen anterior."

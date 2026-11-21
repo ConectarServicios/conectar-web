@@ -7,7 +7,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  // Public content is anonymous. Private pages still validate the user/profile
+  // in their layout/actions; auth routes retain cookie refresh behavior.
+  matcher: ["/admin/:path*", "/auth/:path*"],
 };

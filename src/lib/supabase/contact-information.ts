@@ -1,7 +1,10 @@
+import { publicFailure } from "@/lib/supabase/public-result";
+import { validDetail, validContact } from "@/lib/supabase/public-cache-validation";
+import { publicRead } from "@/lib/supabase/public-read";
+import { PUBLIC_CACHE_POLICY } from "@/lib/supabase/public-cache";
 import { cache } from "react";
-import { unstable_rethrow } from "next/navigation";
 
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import type { ContactInformation } from "@/types/contact-information";
 
 export type PublicContactInformation = {
@@ -10,9 +13,10 @@ export type PublicContactInformation = {
 };
 
 export const getPublicContactInformation = cache(async (): Promise<PublicContactInformation> => {
-  try {
-    const supabase = await createClient();
-    const { data, error } = await supabase
+  return publicRead("getPublicContactInformation", { data: null, unavailable: true } as PublicContactInformation, async () => {
+
+  const supabase = await createPublicClient();
+    const { data, error, status } = await supabase
       .from("contact_information")
       .select("id, phone, whatsapp, commercial_email, address, business_hours, guard_hours")
       .order("created_at", { ascending: true })
@@ -21,13 +25,10 @@ export const getPublicContactInformation = cache(async (): Promise<PublicContact
 
     if (error) {
       console.error("Unable to load public contact information", error);
-      return { data: null, unavailable: true };
+      return publicFailure(null, status);
     }
 
     return { data: data as ContactInformation | null, unavailable: false };
-  } catch (error) {
-    unstable_rethrow(error);
-    console.error("Unable to initialize public contact information query", error);
-    return { data: null, unavailable: true };
-  }
+
+  }, { domain: "contact", key: "main", policy: PUBLIC_CACHE_POLICY.information, valid: value => validDetail(value, validContact) });
 });

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { PromotionCard } from "@/components/public/promotion-card";
 import { getPublicPromotions, promotionImageUrl } from "@/lib/supabase/promotions";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 
 export const metadata: Metadata = {
   title: "Promociones | Conectar Servicios",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default async function PromotionsPage() {
   const result = await getPublicPromotions();
   const items = result.data;
-  const supabase = await createClient();
+  const supabase = result.data.length ? await createPublicClient() : null;
   return (
     <main>
       <section className="bg-brand-navy-deep py-16 text-white sm:py-24">
@@ -28,7 +28,7 @@ export default async function PromotionsPage() {
           <h2 className="text-2xl font-black">Las promociones no están disponibles temporalmente.</h2>
           <p className="mt-3 text-slate-600">Intentá nuevamente más tarde.</p>
         </div> : items.length ? <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
-          {items.map((item) => <PromotionCard imageUrl={promotionImageUrl(supabase, item.image_path)} item={item} key={item.id} />)}
+          {items.map((item) => <PromotionCard imageUrl={promotionImageUrl(supabase!, item.image_path)} item={item} key={item.id} />)}
         </div> : <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-12 text-center">
           <h2 className="text-2xl font-black">No hay promociones vigentes por el momento</h2>
           <p className="mt-3 text-slate-600">Volvé pronto para conocer nuevos beneficios.</p>

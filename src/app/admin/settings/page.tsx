@@ -4,7 +4,8 @@ import {
   InternetSettingsForm,
   SeoSettingsForm,
 } from "@/components/admin/settings/settings-forms";
-import { getPublicSiteConfiguration } from "@/lib/supabase/site-settings";
+import { getAdminSiteConfiguration } from "@/lib/supabase/site-settings";
+import { AdminReadError } from "@/components/admin/admin-operation-notice";
 import { createClient } from "@/lib/supabase/server";
 
 const sections = [
@@ -35,10 +36,11 @@ export default async function Page() {
   } = await supabase.auth.getUser();
   const [{ data: profile, error: profileError }, configuration] = await Promise.all([
     supabase.from("profiles").select("active, role").eq("id", user?.id ?? "").maybeSingle(),
-    getPublicSiteConfiguration(),
+    getAdminSiteConfiguration(),
   ]);
 
   if (profileError) console.error("Unable to verify settings authorization", profileError);
+  if (profileError || configuration.unavailable || !configuration.data) return <AdminReadError />;
   const canManage = Boolean(profile?.active && ["admin", "super_admin"].includes(profile.role));
 
   return (
@@ -57,7 +59,7 @@ export default async function Page() {
             <h2 className="text-xl font-bold text-slate-950" id={id}>{title}</h2>
             <p className="mt-2 max-w-2xl text-sm text-slate-600">{description}</p>
             {canManage ? (
-              <Form configuration={configuration} />
+              <Form configuration={configuration.data} />
             ) : (
               <p className="mt-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
                 Solo administradores y super administradores pueden modificar esta configuración.

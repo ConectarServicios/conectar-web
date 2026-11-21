@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { NewsCard } from "@/components/public/news-card";
 import { getPublicNews, newsImageUrl } from "@/lib/supabase/news";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 export const metadata: Metadata = { title:"Noticias y comunicados | Conectar Servicios", description:"Novedades, comunicados e información institucional de Conectar Servicios.", alternates: { canonical: "/noticias" } };
 export default async function NewsPage() {
   const result = await getPublicNews();
   const items = result.data;
-  const supabase = await createClient();
+  const supabase = result.data.length ? await createPublicClient() : null;
 
   return (
     <main>
@@ -28,7 +28,7 @@ export default async function NewsPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {items.map((item) => (
                 <NewsCard
-                  imageUrl={newsImageUrl(supabase, item.cover_image)}
+                  imageUrl={newsImageUrl(supabase!, item.cover_image)}
                   item={item}
                   key={item.id}
                   variant="home"

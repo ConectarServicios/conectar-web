@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { PromotionCard } from "@/components/public/promotion-card";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { getPublicPromotions, promotionImageUrl } from "@/lib/supabase/promotions";
 import { isExternalPublicUrl, normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 import { argentinaDateFormatter } from "@/lib/utils/news-dates";
@@ -55,12 +55,12 @@ function WideContextualPromotion({ item, imageUrl }: Readonly<{ item: Promotion;
   );
 }
 
-export async function ContextualPromotions({ placement, exclude = [] }: Readonly<{ placement: PromotionPlacement; exclude?: string[] }>) {
-  const result = await getPublicPromotions(placement);
+export async function ContextualPromotions({ placement, exclude = [], result: pendingResult }: Readonly<{ placement: PromotionPlacement; exclude?: string[] | Promise<string[]>; result?: ReturnType<typeof getPublicPromotions> }>) {
+  const [result, excluded] = await Promise.all([pendingResult ?? getPublicPromotions(placement), exclude]);
   if (result.unavailable) return <section className="bg-brand-navy py-10 text-white"><div className="public-container"><p className="rounded-2xl border border-white/15 p-5 text-center" role="status">Las promociones no están disponibles temporalmente.</p></div></section>;
-  const items = result.data.filter((item) => !exclude.includes(item.id)).slice(0, 2);
+  const items = result.data.filter((item) => !excluded.includes(item.id)).slice(0, 2);
   if (!items.length) return null;
-  const supabase = await createClient();
+  const supabase = await createPublicClient();
   return (
     <section className="bg-brand-navy py-16 text-white">
       <div className="public-container">

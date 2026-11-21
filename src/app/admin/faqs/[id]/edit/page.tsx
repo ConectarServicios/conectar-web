@@ -1,3 +1,4 @@
+import { AdminReadError } from "@/components/admin/admin-operation-notice";
 import { notFound } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { FaqForm } from "@/components/admin/faqs/faq-form";
@@ -15,7 +16,7 @@ export default async function EditFaqPage({
     .select(FAQ_SELECT)
     .eq("id", id)
     .maybeSingle();
-  if (error || !data) notFound();
+  if (error) return <AdminReadError />; if (!data) notFound();
   const item = data as FaqItem;
   return (
     <>

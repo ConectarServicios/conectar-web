@@ -13,6 +13,7 @@ import {
   getPlaySettings,
 } from "@/lib/supabase/conectar-play";
 import { ContextualPromotions } from "@/components/public/contextual-promotions";
+import { getPublicPromotions } from "@/lib/supabase/promotions";
 import { isExternalPublicUrl, normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ConectarPlayPage() {
+  const contextualPromotions = getPublicPromotions("conectar_play");
   const [settingsResult, plansResult, packsResult, faqsResult] =
     await Promise.all([
       getPlaySettings(),
@@ -79,7 +81,7 @@ export default async function ConectarPlayPage() {
         </div>
       </section>
 
-      <ContextualPromotions placement="conectar_play" />
+      <ContextualPromotions placement="conectar_play" result={contextualPromotions} />
 
       <section className="scroll-mt-24 bg-white py-12 sm:py-16" id="planes-play">
         <div className="public-container">

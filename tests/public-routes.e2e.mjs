@@ -67,7 +67,7 @@ test("public pages expose coherent segment, institutional, and contact destinati
   assert.match(services, /href="\/corporativo#contacto"/);
   assert.match(home, /href="\/quienes-somos"/);
   assert.match(home, /id="cobertura"/);
-  assert.match(home, /¿Conectar llega a tu domicilio\?/);
+  assert.match(home, /Consultá nuestra cobertura/);
   assert.match(home, /name="address"/);
   assert.match(home, /¿Necesitás ayuda o querés contratar\?/);
   assert.match(corporate, /¿Necesitás ayuda o querés contratar\?/);
@@ -87,9 +87,10 @@ test("home and corporate canonicals use their canonical paths", async () => {
     const html = await request(path).then((response) => response.text());
     const canonical = html.match(/<link rel="canonical" href="([^"]+)"/);
     assert.ok(canonical, `Missing canonical for ${path}`);
-    assert.equal(new URL(canonical[1]).pathname, path);
+    const canonicalUrl = new URL(canonical[1], new URL(path, baseUrl));
+    assert.equal(canonicalUrl.pathname, path);
     if (path === "/") {
-      assert.equal(new URL(canonical[1]).href, "https://conectarservicios.com.ar/");
+      assert.equal(canonicalUrl.href, "https://conectarservicios.com.ar/");
     }
   }
 });

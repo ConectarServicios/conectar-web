@@ -1,3 +1,4 @@
+import { AdminReadError } from "@/components/admin/admin-operation-notice";
 import { notFound } from "next/navigation";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
@@ -12,7 +13,7 @@ export default async function EditPlanPage({ params }: Readonly<{ params: Promis
     .select("id, name, slug, speed_mbps, upload_speed_mbps, description, regular_price, promotional_price, promotion_label, promotion_start, promotion_end, featured, active, display_order, plan_features(id, text, display_order)")
     .eq("id", id).order("display_order", { referencedTable: "plan_features", ascending: true }).maybeSingle();
   if (error) console.error("Unable to load plan for editing", error);
-  if (!data || error) notFound();
+  if (error) return <AdminReadError />; if (!data) notFound();
   const plan = data as Plan;
   const { id: planId, ...initialValues } = plan;
   return <><AdminPageHeader description={`Actualizá los datos y características de ${plan.name}.`} title="Editar plan" /><PlanForm id={planId} initialValues={initialValues} /></>;

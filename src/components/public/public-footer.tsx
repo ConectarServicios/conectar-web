@@ -1,8 +1,11 @@
 import Link from "next/link";
 import styles from "./public-footer.module.css";
-import { unstable_rethrow } from "next/navigation";
+import { publicRead } from "@/lib/supabase/public-read";
+import { PUBLIC_CACHE_POLICY } from "@/lib/supabase/public-cache";
+import { validList, validSocial } from "@/lib/supabase/public-cache-validation";
+import { publicFailure, type PublicResult } from "@/lib/supabase/public-result";
 
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { isSocialPlatform, type SocialLink, type SocialPlatform } from "@/types/social-links";
 import type { SiteConfiguration } from "@/types/site-settings";
 import { isExternalPublicUrl, normalizePublicNavigationUrl } from "@/lib/utils/public-navigation-url";
@@ -43,30 +46,23 @@ function SocialIcon({ platform }: Readonly<{ platform: SocialPlatform }>) {
 }
 
 async function getSocialLinks(): Promise<SocialLink[]> {
-  try {
-    const supabase = await createClient();
-    const { data, error } = await supabase.from("social_links").select("id, platform, url, active, display_order")
+  const result = await publicRead<PublicResult<SocialLink[]>>("getSocialLinks", { data: [], unavailable: true }, async () => {
+    const supabase = await createPublicClient();
+    const { data, error, status } = await supabase.from("social_links").select("id, platform, url, active, display_order")
       .eq("active", true).order("display_order", { ascending: true }).order("platform", { ascending: true });
-    if (error) {
-      console.error("Unable to load public social links", error);
-      return [];
-    }
-    return (data ?? []).filter((link): link is SocialLink =>
-      isSocialPlatform(link.platform) && isExternalPublicUrl(normalizePublicNavigationUrl(link.url)),
-    );
-  } catch (error) {
-    unstable_rethrow(error);
-    console.error("Unable to initialize social links query", error);
-    return [];
-  }
+    if (error) return publicFailure([], status);
+    return { data: (data ?? []).filter((link): link is SocialLink =>
+      isSocialPlatform(link.platform) && isExternalPublicUrl(normalizePublicNavigationUrl(link.url))), unavailable: false };
+  }, { domain: "social", key: "links", policy: PUBLIC_CACHE_POLICY.information, valid: value => validList(value, validSocial) });
+  return result.data;
 }
 
 type PublicFooterProps = Readonly<{
-  configuration: Pick<SiteConfiguration, "siteName" | "footerTagline" | "selfServiceUrl">;
+  configuration: Pick<SiteConfiguration, "siteName" | "footerTagline" | "selfServiceUrl"> | Promise<Pick<SiteConfiguration, "siteName" | "footerTagline" | "selfServiceUrl">>;
 }>;
 
-export async function PublicFooter({ configuration }: PublicFooterProps) {
-  const socialLinks = await getSocialLinks();
+export async function PublicFooter({ configuration: pendingConfiguration }: PublicFooterProps) {
+  const [configuration, socialLinks] = await Promise.all([pendingConfiguration, getSocialLinks()]);
   return (
     <footer className={`${styles.footer} bg-brand-navy-deep py-12 text-slate-300`}>
       <div className={`${styles.main} public-container grid gap-10 lg:grid-cols-[1.1fr_2fr]`}>

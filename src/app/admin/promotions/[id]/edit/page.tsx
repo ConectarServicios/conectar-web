@@ -1,3 +1,4 @@
+import { AdminReadError } from "@/components/admin/admin-operation-notice";
 import { notFound } from "next/navigation";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
@@ -11,7 +12,7 @@ export default async function EditPromotionPage({ params }: Readonly<{ params: P
   const { data, error } = await supabase.from("promotions")
     .select("id,title,slug,summary,description,image_path,button_text,button_url,starts_at,ends_at,active,featured,placements,display_order,created_at,updated_at")
     .eq("id", id).maybeSingle();
-  if (error || !data) notFound();
+  if (error) return <AdminReadError />; if (!data) notFound();
   const item = data as Promotion;
   const values: PromotionFormValues = {
     title: item.title, slug: item.slug, summary: item.summary, description: item.description,

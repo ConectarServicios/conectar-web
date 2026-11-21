@@ -1,3 +1,4 @@
+import { AdminOperationNotice } from "@/components/admin/admin-operation-notice";
 import Link from "next/link";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
@@ -19,12 +20,13 @@ export default async function SocialPage({ searchParams }: Readonly<{ searchPara
   const socialLinks = (data ?? []) as SocialLink[];
 
   return <>
+      <AdminOperationNotice code={query.error} />
     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
       <AdminPageHeader description="Gestioná los enlaces a los perfiles sociales oficiales." title="Redes sociales" />
       <Link className="shrink-0 rounded-xl bg-orange-600 px-5 py-3 text-center font-bold text-white shadow-sm hover:bg-orange-700" href="/admin/social/new">Nueva red social</Link>
     </div>
     {query.success && feedback[query.success] && <p className="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status">{feedback[query.success]}</p>}
-    {query.error && <p className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{query.error === "permission" ? "No tenés permiso para realizar esa acción." : "No pudimos completar la acción. Intentá nuevamente."}</p>}
+    {query.error && query.error !== "uncertain" && query.error !== "unavailable" && <p className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{query.error === "permission" ? "No tenés permiso para realizar esa acción." : "No pudimos completar la acción. Intentá nuevamente."}</p>}
     {error ? <div className="rounded-2xl border border-red-200 bg-white p-8 text-center"><h2 className="font-bold text-slate-950">No pudimos cargar las redes sociales</h2><p className="mt-2 text-slate-600">Intentá nuevamente en unos minutos.</p></div>
       : socialLinks.length === 0 ? <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center"><h2 className="text-xl font-bold text-slate-950">Todavía no hay redes sociales cargadas.</h2><p className="mt-2 text-slate-600">Creá el primer enlace oficial para comenzar.</p></div>
       : <div className="grid gap-4 lg:block lg:rounded-2xl lg:border lg:border-slate-200 lg:bg-white lg:shadow-sm">
